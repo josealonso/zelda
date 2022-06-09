@@ -16,4 +16,8 @@ contract OzNFT is ERC721 {
         _mint(to, _tokenIds.current());
         return _tokenIds.current();
     }
+
+    function transfer(address _to, uint256 _tokenId) public {
+        _transfer(msg.sender, _to, _tokenId);
+    }
 }
