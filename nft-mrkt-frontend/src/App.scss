@@ -1,7 +1,10 @@
 ::-webkit-scrollbar {
     display: none;
 }
-
+* {    
+    margin: 0;
+    padding: 0;
+}
 .app{
     box-sizing: border-box;
     height: 100vh;
@@ -9,4 +12,5 @@
     scrollbar-width: none; // for firefox
     overflow: scroll;
     background-color: var(--ethblack);
+    margin: 0;
 }
