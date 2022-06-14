@@ -1,30 +1,30 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `npx hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
+import { writeFileSync } from "fs";
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+  // URL from where we can extract the metadata for the NFTs
+  const metadataURL = "ipfs://QmZc7jp32oZNbaSGBLbMib4GU5YnGesvudHcE3o7EVqdjs/";
+  /*
+  A ContractFactory in ethers.js is an abstraction used to deploy new smart contracts,
+  so punksContract here is a factory for instances of our Punks contract.
+  */
+  const marketplaceContract = await ethers.getContractFactory("NFTMarketplace");
 
-  // We get the contract to deploy
-  const Greeter = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  // deploy the contract
+  // const deployedMarketplaceContract = await marketplaceContract.deploy(metadataURL);
+  const deployedMarketplaceContract = await marketplaceContract.deploy();
+  await deployedMarketplaceContract.deployed();
+  // print the address of the deployed contract
+  console.log("Marketplace Contract Address:", deployedMarketplaceContract.address);
 
-  await greeter.deployed();
-
-  console.log("Greeter deployed to:", greeter.address);
+  writeFileSync('../frontend/config.ts', `export const marketplaceAddress = "${deployedMarketplaceContract.address}"
+  `);
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+// Call the main function and catch if there is any error
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
