@@ -10,7 +10,7 @@ env:
   ECS_CLUSTER: frontend-cluster                          # set this to your Amazon ECS cluster name
   ECR_REPO: frontend-repo                                # set this to your Amazon ECR Repo name
   ECR_IMAGE_TAG: frontend-tag                            # set this to your Amazon ECR image tag name
-  ECS_TASK_DEFINITION: nft-mrkt-frontend/.aws/frontend-task-definition     # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: nft-mrkt-frontend/.aws/frontend-task-definition.json     # set this to the path to your Amazon ECS task definition
                                                          # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: frontend-container                     # set this to the name of the container in the
                                                          # containerDefinitions section of your task definition
