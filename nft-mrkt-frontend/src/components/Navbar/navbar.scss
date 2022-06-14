@@ -1,0 +1,19 @@
+.navbar{
+    height: 60px;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    background-color: gray;
+    top: 0;
+    z-index: 3;
+    transition: all 1s ease;
+    justify-content: space-between;
+
+    .logo{
+        padding-left: 10px;
+    }
+    .connectMMBtn{
+        padding: 10px;
+        margin-right: 20px;
+    }
+}
