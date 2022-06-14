@@ -14,7 +14,8 @@ import NFTMarketplaceValue from '../../backend/artifacts/contracts/Marketplace.s
 const provider = new ethers.providers.JsonRpcProvider();
 const contract = new ethers.Contract(marketplaceAddress, NFTMarketplaceValue.abi, provider) as NFTMarketplace;
 
-export default function Home(): NextPage {
+// export default function Home(): NextPage {
+export default function Home() {
   const [nfts, setNfts] = useState([])
   const [loadingState, setLoadingState] = useState('not-loaded')
   useEffect(() => {
@@ -71,7 +72,7 @@ export default function Home(): NextPage {
       <div className="px-4" style={{ maxWidth: '1600px' }}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
           {
-            nfts.map((nft, i) => {
+            nfts.map((nft, i) => (
               <div key={i} className="border shadow rounded-xl overflow-hidden">
                 <img src={nft.image} />
                 <div className="p-4">
@@ -85,12 +86,11 @@ export default function Home(): NextPage {
                   <button className="mt-4 w-full bg-pink-500 text-white font-bold py-2 px-12 rounded" onClick={() => buyNft(nft)}>Buy</button>
                 </div>
               </div>
-            })
-          // }
+            ))
+          }
         </div>
       </div>
     </div>
-          }
-          )
-          
+  )
+
 }
