@@ -7,10 +7,7 @@ import axios from 'axios'
 import Web3Modal from 'web3modal'
 
 import { NFTMarketplace } from "../../backend/typechain";
-import {
-  marketplaceAddress
-} from '../config'
-
+import { marketplaceAddress } from '../config'
 import NFTMarketplaceValue from '../../backend/artifacts/contracts/Marketplace.sol/NFTMarketplace.json';
 // import  {} from '../../artifacts/contracts/'; 
 
@@ -67,13 +64,14 @@ export default function Home(): NextPage {
     await transaction.wait()
     loadNFTs()
   }
+
   if (loadingState === 'loaded' && !nfts.length) return (<h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>)
   return (
     <div className="flex justify-center">
       <div className="px-4" style={{ maxWidth: '1600px' }}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
           {
-            nfts.map((nft, i) => (
+            nfts.map((nft, i) => {
               <div key={i} className="border shadow rounded-xl overflow-hidden">
                 <img src={nft.image} />
                 <div className="p-4">
@@ -87,10 +85,12 @@ export default function Home(): NextPage {
                   <button className="mt-4 w-full bg-pink-500 text-white font-bold py-2 px-12 rounded" onClick={() => buyNft(nft)}>Buy</button>
                 </div>
               </div>
-            ))
-          }
+            })
+          // }
         </div>
       </div>
     </div>
-  )
+          }
+          )
+          
 }
