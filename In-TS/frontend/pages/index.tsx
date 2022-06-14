@@ -11,7 +11,8 @@ import { marketplaceAddress } from '../config'
 import NFTMarketplaceValue from '../../backend/artifacts/contracts/Marketplace.sol/NFTMarketplace.json';
 // import  {} from '../../artifacts/contracts/'; 
 
-const provider = new ethers.providers.JsonRpcProvider();
+const MUMBAI_RPC = "https://matic-mumbai.chainstacklabs.com";
+const provider = new ethers.providers.JsonRpcProvider(MUMBAI_RPC);
 const contract = new ethers.Contract(marketplaceAddress, NFTMarketplaceValue.abi, provider) as NFTMarketplace;
 
 // export default function Home(): NextPage {
