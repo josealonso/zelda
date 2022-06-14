@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './App.scss';
-import {Outlet, BrowserRouter as Router} from 'react-router-dom';
-import { ethers } from "ethers";
+import { Outlet } from 'react-router-dom';
 
 import Navbar from './components/Navbar/Navbar';
 
@@ -23,10 +22,8 @@ function App() {
 
   return (
     <div className="App">
-        <Router>
-            <Navbar />
-        </Router>
-      <Outlet context={[state, setState]}/>
+        <Navbar />
+        <Outlet context={[state, setState]}/>
         <div>Temporary Title</div>
     </div>
   );
