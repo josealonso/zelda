@@ -1,4 +1,4 @@
-/* pages/my-nft.js */
+/* pages/my-nfts.tsx */
 import { ethers } from 'ethers'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
