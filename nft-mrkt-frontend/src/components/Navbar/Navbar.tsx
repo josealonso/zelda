@@ -1,6 +1,6 @@
 import React from 'react'
 import './navbar.scss'
-import {Link } from "react-router-dom";
+import {Link, Router} from "react-router-dom";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import {Web3Provider} from "@ethersproject/providers";
@@ -17,7 +17,7 @@ function Navbar() {
       console.log("signer is:", typeof signer)
       const address: any = await signer.getAddress();
       console.log("address is: ", typeof address);
-  
+
 
       console.log(address);
     }
