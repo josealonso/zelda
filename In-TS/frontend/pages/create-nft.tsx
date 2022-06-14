@@ -60,7 +60,7 @@ export default function CreateItem() {
         /* next, create the item */
         const price = ethers.utils.parseUnits(formInput.price, 'ether')
         let contract = new ethers.Contract(marketplaceAddress, NFTMarketplaceJsonFile.abi, signer) as NFTMarketplace;
-        let listingPrice = await (await contract.getListingPrice()).toString();
+        let listingPrice = (await contract.getListingPrice()).toString();
         // listingPrice = listingPrice.toString()
         const url2 = url === undefined ? "" : url;     // Added line  JR
         let transaction = await contract.createToken(url2, price, { value: listingPrice })
