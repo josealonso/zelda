@@ -7,12 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-      - uses: actions/checkout@v2
-      - name: Set up node 
-        uses: actions/setup-node@v1
-      - name: Change to FE Project
-        run: cd nft-mrkt-frontend
+        uses: actions/checkout@v2
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
       - name: Install dependencies
-        run: yarn install
-      - name: Run tests 
-        run: yarn test
+        run: cd nft-mrkt-frontend && npm ci
+      - name: Run tests
+        run: cd nft-mrkt-frontend && CI=true npm test
+
