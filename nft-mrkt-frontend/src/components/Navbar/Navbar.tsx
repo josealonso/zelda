@@ -1,9 +1,9 @@
 import React from 'react'
 import './navbar.scss'
-import {Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
-import {JsonRpcSigner, Web3Provider} from "@ethersproject/providers";
+// import {JsonRpcSigner, Web3Provider} from "@ethersproject/providers";
 
 const { ethereum } = window as any;
 

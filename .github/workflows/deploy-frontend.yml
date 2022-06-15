@@ -1,0 +1,66 @@
+# This is a deploy workflow
+
+name: Deploy to ECS
+
+# Controls when the workflow will run
+on: [workflow_dispatch]
+
+env:
+  ECS_SERVICE: frontend-service                          # set this to your Amazon ECS service name
+  ECS_CLUSTER: frontend-cluster                          # set this to your Amazon ECS cluster name
+  ECR_REPO: frontend-repo                                # set this to your Amazon ECR Repo name
+  ECR_IMAGE_TAG: frontend-tag                            # set this to your Amazon ECR image tag name
+  ECS_TASK_DEFINITION: nft-mrkt-frontend/.aws/frontend-task-definition.json     # set this to the path to your Amazon ECS task definition
+                                                         # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: frontend-container                     # set this to the name of the container in the
+                                                         # containerDefinitions section of your task definition
+
+jobs:
+
+  build:
+
+    name: Build Image
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ env.ECR_REPO }}
+        IMAGE_TAG: ${{ env.ECR_IMAGE_TAG }}
+      run: |
+        cd nft-mrkt-frontend && docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . && docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@97587c9d45a4930bf0e3da8dd2feb2a463cf4a3a
+      with:
+        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ steps.build-image.outputs.image }}
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
