@@ -5,17 +5,28 @@ import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 // import {JsonRpcSigner, Web3Provider} from "@ethersproject/providers";
 
+import { GeneralObject } from '../interfaces';
+
 const { ethereum } = window as any;
 
-function Navbar() {
+const Navbar: React.FC<{state:any, setState:any}> = ({state, setState}) => {
 
   async function connectMM() {
     if(ethereum) {
       const web3Modal = new Web3Modal()
-      const provider = new ethers.providers.Web3Provider(await web3Modal.connect())
-      const signer = await provider.getSigner()
+      const prov = new ethers.providers.Web3Provider(await web3Modal.connect())
+      setState((prevState: any) => ({
+        ...prevState,
+        provider: prov
+      }));
+      const signer = await prov.getSigner()
       const address = await signer.getAddress();
-      // put address into a useState Hook
+      console.log("address is: ", address,);
+      console.log("Address is of type: ", typeof address);
+      setState((prevState: any) => ({
+        ...prevState,
+        polyAddr: address
+      }));
     }
   }
 
