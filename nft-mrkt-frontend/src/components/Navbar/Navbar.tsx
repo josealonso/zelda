@@ -35,7 +35,7 @@ const Navbar: React.FC<{state:any, setState:any}> = ({state, setState}) => {
       <Link to="/">
         <h1 className='logo'>Our3.xyz</h1>
       </Link>
-      <button className='connectMMBtn' onClick={connectMM}>Connect Metamsk!</button>
+      <button className='connectMMBtn' onClick={connectMM}>Connect Metamask!</button>
     </div>
   )
 }
