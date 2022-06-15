@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 // import {JsonRpcSigner, Web3Provider} from "@ethersproject/providers";
-
-import { GeneralObject } from '../interfaces';
+// import { GeneralObject } from '../interfaces';
 
 const { ethereum } = window as any;
 
@@ -35,7 +34,12 @@ const Navbar: React.FC<{state:any, setState:any}> = ({state, setState}) => {
       <Link to="/">
         <h1 className='logo'>Our3.xyz</h1>
       </Link>
-      <button className='connectMMBtn' onClick={connectMM}>Connect Metamask!</button>
+      {state?.polyAddr ? <button className='connectMMBtn'>{state?.polyAddr}</button> : <button className='connectMMBtn' onClick={connectMM}>Connect Metamask!</button>}
+      {/* 
+      TODO:
+        make display address appear when connected: "0xae9...630" instead of "0xae90d6C1360d095a03c4AAf378Bf20cEcdB27630"
+        have state persist in session storage so that it persists on refresh
+      */}
     </div>
   )
 }
