@@ -2,12 +2,16 @@ import './index.scss';
 import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 import SplashPage from './components/SplashPage/SplashPage';
 import Manufacturer from './components/Manufacturer/Manufacturer';
 import Consumer from './components/Consumer/Consumer';
 import Browse from './components/Browse/Browse';
+// import { QRCodeReader } from "./components/QRCodeReader/QRCodeReader";
+import QRCodeReader from "./components/QRCode/QRCodeReader/QRCodeReader";
+import QRReadResult from "./components/QRCode/QRReadResult/QRReadResult";
+import QRGenerator from "./components/QRCode/QRGenerator/QRGenerator";
 
 
 const root = ReactDOM.createRoot(
@@ -23,6 +27,10 @@ root.render(
               <Route path="manufacturer" element={<Manufacturer />} />
               <Route path="consumer" element={<Consumer />} />
               <Route path="browse" element={<Browse />} />
+
+              <Route path="qr-code-reader" element={<QRCodeReader />} />
+              <Route path="qr-read-result" element={<QRReadResult />} />
+              <Route path="qr-generator" element={<QRGenerator />} />
             </Route>
           </Routes>
         </BrowserRouter>
