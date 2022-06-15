@@ -3,6 +3,7 @@ import './App.scss';
 import { Outlet } from 'react-router-dom';
 
 import Navbar from './components/Navbar/Navbar';
+import Footer from './components/Footer/Footer';
 
 function App() {
 
@@ -24,7 +25,8 @@ function App() {
     <div className="App">
         <Navbar />
         <Outlet context={[state, setState]}/>
-        <div>Temporary Title</div>
+        {/* <div>Temporary Title</div> */}
+        <Footer />
     </div>
   );
 }
