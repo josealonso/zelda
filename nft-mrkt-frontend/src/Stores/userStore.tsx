@@ -1,7 +1,6 @@
-import { Description } from "@ethersproject/properties";
 import create from "zustand";
 
-import { User } from "./models/User";
+import { User } from "../models/User";
 
 interface UserState {
   user: User

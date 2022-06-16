@@ -6,6 +6,8 @@ import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import { ethers } from "ethers";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 function App() {
 
   // const [state, setState] = useState<GeneralObject>({

@@ -9,7 +9,6 @@ import Manufacturer from './components/Manufacturer/Manufacturer';
 import Consumer from './components/Consumer/Consumer';
 import Browse from './components/Browse/Browse';
 
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
