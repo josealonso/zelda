@@ -1,15 +1,16 @@
 import React from 'react'
 import "./manufacturer.scss";
-import { useOutletContext } from "react-router-dom";
+// import { useOutletContext } from "react-router-dom";
+import { useStore } from "../../userStore";
 
 
 function Manufacturer() {
 
-  const [state] = useOutletContext() as any;
+  // const [state] = useOutletContext() as any;
+  const { user } = useStore();
 
   function writeAddress() {
-    console.log(state?.polyAddr);
-    console.log(state?.provider)
+    console.log(user)
   }
   return (
     <div className='manufacturer'>
