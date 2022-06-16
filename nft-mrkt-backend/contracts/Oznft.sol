@@ -9,7 +9,7 @@ contract OzNFT is ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    constructor() ERC721("OzExampleNft", "ONFT") {}
+    constructor(string _tokenName_, string _tokenSymbol_) ERC721(_tokenName_, _tokenSymbol_) {}
 
     function mintToken(address to) public returns(uint256) {
         _tokenIds.increment();
@@ -19,5 +19,5 @@ contract OzNFT is ERC721 {
 
     function transfer(address _to, uint256 _tokenId) public {
         _transfer(msg.sender, _to, _tokenId);
-    }
+    } 
 }

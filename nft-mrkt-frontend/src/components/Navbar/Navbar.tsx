@@ -3,19 +3,35 @@ import './navbar.scss'
 import { Link } from "react-router-dom";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
+
+import { useStore } from "../../userStore";
 // import {JsonRpcSigner, Web3Provider} from "@ethersproject/providers";
+// import { GeneralObject } from '../interfaces';
 
 const { ethereum } = window as any;
 
-function Navbar() {
+const Navbar: React.FC = () => {
+
+  const { user, setAddress } = useStore();
+
 
   async function connectMM() {
     if(ethereum) {
       const web3Modal = new Web3Modal()
-      const provider = new ethers.providers.Web3Provider(await web3Modal.connect())
-      const signer = await provider.getSigner()
+      const prov = new ethers.providers.Web3Provider(await web3Modal.connect())
+      // setState((prevState: any) => ({
+      //   ...prevState,
+      //   provider: prov
+      // }));
+      const signer = await prov.getSigner()
       const address = await signer.getAddress();
-      // put address into a useState Hook
+      console.log("address is: ", address,);
+      console.log("Address is of type: ", typeof address);
+      setAddress(address);
+      // setState((prevState: any) => ({
+      //   ...prevState,
+      //   polyAddr: address
+      // }));
     }
   }
 
@@ -24,7 +40,12 @@ function Navbar() {
       <Link to="/">
         <h1 className='logo'>Our3.xyz</h1>
       </Link>
-      <button className='connectMMBtn' onClick={connectMM}>Connect Metamsk!</button>
+      <button className='connectMMBtn' onClick={connectMM}>Connect Metamask!</button>
+      {/* 
+      TODO:
+        make display address appear when connected: "0xae9...630" instead of "0xae90d6C1360d095a03c4AAf378Bf20cEcdB27630"
+        have state persist in session storage so that it persists on refresh
+      */}
     </div>
   )
 }
