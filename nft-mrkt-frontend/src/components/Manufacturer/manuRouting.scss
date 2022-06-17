@@ -1,0 +1,26 @@
+.card{
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 23%;
+    height: 80%;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    box-shadow: -6px 47px 76px -3px #190303;
+    cursor: pointer;
+    text-decoration: none;
+    margin: auto;
+
+    .header{
+        font-size: 2.4vw;
+        font-weight: 900;
+        text-align: center;
+    }
+    .instructions{
+        text-align: center;
+        margin-top: 0;
+        font-weight: 750;
+    }
+}

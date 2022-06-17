@@ -1,28 +1,23 @@
 import React, { useState } from 'react'
-import "./manufacturer.scss";
-// import { useOutletContext } from "react-router-dom";
-import { useStore } from "../../Stores/userStore";
+import "./depContract.scss";
+
+import { useStore } from "../../../Stores/manuStore";
 
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
 
-function Manufacturer() {
 
+function DepContract() {
 
-  // const [state] = useOutletContext() as any;
-  const { user } = useStore();
   const [name, setName] = useState('');
   const [count, setCount] = useState(0);
   const [contName, setContName] = useState('');
   const [contSym, setContSym] = useState('');  
 
   function writeAddress() {
-    console.log(user.addrString);
+    console.log("button");
   }
-
-  console.log('111', count)
 
   return (
     <div className='manufacturer'>
@@ -54,4 +49,4 @@ function Manufacturer() {
   )
 }
 
-export default Manufacturer
+export default DepContract
