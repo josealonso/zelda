@@ -1,12 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom'
-import App from './App';
+import QRGenerator from './QRGenerator';
 import { MemoryRouter } from 'react-router-dom';
 
-test('renders learn react link', () => {
-
-  render(<App />, {wrapper: MemoryRouter});
-  const linkElement = screen.getByText(/Temporary Title/i);
+test('test qr code component', () => {
+  render(<QRGenerator />, {wrapper: MemoryRouter});
+  const linkElement = screen.getByText(/no data/i);
   expect(linkElement).toBeInTheDocument();
 });
