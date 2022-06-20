@@ -6,18 +6,14 @@ import './qrCodeReader.scss'
 
 function QRCodeReader() {
     const navigate = useNavigate();
-    const [ data, setData ] = useState("scan me")
-    const [ show, setShow ] = useState(true)
     return (
         <div className="qrCodeReader">
-            {show ? (<QrReader
+            <QrReader
             delay={300}
             onError={() => void {}}
             onScan={(data) => {
                 if (data !== null) {
                     console.log(data)
-                    setData(data)
-                    setShow(false)
                     let request: QRReadResultType = {data:data}
                     navigate("/qr-read-result" , {
                         state: request
@@ -25,8 +21,7 @@ function QRCodeReader() {
                 }
             }}
             style={{width: '30%'}}
-            />) : (<p>done</p>)};
-        <p>hello world: {data}</p>
+            />;
         </div>
     )
 }
