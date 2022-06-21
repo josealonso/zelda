@@ -1,38 +1,86 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+/**
+ * For the first MVP, let's assume there is only one maker with only one collection.
+ */
+
 struct CollectionData {
     uint256 numMaxOfTokens;
     address makerAddress;
+    string CollectionURI;
     mapping(uint256 => uint256) idToTokenPrice;
 }
 
 /**
  * @dev An integer is the collection identifier.
+ * This variable relates the collection identifier and the collection data.
+ * This is commented because it produces a compile error.
  * mapping (uint256 => CollectionData) public idToCollectionData;
  */
 
 interface IMarketplace {
-
-    function addCollection(CollectionData memory collectionData) external;
+    /**
+     * @dev Emitted when a collection is added to the marketplace.
+     */
+    event AddCollection(uint256 indexed collectionId);
 
     /**
-     * @dev Action performed on behalf of the maker.
+     * @dev Emitted when a token price is modified.
+     */
+    event UpdateTokenPrice(
+        uint256 indexed collectionId,
+        uint256 indexed tokenId,
+        uint256 indexed newPrice
+    );
+
+    /**
+     * @dev Emitted when a maker address is updated.
+     */
+    event UpdateMakerAddress(
+        uint256 indexed collectionId,
+        address indexed newAddress
+    );
+
+    /**
+     * @dev Adds a collection to the marketplace.
+     * Emits a {AddCollection} event.
+     */
+    function addCollection(uint256 collectionId) external;
+
+    /**
+     * @dev Add a token to an existing collection.
+     * The new token is assigned the number max + 1
+     * Action performed on behalf of the maker.
      */
     function addToken(uint256 collectionId) external;
 
     /**
-     * @dev Action performed on behalf of the maker.
+     * @dev Remove a token from an existing collection.
+     * Action performed on behalf of the maker.
      */
     function removeToken(uint256 collectionId, uint256 tokenId) external;
 
-    /**
-     * @dev Action performed on behalf of the maker.
-     */
-    function updateTokenPrice(uint256 collectionId, uint256 tokenId) external;
+    function setCollectionURI(uint256 collectionId, string memory collectionURI)
+        external;
+
+    // function setTokenURI(uint256 tokenId, string memory tokenURI) external;
 
     /**
-     * @dev Action performed on behalf of the maker.
+     * @dev Change the price of an existing token.
+     * Action performed on behalf of the maker.
+     * Emits a {UpdateTokenPrice} event.
+     */
+    function updateTokenPrice(
+        uint256 collectionId,
+        uint256 tokenId,
+        uint256 newPrice
+    ) external;
+
+    /**
+     * @dev Change the wallet address of a maker that is already registered on the marketplace.
+     * Action performed on behalf of the maker.
+     * Emits a {UpdateMakerAddress} event.
      */
     function updateMakerAddress(
         uint256 collectionId,
@@ -40,16 +88,29 @@ interface IMarketplace {
         address newAddress
     ) external;
 
-    function getTokenPrice(uint256 collectionId, uint256 tokenId) external;
+    /**
+     * @dev Returns the price of the `tokenId` token of the `collectionId` collection.
+     *
+     *  * Requirements:
+     *
+     * - `collectionId` must exist.
+     * - `tokenId` must exist.
+     */
+    function getTokenPrice(uint256 collectionId, uint256 tokenId)
+        external
+        returns (uint256);
 
-    function getMakerAddress(uint256 collectionId) external;
+    function getMakerAddress(uint256 collectionId) external returns (address);
 
-    function getNumMaxOfTokens(uint256 collectionId) external;
+    function getNumMaxOfTokens(uint256 collectionId) external returns (uint256);
 
     function buyItem(string memory tokenURI, uint256 tokenId)
         external
         returns (uint256);
 
+    /**
+     * @dev Returns only the tokens that a user has purchased.
+     */
     function fetchMyNFTs()
         external
         view
