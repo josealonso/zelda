@@ -55,7 +55,13 @@ interface IMarketplace {
      * @dev Adds a collection to the marketplace.
      * Emits a {AddCollection} event.
      */
-    function addCollection(uint256 collectionId) external;
+    // function addCollection(uint256 collectionId) external;
+    function addCollection(
+        uint256 maxNumOfTokens,
+        address makerAddress,
+        string memory collectionURI
+        // mapping(uint256 => uint256) memory idToTokenPrice     // TODO
+    ) external;
 
     function setCollectionURI(uint256 collectionId, string memory collectionURI)
         external;
@@ -104,11 +110,20 @@ interface IMarketplace {
 
     function getMaxNumOfTokens(uint256 collectionId) external returns (uint256);
 
-    function getRoyalties(uint256 collectionId) external returns (uint256 sellerPercentage, uint256 marketplacePercentage);
+    function getRoyalties(uint256 collectionId)
+        external
+        returns (uint256 sellerPercentage, uint256 marketplacePercentage);
 
     function buyItem(uint256 collectionId, uint256 tokenId)
         external
         returns (uint256);
+
+    /**
+     * @dev Returns only the tokens of a `collectionId` collection that can be sold.
+     * Assume there is no secondary market (the NFTs can't be reselled).
+     * This information is needed by the frontend because the token is not minted until it's sold ("lazy minting" technique)
+     */    
+    function getTokensForSale(uint256 collectionID) external returns (uint256[] memory tokenIds);
 
     /**
      * @dev Returns only the tokens that a user has purchased.
