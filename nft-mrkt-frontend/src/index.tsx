@@ -7,6 +7,8 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SplashPage from './components/SplashPage/SplashPage';
 import Manufacturer from './components/Manufacturer/Manufacturer';
 import Consumer from './components/Consumer/Consumer';
+// import Browse from './components/Browse/Browse';
+import About from './components/About/About';
 import Browse from './components/Browse/Browse';
 // import { QRCodeReader } from "./components/QRCodeReader/QRCodeReader";
 import QRCodeReader from "./components/QRCode/QRCodeReader/QRCodeReader";
@@ -26,8 +28,9 @@ root.render(
               <Route index element={<SplashPage />} />
               <Route path="manufacturer" element={<Manufacturer />} />
               <Route path="consumer" element={<Consumer />} />
+              {/* <Route path="browse" element={<Browse />} /> */}
+              <Route path="about" element={<About />} />
               <Route path="browse" element={<Browse />} />
-
               <Route path="qr-code-reader" element={<QRCodeReader />} />
               <Route path="qr-read-result" element={<QRReadResult />} />
               <Route path="qr-generator" element={<QRGenerator />} />

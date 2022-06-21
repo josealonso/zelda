@@ -37,15 +37,13 @@ const Navbar: React.FC = () => {
 
   return (
     <div className='navbar' id="navbar">
-      <Link to="/">
-        <h1 className='logo'>Our3.xyz</h1>
-      </Link>
-      <button className='connectMMBtn' onClick={connectMM}>Connect Metamask!</button>
-      {/* 
-      TODO:
-        make display address appear when connected: "0xae9...630" instead of "0xae90d6C1360d095a03c4AAf378Bf20cEcdB27630"
-        have state persist in session storage so that it persists on refresh
-      */}
+      <div className='left'>
+        <Link to="/" className='title'> Our3 Marketplace </Link>
+      </div>
+      <div className='right'>
+        <Link to="/consumer" className='consumerLink'> My Items </Link>
+        <button className='connectMMBtn' onClick={connectMM}>Connect Wallet</button>
+      </div>
     </div>
   )
 }

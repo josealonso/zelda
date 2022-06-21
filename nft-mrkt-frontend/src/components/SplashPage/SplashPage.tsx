@@ -1,10 +1,7 @@
 import React from 'react'
 import { useOutletContext } from 'react-router-dom';
 import "./splashPage.scss";
-
-import BrowseCard from './Cards/BrowseCard';
-import ConsumerCard from './Cards/ConsumerCard';
-import ManufacturerCard from './Cards/ManufacturerCard';
+import Browse from './Browse/Browse';
 
 function SplashPage() {
 
@@ -13,11 +10,7 @@ function SplashPage() {
 
   return (
   <div className='splashcardwrapper'>
-    <div className='pop'>
-      <ManufacturerCard />
-      <ConsumerCard />
-      <BrowseCard />
-    </div>
+    <Browse />
   </div>
   )
 }

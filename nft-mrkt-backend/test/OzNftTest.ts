@@ -9,7 +9,7 @@ describe("OzNft Contract", function () {
     [owner, user1] = await ethers.getSigners();
 
     const OZcontract_ = await ethers.getContractFactory("OzNFT");
-    OZContract = await OZcontract_.deploy();
+    OZContract = await OZcontract_.deploy("test name", "test");
     await OZContract.deployed();
 
     const tx = await OZContract.connect(owner).mintToken(owner.address);

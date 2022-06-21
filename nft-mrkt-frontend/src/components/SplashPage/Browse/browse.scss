@@ -1,0 +1,40 @@
+.browseWrapper{
+    display: flex;
+    width: 100vw;
+    height: calc(100vh - 120px);
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(131, 145, 154);
+
+    .browseBox{
+        display: flex;
+        height: 95%;
+        width: 95%;
+        border-radius: 10px;
+        background-color: aliceblue;
+
+        .navigation{
+            display: flex;
+            height: 10%;
+            width: 100%;
+            align-items: center;
+            border-radius: 10px;
+            justify-content: space-between;
+
+            .browseTitle{
+                font-size: 2.5vw;
+                margin-left: 3%;
+            }
+            .refreshButton{
+                font-size: 2vw;
+                margin-right: 3%;
+                border-radius: 10px;
+                border: none;
+                padding: .1% 2%;
+                color: blue;
+                text-decoration: underline;
+                background-color: transparent;
+            }
+        }
+    }
+}
