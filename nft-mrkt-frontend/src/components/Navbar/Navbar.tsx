@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
         <Link to="/" className='title'> Our3 Marketplace </Link>
       </div>
       <div className='right'>
-        <Link to="/consumer" className='consumerLink'> consumer </Link>
+        <Link to="/consumer" className='consumerLink'> My Items </Link>
         <button className='connectMMBtn' onClick={connectMM}>Connect Wallet</button>
       </div>
     </div>

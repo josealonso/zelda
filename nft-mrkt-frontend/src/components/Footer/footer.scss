@@ -1,11 +1,55 @@
 .footer{
+    box-sizing: border-box;
     height: 60px;
     width: 100%;
     position: fixed;
     display: flex;
-    background-color: rgb(124, 124, 206);
+    background-color: rgb(155, 147, 63);
     bottom: 0;
     z-index: 3;
     transition: all 1s ease;
     justify-content: space-between;
+    align-items: center;
+
+    .left{
+        display: flex;
+
+        .text{
+            font-weight: 700;
+            font-size: 2vw;
+            padding: .5% 5%;
+            border-radius: 10px;
+            // text-decoration: none;
+            // background-color: rgb(219, 193, 160);
+            color: rgb(0, 0, 0);
+            margin-left: 5%;
+        }
+        .about{
+
+        }
+    }
+    .right{
+        justify-content: flex-end;
+        display: flex;
+        height: 50%;
+
+        .icon{
+            display: flex;
+            height: 100%;
+            align-items: center;
+            margin: auto 1%;
+            width: auto;
+            padding-right: 25%;
+    
+            .linkBox{
+                display: flex;
+                height: 100%;
+                width: auto;
+            }
+    
+            .twitter{
+                height: 90%;
+            }
+        }
+    }
 }
