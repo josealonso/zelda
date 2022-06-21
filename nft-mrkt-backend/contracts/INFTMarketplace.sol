@@ -6,9 +6,9 @@ pragma solidity ^0.8.0;
  */
 
 struct CollectionData {
-    uint256 numMaxOfTokens;
+    uint256 maxNumOfTokens;
     address makerAddress;
-    string CollectionURI;
+    string collectionURI;
     mapping(uint256 => uint256) idToTokenPrice;
 }
 
@@ -87,7 +87,7 @@ interface IMarketplace {
 
     function getMakerAddress(uint256 collectionId) external returns (address);
 
-    function getNumMaxOfTokens(uint256 collectionId) external returns (uint256);
+    function getMaxNumOfTokens(uint256 collectionId) external returns (uint256);
 
     function setRoyalties() external; // TODO
 
