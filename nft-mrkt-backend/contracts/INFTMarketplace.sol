@@ -35,6 +35,15 @@ interface IMarketplace {
     );
 
     /**
+     * @dev Emitted when the royalties of an existing collection are modified.
+     */
+    event UpdateRoyalties(
+        uint256 indexed collectionId,
+        uint256 sellerPercentage,
+        uint256 marketplacePercentage
+    );
+
+    /**
      * @dev Emitted when a maker address is updated.
      */
     event UpdateMakerAddress(
@@ -60,6 +69,12 @@ interface IMarketplace {
         uint256 collectionId,
         uint256 tokenId,
         uint256 newPrice
+    ) external;
+
+    function setRoyalties(
+        uint256 collectionId,
+        uint256 sellerPercentage,
+        uint256 marketplacePercentage
     ) external;
 
     /**
@@ -89,7 +104,7 @@ interface IMarketplace {
 
     function getMaxNumOfTokens(uint256 collectionId) external returns (uint256);
 
-    function setRoyalties() external; // TODO
+    function getRoyalties(uint256 collectionId) external returns (uint256 sellerPercentage, uint256 marketplacePercentage);
 
     function buyItem(uint256 collectionId, uint256 tokenId)
         external
