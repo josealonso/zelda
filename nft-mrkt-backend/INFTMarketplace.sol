@@ -13,27 +13,45 @@ struct CollectionData {
  */
 
 interface IMarketplace {
-    
+
     function addCollection(CollectionData memory collectionData) external;
 
-    function addToken() external onlyMaker;
+    /**
+     * @dev Action performed on behalf of the maker.
+     */
+    function addToken(uint256 collectionId) external;
 
-    function removeToken() external onlyMaker;
+    /**
+     * @dev Action performed on behalf of the maker.
+     */
+    function removeToken(uint256 collectionId, uint256 tokenId) external;
 
-    function updateTokenPrice() external onlyMaker;
+    /**
+     * @dev Action performed on behalf of the maker.
+     */
+    function updateTokenPrice(uint256 collectionId, uint256 tokenId) external;
 
-    function updateMakerAddress() external onlyMaker;
+    /**
+     * @dev Action performed on behalf of the maker.
+     */
+    function updateMakerAddress(
+        uint256 collectionId,
+        address oldAddress,
+        address newAddress
+    ) external;
 
-    function getTokenPrice() external {}
+    function getTokenPrice(uint256 collectionId, uint256 tokenId) external;
 
-    modifier onlyMaker() {
-        _;
-    }
+    function getMakerAddress(uint256 collectionId) external;
+
+    function getNumMaxOfTokens(uint256 collectionId) external;
 
     function buyItem(string memory tokenURI, uint256 tokenId)
         external
-        returns (uint256)
-    {}
+        returns (uint256);
 
-    // .......................
+    function fetchMyNFTs()
+        external
+        view
+        returns (uint256 collectionId, uint256[] memory tokenIds);
 }
