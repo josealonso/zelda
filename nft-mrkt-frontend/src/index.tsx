@@ -5,9 +5,9 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import SplashPage from './components/SplashPage/SplashPage';
-import Manufacturer from './components/Manufacturer/Manufacturer';
+// import Manufacturer from './components/Manufacturer/Manufacturer';
 import Consumer from './components/Consumer/Consumer';
-import Browse from './components/Browse/Browse';
+// import Browse from './components/Browse/Browse';
 
 
 const root = ReactDOM.createRoot(
@@ -20,9 +20,9 @@ root.render(
               <Route path="/health" element={<div>Hey There!!! The App is Healthy</div>} />
               <Route path="/" element={<App />} >
               <Route index element={<SplashPage />} />
-              <Route path="manufacturer" element={<Manufacturer />} />
+              {/* <Route path="manufacturer" element={<Manufacturer />} /> */}
               <Route path="consumer" element={<Consumer />} />
-              <Route path="browse" element={<Browse />} />
+              {/* <Route path="browse" element={<Browse />} /> */}
             </Route>
           </Routes>
         </BrowserRouter>
