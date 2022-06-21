@@ -57,11 +57,18 @@ export default class StubBackendData implements BackendData {
     async getNFTsForSale(marketPlaceContractAddress: string): Promise<NFTData[]> {
         return [{
             ownerAddress: marketPlaceContractAddress,
-            address: "contractAddress",
-            metadata: "test",
-            tokenId: ethers.BigNumber.from(0),
+            address: "contractAddress1",
+            metadata: "test1",
+            tokenId: ethers.BigNumber.from(1),
             image: "https://picsum.photos/200/300",
-            price: BigNumber.from(0)
+            price: BigNumber.from(1)
+        }, {
+            ownerAddress: marketPlaceContractAddress,
+            address: "contractAddress2",
+            metadata: "test2",
+            tokenId: ethers.BigNumber.from(2),
+            image: "https://picsum.photos/200/300",
+            price: BigNumber.from(2)
         }]
     }
 
