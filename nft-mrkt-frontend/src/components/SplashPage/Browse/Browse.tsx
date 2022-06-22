@@ -22,8 +22,27 @@ const Browse: React.FC = () => {
 
   async function loadNfts() {
     let data: NFTData[] = await getNFT("string-test");
-    setNfts(data);
 
+    const items = await Promise.all(data.map(async i => {
+      const address = i.address
+      const metadata = i.metadata
+      const tokenId = i.tokenId
+      const ownerAddress = i.ownerAddress
+      const image = i.image
+      const price = i.price
+      
+      let item: NFTData = {
+        address,
+        metadata,
+        tokenId,
+        ownerAddress,
+        image,
+        price,
+      }
+      return item
+    }))
+
+    setNfts(items);
     setLoadingState('loaded')
   }
 
@@ -31,7 +50,6 @@ const Browse: React.FC = () => {
     console.log(nfts.length)
   }
 
-  if (loadingState === 'loaded' && !nfts.length) return (<h1>No NFTs listed</h1>)
   return (
     <div className='browseWrapper'>
       <div className='browseBox'>
@@ -40,7 +58,12 @@ const Browse: React.FC = () => {
           <button className='refreshButton' onClick={log}>Refresh</button>
         </div>
         <div className='itemCards'>
-          <ItemCard owner={"owwwner"} price={"100"} date={'12'}/>
+          {
+            nfts.map((i) => (
+              <ItemCard address={i.ownerAddress} _price={i.price} date={i.metadata}/>
+            ))
+          }
+          {/* <ItemCard owner={"owwwner"} price={"100"} date={'12'}/> */}
         </div>
       </div>
     </div>

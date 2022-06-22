@@ -7,6 +7,15 @@ export type NFTData = {
     ownerAddress: string
     image: string
     price: ethers.BigNumber
+    /* 
+        Items I would like for the 'browse' section:
+        1) Date auction is ending
+
+        Should we have a seperate type for each return? I don't think so, but most of the
+        response is being wasted here. 
+
+        Question: why are we using ethers.BigNumber for price? Isn't it just an integer?
+    */
 }
 
 export type SoldNFTData = {
