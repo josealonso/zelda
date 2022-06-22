@@ -45,9 +45,9 @@ const Browse: React.FC = () => {
   }
 
   function log(): void {
-    console.log(nfts.length)
+    console.log(nfts)
   }
-
+  
   return (
     <div className='browseWrapper'>
       <div className='browseBox'>
@@ -57,8 +57,8 @@ const Browse: React.FC = () => {
         </div>
         <div className='itemCards'>
           {
-            nfts.map((i) => (
-              <ItemCard address={i.ownerAddress} _price={i.price} date={i.metadata}/>
+            nfts.map(i => (
+              <ItemCard key={i.address} address={i.ownerAddress} _price={i.price} date={i.metadata}/>
             ))
           }
           {/* <ItemCard owner={"owwwner"} price={"100"} date={'12'}/> */}

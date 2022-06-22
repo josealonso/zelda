@@ -23,7 +23,11 @@ function Manufacturer() {
       setMakerInfo(response);
     }
     getInfo(makerAddress);
-  })
+  }, [])
+
+  function addLine() {
+    console.log("test");
+  }
 
   return (
     <div className='manufacturer'>
@@ -31,11 +35,11 @@ function Manufacturer() {
         <h3 className='makerName'>{makerInfo?.name}</h3>
         <img src={EtherscanLogoDark} className='makerImg' alt="company logo"></img>
         <div className='productLines'>
-          {          
-            makerInfo?.addresses.map((i) => (
-              <div className='line x'>{[i]}</div>
+          { makerInfo?.addresses.map((i) => (
+              <div key={i} className='line x'>{[i]}</div>
             ))
           }
+          <button className='addLine' onClick={addLine}>Add line + </button>
         </div>
       </div>
       <div className='main toplevel'>
@@ -46,3 +50,5 @@ function Manufacturer() {
 }
 
 export default Manufacturer
+
+// key={generateKey(makerInfo?.addresses)}
