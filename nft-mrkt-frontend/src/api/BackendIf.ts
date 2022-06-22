@@ -7,6 +7,11 @@ export type NFTData = {
     ownerAddress: string
     image: string
     price: ethers.BigNumber
+    auction?: Auction
+}
+
+export type Auction = {
+    auctionEnds: number
 }
 
 export type SoldNFTData = {
@@ -20,24 +25,26 @@ export type SoldNFTData = {
 }
 
 export type ManufacturerData = {
-    name:string
-    logoUri:string
-    address: string
-    productLine:string
-    productName:string
-    price: Number
-    numberProduced: Number
-    image: string
+    addresses: string[]
 }
 
 export type CreateManufacturerResponse = {
     contractAddress: string
+}
+export type CollectionData = {
+    productName: string
+    maker: string 
+    productUri:string 
+    price: Number
+    numberProduced: Number
 }
 
 export interface BackendData {
     getUserNFTs(ownerAddress: string): Promise<NFTData[]>
 
     getNFTsForSale(marketPlaceContractAddress: string): Promise<NFTData[]>
+
+    getCollectionData(manuContractAddress: string[]): Promise<CollectionData[]>
 
     getManufacturerData(manufacturerAddress: string): Promise<ManufacturerData>
 
@@ -49,15 +56,13 @@ export interface BackendData {
 
     buyNFT(address:string): Promise<boolean>
 
-    addManufacturer(
-        name:string,
-        logoUri:string,
-        address: string,
-        productLine:string,
-        productName:string,
-        price: Number,
-        numberProduced: Number,
-        image: string
+
+    addManuContract(
+        productName: string, //Product Line
+        makerAddress: string, // Manufacturer address
+        productUri:string, // Product Image
+        price: Number,  // Price
+        numberProduced: Number, // Max TokenId
     ): Promise<CreateManufacturerResponse>
 
     changePrice(contractAddress: string, newPrice: Number): Promise<boolean>

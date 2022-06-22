@@ -1,18 +1,14 @@
-import {BackendData, CreateManufacturerResponse, ManufacturerData, NFTData, SoldNFTData} from "./BackendIf";
+import {BackendData, CollectionData, CreateManufacturerResponse, ManufacturerData, NFTData, SoldNFTData} from "./BackendIf";
 import {BigNumber, ethers} from "ethers";
 
 export default class StubBackendData implements BackendData {
+    async getCollectionData(manuContractAddress: string[]): Promise<CollectionData[]> {
+        return [];
+    }
 
     async getManufacturerData(manufacturerAddress: string): Promise<ManufacturerData> {
         return {
-            address: "testAddress",
-            image: "https://picsum.photos/200/300",
-            logoUri: "https://picsum.photos/200/300",
-            name: "test name",
-            numberProduced: 100,
-            price: 1,
-            productLine: "line 1",
-            productName: "name 1"
+            addresses: []
         }
     }
     async getSoldNFTData(manufacturerAddress: string): Promise<SoldNFTData[]> {
@@ -26,15 +22,12 @@ export default class StubBackendData implements BackendData {
             currentOwnerAddress: "test_address"
         }]
     }
-    async addManufacturer(
-        name: string,
-        logoUri: string,
-        address: string,
-        productLine: string,
+    async addManuContract(
         productName: string,
+        makerAddress: string,
+        productUri:string, 
         price: Number,
         numberProduced: Number,
-        image: string
     ): Promise<CreateManufacturerResponse> {
         return {
             contractAddress: "test_address"
@@ -57,11 +50,18 @@ export default class StubBackendData implements BackendData {
     async getNFTsForSale(marketPlaceContractAddress: string): Promise<NFTData[]> {
         return [{
             ownerAddress: marketPlaceContractAddress,
-            address: "contractAddress",
-            metadata: "test",
-            tokenId: ethers.BigNumber.from(0),
+            address: "contractAddress1",
+            metadata: "test1",
+            tokenId: ethers.BigNumber.from(1),
             image: "https://picsum.photos/200/300",
-            price: BigNumber.from(0)
+            price: BigNumber.from(1)
+        }, {
+            ownerAddress: marketPlaceContractAddress,
+            address: "contractAddress2",
+            metadata: "test2",
+            tokenId: ethers.BigNumber.from(2),
+            image: "https://picsum.photos/200/300",
+            price: BigNumber.from(2)
         }]
     }
 
