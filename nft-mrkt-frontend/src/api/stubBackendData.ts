@@ -8,7 +8,9 @@ export default class StubBackendData implements BackendData {
 
     async getManufacturerData(manufacturerAddress: string): Promise<ManufacturerData> {
         return {
-            addresses: []
+            addresses: ["0x123...345", "0x234...567"],
+            name: "Wonka Industries"
+            // Added Name so that I can populate the storefront page
         }
     }
     async getSoldNFTData(manufacturerAddress: string): Promise<SoldNFTData[]> {

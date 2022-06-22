@@ -26,6 +26,7 @@ export type SoldNFTData = {
 
 export type ManufacturerData = {
     addresses: string[]
+    name: string
 }
 
 export type CreateManufacturerResponse = {
@@ -33,7 +34,7 @@ export type CreateManufacturerResponse = {
 }
 export type CollectionData = {
     productName: string
-    maker: string 
+    makerAddress: string 
     productUri:string 
     price: Number
     numberProduced: Number
