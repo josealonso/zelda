@@ -4,10 +4,12 @@ import StubBackendData from '../../../api/stubBackendData';
 // import { NFTData } from '../../../api/BackendIf';
 import ItemCard from './ItemCard';
 import { NFTData } from '../../../api/BackendIf';
+import { ethers } from 'ethers';
 
 const Browse: React.FC = () => {
 
   let [nfts, setNfts] = useState<NFTData[]>([]);
+  const [loadingState, setLoadingState] = useState('not-loaded')
   
   async function getNFT(str: string) {
     let backend = new StubBackendData();
@@ -15,17 +17,21 @@ const Browse: React.FC = () => {
   }
 
   useEffect(() => {
-    async function getData() {
-      let data: NFTData[] = await getNFT("string-test");
-      setNfts(data);
-    }
-    getData();
+    loadNfts();
   }, [])
 
-  function log() {
+  async function loadNfts() {
+    let data: NFTData[] = await getNFT("string-test");
+    setNfts(data);
+
+    setLoadingState('loaded')
+  }
+
+  function log(): void {
     console.log(nfts.length)
   }
 
+  if (loadingState === 'loaded' && !nfts.length) return (<h1>No NFTs listed</h1>)
   return (
     <div className='browseWrapper'>
       <div className='browseBox'>
@@ -34,14 +40,7 @@ const Browse: React.FC = () => {
           <button className='refreshButton' onClick={log}>Refresh</button>
         </div>
         <div className='itemCards'>
-          <ItemCard />
-          <ItemCard />
-          <ItemCard />
-          <ItemCard />
-          <ItemCard />
-          <ItemCard />
-          <ItemCard />
-          <ItemCard />
+          <ItemCard owner={"owwwner"} price={"100"} date={'12'}/>
         </div>
       </div>
     </div>
