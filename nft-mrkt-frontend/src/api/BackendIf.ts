@@ -10,6 +10,14 @@ export type NFTData = {
     auction?: Auction
 }
 
+// Created by Joey 6/23/22 for displaying token info in manufacturer>main>items component
+export type tokenData = {
+    name: string
+    sold: boolean
+    forSale: boolean
+    currentOwner: string
+}
+
 export type Auction = {
     auctionEnds: number
 }
@@ -36,8 +44,9 @@ export type CollectionData = {
     productName: string
     makerAddress: string 
     productUri:string 
-    price: Number
-    numberProduced: Number
+    price: number
+    numberProduced: number
+    tokens: tokenData[] // This will need to be an array of objects? Metadat of each token needs to come from somewhere. Should we have a `tokenObj` type?
 }
 
 export interface BackendData {
@@ -45,7 +54,7 @@ export interface BackendData {
 
     getNFTsForSale(marketPlaceContractAddress: string): Promise<NFTData[]>
 
-    getCollectionData(manuContractAddress: string[]): Promise<CollectionData[]>
+    getCollectionData(manuContractAddress: string): Promise<CollectionData[]>
 
     getManufacturerData(manufacturerAddress: string): Promise<ManufacturerData>
 

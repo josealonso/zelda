@@ -2,8 +2,52 @@ import {BackendData, CollectionData, CreateManufacturerResponse, ManufacturerDat
 import {BigNumber, ethers} from "ethers";
 
 export default class StubBackendData implements BackendData {
-    async getCollectionData(manuContractAddress: string[]): Promise<CollectionData[]> {
-        return [];
+
+    // I changed this from an array param to a single string. We will need to query 
+    // with contract address and then return the info below. I couldn't get it to return correctly not as an array tho.
+    // Thats fine tho, I'll just access the 0 index for now
+    async getCollectionData(manuContractAddress: string): Promise<CollectionData[]> {
+        return [
+            {
+                productName: "Golden Tickets",
+                makerAddress: "0x123...456",
+                productUri: "photo",
+                price: 12,
+                numberProduced: 5,
+                tokens: [
+                    {
+                        name: "Ticket 1",
+                        sold: true,
+                        forSale: false,
+                        currentOwner: "0x987...654"
+                    },
+                    {
+                        name: "Ticket 2",
+                        sold: true,
+                        forSale: false,
+                        currentOwner: "0xABC...DEF"
+                    },
+                    {
+                        name: "Ticket 3",
+                        sold: true,
+                        forSale: false,
+                        currentOwner: "0xBCD...EFG"
+                    },
+                    {
+                        name: "Ticket 4",
+                        sold: true,
+                        forSale: false,
+                        currentOwner: "0xAAA...AAA"
+                    },
+                    {
+                        name: "Ticket 5",
+                        sold: true,
+                        forSale: false,
+                        currentOwner: "0xBBB...BBB"
+                    }
+                ], // Added
+            },
+        ];
     }
 
     async getManufacturerData(manufacturerAddress: string): Promise<ManufacturerData> {
