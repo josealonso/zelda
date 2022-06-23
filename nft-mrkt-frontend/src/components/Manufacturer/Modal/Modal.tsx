@@ -28,23 +28,23 @@ const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
     }
 
     async function handleCreation() {
-        // setImageUri( await uploadToIPFS(imageFile))
-        // const backend = new StubBackendData();
-        // const response = await backend.addManuContract(
-        //     name,
-        //     user.addrString,
-        //     imageUri,
-        //     price,
-        //     quantity
-        // )
-        // console.log(response);
-        console.log(
+        setImageUri( await uploadToIPFS(imageFile))
+        const backend = new StubBackendData();
+        const response = await backend.addManuContract(
             name,
             user.addrString,
             imageUri,
             price,
             quantity
         )
+        // console.log(response);
+        // console.log(
+        //     name,
+        //     user.addrString,
+        //     imageUri,
+        //     price,
+        //     quantity
+        // )
     }
 
     return (

@@ -5,6 +5,7 @@ import StubBackendData from '../../api/stubBackendData';
 import { ManufacturerData } from '../../api/BackendIf';
 import EtherscanLogoDark from "../Assets/EtherscanLogoDark.png";
 import Modal from "./Modal/Modal";
+import Main from './Main/Main';
 
 // import { useOutletContext } from "react-router-dom";
 
@@ -14,8 +15,9 @@ const Manufacturer: React.FC = () => {
   const { user } = useStore();
   const makerAddress: string = user.addrString;
 
-  let [makerInfo, setMakerInfo] = useState<ManufacturerData>()
+  const [makerInfo, setMakerInfo] = useState<ManufacturerData>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [chosenLine, setChosenLine] = useState<any>(""); // Running into type problem here. IDE complains that it can be undefined
 
   useEffect(() => {
     async function getInfo(_makerAddress: string) {
@@ -33,7 +35,8 @@ const Manufacturer: React.FC = () => {
         <img src={EtherscanLogoDark} className='makerImg' alt="company logo"></img>
         <div className='productLines'>
           { makerInfo?.addresses.map((i) => (
-              <div key={i} className='line x'>{[i]}</div>
+              // <div key={i} className='line x' data-address={i} onClick={(e) => testSetter(e.currentTarget.dataset.address)}>{i}</div>
+              <div key={i} className='line x' data-address={i} onClick={(e) => setChosenLine(e.currentTarget.dataset.address?.toString())}>{i}</div>
             ))
           }
           <button className='addLine'  onClick={() => setIsOpen(true)}>Add line + </button>
@@ -41,7 +44,7 @@ const Manufacturer: React.FC = () => {
         </div>
       </div>
       <div className='main toplevel'>
-        I am the main
+        <Main chosenLine={chosenLine} />
       </div>
     </div>
   )
