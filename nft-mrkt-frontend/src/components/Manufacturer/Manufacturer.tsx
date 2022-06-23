@@ -4,17 +4,18 @@ import { useStore } from "../../userStore";
 import StubBackendData from '../../api/stubBackendData';
 import { ManufacturerData } from '../../api/BackendIf';
 import EtherscanLogoDark from "../Assets/EtherscanLogoDark.png";
-
+import Modal from "./Modal/Modal";
 
 // import { useOutletContext } from "react-router-dom";
 
 
-function Manufacturer() {
+const Manufacturer: React.FC = () => {
 
   const { user } = useStore();
   const makerAddress: string = user.addrString;
 
   let [makerInfo, setMakerInfo] = useState<ManufacturerData>()
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     async function getInfo(_makerAddress: string) {
@@ -24,10 +25,6 @@ function Manufacturer() {
     }
     getInfo(makerAddress);
   }, [])
-
-  function addLine() {
-    console.log("test");
-  }
 
   return (
     <div className='manufacturer'>
@@ -39,7 +36,8 @@ function Manufacturer() {
               <div key={i} className='line x'>{[i]}</div>
             ))
           }
-          <button className='addLine' onClick={addLine}>Add line + </button>
+          <button className='addLine'  onClick={() => setIsOpen(true)}>Add line + </button>
+          {isOpen && <Modal setIsOpen={setIsOpen} />}
         </div>
       </div>
       <div className='main toplevel'>
