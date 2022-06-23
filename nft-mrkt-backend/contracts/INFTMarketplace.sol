@@ -4,26 +4,32 @@ pragma solidity ^0.8.0;
 /**
  * For the first MVP, let's assume there is only one maker with only one collection.
  */
-
-struct CollectionData {
-    uint256 maxNumOfTokens;
-    address makerAddress;
-    string collectionURI;
-    mapping(uint256 => uint256) idToTokenPrice;
+struct NftToken {
+    uint256 tokenId;
+    string metadataUri;
+    address owner;
+    uint256 price;
 }
 
 /**
- * @dev An integer is the collection identifier.
- * This variable relates the collection identifier and the collection data.
- * This is commented because it produces a compile error.
- * mapping (uint256 => CollectionData) public idToCollectionData;
+ * @dev An array is easier than a mapping/dictionary, although the lookup is not as efficient.
  */
+struct NftCollection {
+    string name;
+    string symbol;
+    string collectionMetadataURI;
+    uint256 makerRoyalties;
+    address makerAddress;
+    address nftContractAddress;
+    NftToken[] nftsInCollection;
+}
 
 interface IMarketplace {
     /**
      * @dev Emitted when a collection is added to the marketplace.
+     * A contract is created per collection.
      */
-    event AddCollection(uint256 indexed collectionId);
+    event CreateNftCollectionContract(uint256 indexed collectionId);
 
     /**
      * @dev Emitted when a token price is modified.
@@ -37,11 +43,15 @@ interface IMarketplace {
     /**
      * @dev Emitted when the royalties of an existing collection are modified.
      */
-    event UpdateRoyalties(
+    event UpdateSellerRoyalties(
         uint256 indexed collectionId,
-        uint256 sellerPercentage,
-        uint256 marketplacePercentage
+        uint256 sellerPercentage
     );
+
+    /**
+     * @dev Emitted when the royalties of the marketplace are modified.
+     */
+    event UpdateMarketplaceRoyalties(uint256 marketpacePercentage);
 
     /**
      * @dev Emitted when a maker address is updated.
@@ -53,14 +63,12 @@ interface IMarketplace {
 
     /**
      * @dev Adds a collection to the marketplace.
-     * Emits a {AddCollection} event.
+     * Emits a {CreateNftCollectionContract} event.
      */
-    // function addCollection(uint256 collectionId) external;
-    function addCollection(
-        uint256 maxNumOfTokens,
+    function createNftCollectionContract(
         address makerAddress,
-        string memory collectionURI
-        // mapping(uint256 => uint256) memory idToTokenPrice     // TODO
+        string memory collectionURI,
+        uint256 sellerRoyalties
     ) external;
 
     function setCollectionURI(uint256 collectionId, string memory collectionURI)
@@ -77,11 +85,13 @@ interface IMarketplace {
         uint256 newPrice
     ) external;
 
-    function setRoyalties(
+    function setSellerRoyalties(
         uint256 collectionId,
         uint256 sellerPercentage,
         uint256 marketplacePercentage
     ) external;
+
+    function setMarketplaceRoyalties(uint256 marketplacePercentage) external;
 
     /**
      * @dev Change the wallet address of a maker that is already registered on the marketplace.
@@ -108,11 +118,13 @@ interface IMarketplace {
 
     function getMakerAddress(uint256 collectionId) external returns (address);
 
-    function getMaxNumOfTokens(uint256 collectionId) external returns (uint256);
-
-    function getRoyalties(uint256 collectionId)
+    function getMarketplaceRoyalties()
         external
-        returns (uint256 sellerPercentage, uint256 marketplacePercentage);
+        returns (uint256 marketplacePercentage);
+
+    function getSellerRoyalties(uint256 collectionId)
+        external
+        returns (uint256 sellerPercentage);
 
     function buyItem(uint256 collectionId, uint256 tokenId)
         external
@@ -122,8 +134,10 @@ interface IMarketplace {
      * @dev Returns only the tokens of a `collectionId` collection that can be sold.
      * Assume there is no secondary market (the NFTs can't be reselled).
      * This information is needed by the frontend because the token is not minted until it's sold ("lazy minting" technique)
-     */    
-    function getTokensForSale(uint256 collectionID) external returns (uint256[] memory tokenIds);
+     */
+    function getTokensForSale(uint256 collectionID)
+        external
+        returns (uint256[] memory tokenIds);
 
     /**
      * @dev Returns only the tokens that a user has purchased.
