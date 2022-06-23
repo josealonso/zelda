@@ -12,24 +12,31 @@ struct NftToken {
 }
 
 /**
- * @dev An array is easier than a mapping/dictionary, although the lookup is not as efficient.
+ * @dev An array is easier than a mapping/dictionary, although the mapping is more efficient.
  */
 struct NftCollection {
+    uint256 nftCollectionId;
     string name;
     string symbol;
-    string collectionMetadataURI;
-    uint256 makerRoyalties;
+    string metadataURI;
+    uint256 makerRoyalties; // this field is optional
     address makerAddress;
     address nftContractAddress;
     NftToken[] nftsInCollection;
 }
+
+// EnumerableSet.AddressSet private _nftCollectionAddresses;
+// uint256 private marketplaceRoyalties;
 
 interface IMarketplace {
     /**
      * @dev Emitted when a collection is added to the marketplace.
      * A contract is created per collection.
      */
-    event CreateNftCollectionContract(uint256 indexed collectionId);
+    event CreateNftCollectionContract(
+        address indexed collectionAddress,
+        uint256 indexed collectionId
+    );
 
     /**
      * @dev Emitted when a token price is modified.
@@ -43,9 +50,9 @@ interface IMarketplace {
     /**
      * @dev Emitted when the royalties of an existing collection are modified.
      */
-    event UpdateSellerRoyalties(
+    event UpdateMakerRoyalties(
         uint256 indexed collectionId,
-        uint256 sellerPercentage
+        uint256 makerPercentage
     );
 
     /**
@@ -66,9 +73,10 @@ interface IMarketplace {
      * Emits a {CreateNftCollectionContract} event.
      */
     function createNftCollectionContract(
-        address makerAddress,
-        string memory collectionURI,
-        uint256 sellerRoyalties
+        NftCollection memory _newNftCollection
+        // address makerAddress,
+        // string memory collectionURI,
+        // uint256 sellerRoyalties
     ) external;
 
     function setCollectionURI(uint256 collectionId, string memory collectionURI)
@@ -81,15 +89,13 @@ interface IMarketplace {
      */
     function updateTokenPrice(
         uint256 collectionId,
+        // NftToken calldata _nftToken,
         uint256 tokenId,
         uint256 newPrice
     ) external;
 
-    function setSellerRoyalties(
-        uint256 collectionId,
-        uint256 sellerPercentage,
-        uint256 marketplacePercentage
-    ) external;
+    function setMakerRoyalties(uint256 collectionId, uint256 makerPercentage)
+        external;
 
     function setMarketplaceRoyalties(uint256 marketplacePercentage) external;
 
@@ -122,9 +128,9 @@ interface IMarketplace {
         external
         returns (uint256 marketplacePercentage);
 
-    function getSellerRoyalties(uint256 collectionId)
+    function getMakerRoyalties(uint256 collectionId)
         external
-        returns (uint256 sellerPercentage);
+        returns (uint256 makerPercentage);
 
     function buyItem(uint256 collectionId, uint256 tokenId)
         external
