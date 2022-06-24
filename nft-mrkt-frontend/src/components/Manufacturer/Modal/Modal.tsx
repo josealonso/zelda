@@ -13,7 +13,6 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
 
-    const placeHolder: number = 0;
     const { user } = useStore();
     const [name, setName] = useState<string>("");
     const [price, setPrice] = useState<number>(0);

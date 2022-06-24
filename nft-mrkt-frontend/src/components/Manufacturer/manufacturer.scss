@@ -10,11 +10,11 @@
     .toplevel{
         display: flex;
         height: 95%;
-        background-color: bisque;
         border-radius: 20px;
     }
     .sidebar{
         display: flex;
+        background-color: bisque;
         flex-direction: column;
         align-items: center;
         text-align: center;
@@ -32,6 +32,9 @@
         }
         .line {
             margin-top: 9%;
+        }
+        .x{
+            cursor: pointer;
         }
         .addLine{
             background-color: rgb(255, 180, 88);

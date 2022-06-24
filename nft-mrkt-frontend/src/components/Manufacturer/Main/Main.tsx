@@ -3,6 +3,7 @@ import "./main.scss";
 import StubBackendData from "../../../api/stubBackendData";
 import TwitterLogo from "../../Assets/TwitterLogo.png";
 import { tokenData } from '../../../api/BackendIf';
+import LineInfo from "./LineInfo/LineInfo";
 
 
 interface MainProps {
@@ -44,19 +45,27 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
 
   if (loaded === true) {
     return (
-        <div>
+        <div className='mainWrapper'>
             <div className='header'>
                 <img src={TwitterLogo} className='productImg' alt="product"></img>
-                <span className='lineAddress'>{chosenLine}</span>
-                <span className='lineName'>{name}</span>
-                <span className='price'>{price}</span>
+                <div className='headerWrapper'>
+                  <span className='headerTitle'>Address of line:</span>
+                  <span className='headerInfo'>{chosenLine}</span>
+                </div>
+                <div className='headerWrapper'>
+                  <span className='headerTitle'>Name of line:</span>
+                  <span className='headerInfo'>{name}</span>
+                </div>
+                <div className='headerWrapper'>
+                  <span className='headerTitle'>Price of Items</span>
+                  <span className='headerInfo'>{price}</span>
+                </div>
             </div>
             <div className='items'>
                 { tokens?.map((i) => (
-                    <div key={i.name} className="token x">{i.name}</div>
+                    <LineInfo i={i} />
                 ))}
             </div>
-            <button onClick={() => log(tokens)}>sdfsdfasdf</button>
         </div>
     )
   } else {
