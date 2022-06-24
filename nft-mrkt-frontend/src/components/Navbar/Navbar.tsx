@@ -42,7 +42,9 @@ const Navbar: React.FC = () => {
       </div>
       <div className='right'>
         <Link to="/consumer" className='consumerLink'> My Items </Link>
-        <button className='connectMMBtn' onClick={connectMM}>Connect Wallet</button>
+        {user?.addrString ? <button className='connectMMBtn'>{user.addrString}</button> :
+                <button className='connectMMBtn' onClick={connectMM}>Connect Wallet</button>
+        }
       </div>
     </div>
   )

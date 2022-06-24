@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import "./browse.scss";
 import StubBackendData from '../../../api/stubBackendData';
-// import { NFTData } from '../../../api/BackendIf';
-import ItemCard from './ItemCard';
 import { NFTData } from '../../../api/BackendIf';
-import { ethers } from 'ethers';
+import ItemCard from './ItemCard';
 
 const Browse: React.FC = () => {
 
@@ -47,9 +45,9 @@ const Browse: React.FC = () => {
   }
 
   function log(): void {
-    console.log(nfts.length)
+    console.log(nfts)
   }
-
+  
   return (
     <div className='browseWrapper'>
       <div className='browseBox'>
@@ -59,8 +57,8 @@ const Browse: React.FC = () => {
         </div>
         <div className='itemCards'>
           {
-            nfts.map((i) => (
-              <ItemCard address={i.ownerAddress} _price={i.price} date={i.metadata}/>
+            nfts.map(i => (
+              <ItemCard key={i.address} address={i.ownerAddress} _price={i.price} date={i.metadata}/>
             ))
           }
           {/* <ItemCard owner={"owwwner"} price={"100"} date={'12'}/> */}

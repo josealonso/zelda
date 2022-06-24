@@ -1,22 +1,55 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "./manufacturer.scss";
-// import { useOutletContext } from "react-router-dom";
 import { useStore } from "../../userStore";
+import StubBackendData from '../../api/stubBackendData';
+import { ManufacturerData } from '../../api/BackendIf';
+import EtherscanLogoDark from "../Assets/EtherscanLogoDark.png";
+import Modal from "./Modal/Modal";
+import Main from './Main/Main';
+
+// import { useOutletContext } from "react-router-dom";
 
 
-function Manufacturer() {
+const Manufacturer: React.FC = () => {
 
-  // const [state] = useOutletContext() as any;
   const { user } = useStore();
+  const makerAddress: string = user.addrString;
 
-  function writeAddress() {
-    console.log(user)
-  }
+  const [makerInfo, setMakerInfo] = useState<ManufacturerData>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [chosenLine, setChosenLine] = useState<any>(""); // Running into type problem here. IDE complains that it can be undefined
+
+  useEffect(() => {
+    async function getInfo(_makerAddress: string) {
+      let backend = new StubBackendData();
+      const response = await backend.getManufacturerData(makerAddress);
+      setMakerInfo(response);
+    }
+    getInfo(makerAddress);
+  }, [])
+
   return (
     <div className='manufacturer'>
-      <button onClick={writeAddress}>write address</button>
+      <div className='sidebar toplevel'>
+        <h3 className='makerName'>{makerInfo?.name}</h3>
+        <img src={EtherscanLogoDark} className='makerImg' alt="company logo"></img>
+        <div className='productLines'>
+          { makerInfo?.addresses.map((i) => (
+              // <div key={i} className='line x' data-address={i} onClick={(e) => testSetter(e.currentTarget.dataset.address)}>{i}</div>
+              <div key={i} className='line x' data-address={i} onClick={(e) => setChosenLine(e.currentTarget.dataset.address?.toString())}>{i}</div>
+            ))
+          }
+          <button className='addLine'  onClick={() => setIsOpen(true)}>Add line + </button>
+          {isOpen && <Modal setIsOpen={setIsOpen} />}
+        </div>
+      </div>
+      <div className='main toplevel'>
+        <Main chosenLine={chosenLine} />
+      </div>
     </div>
   )
 }
 
 export default Manufacturer
+
+// key={generateKey(makerInfo?.addresses)}
