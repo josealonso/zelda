@@ -68,10 +68,11 @@ export default class StubBackendData implements BackendData {
             currentOwnerAddress: "test_address"
         }]
     }
-    async addManuContract(
+    async addCollectionContract(
         productName: string,
         makerAddress: string,
-        productUri:string, 
+        productImgUri: string,
+        productMetadataUri: string,
         price: Number,
         numberProduced: Number,
     ): Promise<CreateManufacturerResponse> {

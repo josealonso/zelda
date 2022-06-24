@@ -16,7 +16,7 @@ export default class BackendImpl implements BackendData {
     getCollectionData(manuContractAddress: string): Promise<CollectionData[]> {
         throw new Error('Method not implemented.');
     }
-    addManuContract(productName: string, makerAddress: string, productUri: string, price: Number, numberProduced: Number): Promise<CreateManufacturerResponse> {
+    addCollectionContract(productName: string, makerAddress: string, productImgUri: string, productMetadataUri: string, price: Number, numberProduced: Number): Promise<CreateManufacturerResponse> {
         throw new Error('Method not implemented.');
     }
 

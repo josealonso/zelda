@@ -1,24 +1,129 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef, useImperativeHandle, useRef } from "react";
 import axios from 'axios';
 import styles from "./Modal.module.scss";
 import { RiCloseLine } from "react-icons/ri";
 import StubBackendData from "../../../api/stubBackendData";
 import { useStore } from "../../../userStore";
 
-interface ModalProps {
-    setIsOpen: any
-    /* 
-    I do not think `any` is correct here. What is the type definition for a function?
-    */
-}
 
-const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
+  interface ModalProps {
+      setIsOpen: any
 
+  }
+  
+  const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
+    
+    let initialFieldNames = ["color", "size", "material"]
+    let initialFieldValues = ["", "", ""]
+    const [fieldNames, setFieldNames] = useState(initialFieldNames);
+    const [fieldValues, setFieldValues] = useState(initialFieldValues);
+    const [ipfsHash, setIpfsHash] = useState<string>("");
+    const { user } = useStore();
     const [fileImg, setFileImg] = useState<File | null>(null);
     const [imgHash, setImgHash] = useState<string>("");
+    const [name, setName] = useState<string>("");
+    const [price, setPrice] = useState<number>(0);
+    const [quantity, setQuantity] = useState<number>(0);
+
+    const addField = () => {
+      const thisFieldNames = fieldNames.slice()
+      const thisFieldValues = fieldValues.slice()
+      console.log(thisFieldNames, thisFieldValues)
+      let defaultKey = "key"
+      let defaultValue = ""
+      let originalLength = thisFieldNames.length
+
+      thisFieldNames[originalLength + 1] = defaultKey
+      thisFieldValues[originalLength + 1] = defaultValue
+
+      if (thisFieldNames.length !== thisFieldValues.length) {
+          alert("Arrays aren't equal!!!")
+          console.log(thisFieldNames, thisFieldValues)
+      }
+      setFieldNames(thisFieldNames)
+      setFieldValues(thisFieldValues)
+  }
+
+  const removeField = (event: React.FormEvent, index: number) => {
+      const thisFieldNames = fieldNames.slice()
+      const thisFieldValues = fieldValues.slice()
+      thisFieldNames.splice(index, 1)
+      thisFieldValues.splice(index, 1)
+
+      if (thisFieldNames.length !== thisFieldValues.length) {
+          alert("Arrays aren't equal!!!")
+      }
+      setFieldNames(thisFieldNames)
+      setFieldValues(thisFieldValues)
+  }
+
+  const handleFormChange = (event: React.FormEvent<HTMLInputElement>, index: number) => {
+      console.log("new f:", fieldNames, fieldValues)
+
+      const thisFieldNames = fieldNames.slice()
+      const thisFieldValues = fieldValues.slice()
+
+      let newContent = event.currentTarget.value
+      let className = event.currentTarget.className
+      if (className == "key") {
+          thisFieldNames[index] = newContent
+      } else if (className == "value") {
+          thisFieldValues[index] = newContent
+      }
+
+      if (thisFieldNames.length !== thisFieldValues.length) {
+          alert("Arrays aren't equal!!!")
+      }
+      setFieldNames(thisFieldNames)
+      setFieldValues(thisFieldValues)
+      console.log("new f:", fieldNames, fieldValues)
+  }
+
+  const submit = (e: React.FormEvent<HTMLElement>) => {
+      e.preventDefault();
+      console.log(fieldNames, fieldValues)
+  }
+
+  const sendJSONToIPFS = async () => {
+      // e.preventDefault()
+      if (fieldNames.length !== fieldValues.length) {
+          alert("Arrays aren't equal!!!")
+      }
+
+      try {
+          console.log("various variables", process.env)
+
+          const api_key = process.env.REACT_APP_PINATA_API_KEY
+          const api_secret_key = process.env.REACT_APP_PINATA_API_SECRET_KEY
+
+          if (api_key != null && api_secret_key != null) {
+
+              const resFile = await axios({
+                  method: "post",
+                  url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+                  headers: {
+                      'pinata_api_key': api_key,
+                      'pinata_secret_api_key': api_secret_key,
+                      "Content-Type": "application/json"
+                  },
+                  data: {fieldNames, fieldValues}
+              });
+
+              const ipfsHash = `ipfs://${resFile.data.IpfsHash}`;
+              setIpfsHash(ipfsHash)
+              console.log(ipfsHash);
+          } else {
+              console.log("API Keys not found")
+          }
+
+      } catch (error) {
+          console.log("Error sending File to IPFS: ")
+          console.log(error)
+      }
+  }
 
     const sendFileToIPFS = async () => {
-      // e.preventDefault()
+      // e.preventDefault() // Not sure what this does. Keeping in case of future bug
 
       if (!fileImg) {
           return;
@@ -59,39 +164,19 @@ const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
       }
     }
 
-
-
-    const { user } = useStore();
-    const [name, setName] = useState<string>("");
-    const [price, setPrice] = useState<number>(0);
-    const [quantity, setQuantity] = useState<number>(0);
-    const [imageUri, setImageUri] = useState<string>(""); // I think we should call setImageUri when IPFS returns us the CID
-    
-    // const [imageFile, setImageFile] = useState<any>("");
-    // async function uploadToIPFS(file: any) {
-    //     // Bryan I think you made this yesterday
-    //     const CID: string = file; 
-    //     return CID
-    // }
-
     async function handleCreation() {
         await sendFileToIPFS();
+        await sendJSONToIPFS();
         const backend = new StubBackendData();
-        const response = await backend.addManuContract(
+        const response = await backend.addCollectionContract(
             name,
             user.addrString,
             imgHash,
+            ipfsHash,
             price,
             quantity
         )
         console.log(response, response);
-        // console.log(
-        //     name,
-        //     user.addrString,
-        //     imageUri,
-        //     price,
-        //     quantity
-        // )
     }
 
     return (
@@ -120,6 +205,30 @@ const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
                     </label>
                     <label> Product Image:
                       <input type="file" onChange={(e) => setFileImg(e.target.files ? e.target.files[0] : null)} required />
+                    </label>
+                    <label> Product info:
+                      <form onSubmit={submit}>
+                        {fieldNames.map((key: string, i: number)=>{
+                          return (
+                                  <div key={i}>
+                                      <input className='key'
+                                            name={key}
+                                            placeholder={key}
+                                            value={key}
+                                            onChange={(event:React.FormEvent<HTMLInputElement>) => handleFormChange(event, i)}
+                                            />
+                                      <input className='value'
+                                            name={key}
+                                            placeholder='value'
+                                            value={fieldValues[i]}
+                                            onChange={(event:React.FormEvent<HTMLInputElement>) => handleFormChange(event, i)}
+                                      />
+                                      <button id='remove_field' onClick={(event:React.FormEvent) => removeField(event, i)}>Remove field</button>
+                                  </div>
+                              )
+                          })}
+                      </form>
+                      <button onClick={addField}>Add a Field</button>
                     </label>
                 </form>
               </div>

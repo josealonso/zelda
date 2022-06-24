@@ -67,10 +67,11 @@ export interface BackendData {
     buyNFT(address:string): Promise<boolean>
 
 
-    addManuContract(
+    addCollectionContract(
         productName: string, //Product Line
         makerAddress: string, // Manufacturer address
-        productUri:string, // Product Image
+        productImgUri:string, // Product Image
+        productMetadataUri: string,
         price: Number,  // Price
         numberProduced: Number, // Max TokenId
     ): Promise<CreateManufacturerResponse>
