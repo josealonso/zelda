@@ -12,7 +12,8 @@ import {
 const CHAIN_ID = 80001
 
 export default class BackendImpl implements BackendData {
-    getCollectionData(manuContractAddress: string[]): Promise<CollectionData[]> {
+    // @ LAU I changed this to be just a string argument
+    getCollectionData(manuContractAddress: string): Promise<CollectionData[]> {
         throw new Error('Method not implemented.');
     }
     addManuContract(productName: string, makerAddress: string, productUri: string, price: Number, numberProduced: Number): Promise<CreateManufacturerResponse> {

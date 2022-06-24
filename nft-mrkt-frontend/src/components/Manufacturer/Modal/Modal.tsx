@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import styles from "./Modal.module.scss";
 import { RiCloseLine } from "react-icons/ri";
 import StubBackendData from "../../../api/stubBackendData";
@@ -13,30 +14,77 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
 
+    const [fileImg, setFileImg] = useState<File | null>(null);
+    const [imgHash, setImgHash] = useState<string>("");
+
+    const sendFileToIPFS = async () => {
+      // e.preventDefault()
+
+      if (!fileImg) {
+          return;
+      }
+      console.log("We have found a file", fileImg)
+      try {
+          console.log("various variables", process.env)
+
+          const api_key = process.env.REACT_APP_PINATA_API_KEY
+          const api_secret_key = process.env.REACT_APP_PINATA_API_SECRET_KEY
+
+          if (api_key != null && api_secret_key != null) {
+              const formData = new FormData();
+              formData.append("file", fileImg);
+
+              const resFile = await axios({
+                  method: "post",
+                  url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+                  data: formData,
+                  headers: {
+                      'pinata_api_key': api_key,
+                      'pinata_secret_api_key': api_secret_key,
+                      "Content-Type": "multipart/form-data"
+                  },
+              });
+
+              const ImgHash = `ipfs://${resFile.data.IpfsHash}`;
+              setImgHash(ImgHash)
+              console.log(ImgHash);
+              //Take a look at your Pinata Pinned section, you will see a new file added to you list.
+          } else {
+              console.log("API Keys not found")
+          }
+
+      } catch (error) {
+          console.log("Error sending File to IPFS: ")
+          console.log(error)
+      }
+    }
+
+
+
     const { user } = useStore();
     const [name, setName] = useState<string>("");
     const [price, setPrice] = useState<number>(0);
     const [quantity, setQuantity] = useState<number>(0);
-    const [imageFile, setImageFile] = useState<any>(""); // What will this type be?
     const [imageUri, setImageUri] = useState<string>(""); // I think we should call setImageUri when IPFS returns us the CID
     
-    async function uploadToIPFS(file: any) {
-        // Bryan I think you made this yesterday
-        const CID: string = file; 
-        return CID
-    }
+    // const [imageFile, setImageFile] = useState<any>("");
+    // async function uploadToIPFS(file: any) {
+    //     // Bryan I think you made this yesterday
+    //     const CID: string = file; 
+    //     return CID
+    // }
 
     async function handleCreation() {
-        setImageUri( await uploadToIPFS(imageFile))
+        await sendFileToIPFS();
         const backend = new StubBackendData();
         const response = await backend.addManuContract(
             name,
             user.addrString,
-            imageUri,
+            imgHash,
             price,
             quantity
         )
-        // console.log(response);
+        console.log(response, response);
         // console.log(
         //     name,
         //     user.addrString,
@@ -71,7 +119,7 @@ const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
                         {/* I could only make this work with parseInt... any thoughts? */}
                     </label>
                     <label> Product Image:
-                        <input type="file" onChange={e => setImageFile(e.target.value)}></input>
+                      <input type="file" onChange={(e) => setFileImg(e.target.files ? e.target.files[0] : null)} required />
                     </label>
                 </form>
               </div>
