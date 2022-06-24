@@ -69,7 +69,16 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
         </div>
     )
   } else {
-    return (<div>No Product Chosen</div>)
+    return (
+      <div className='mainWrapper'>
+          <div className='header'>
+
+          </div>
+          <div className='items'>
+            
+          </div>
+      </div>
+      )
   }
 }
 
