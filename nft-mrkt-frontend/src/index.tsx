@@ -13,6 +13,8 @@ import Browse from './components/SplashPage/Browse/Browse';
 import QRCodeReader from "./components/QRCode/QRCodeReader/QRCodeReader";
 import QRReadResult from "./components/QRCode/QRReadResult/QRReadResult";
 import QRGenerator from "./components/QRCode/QRGenerator/QRGenerator";
+import UploadImageForm from "./components/UploadImageForm/UploadImageForm";
+import UploadJSONDataForm from "./components/UploadJSONDataForm/UploadJSONDataForm";
 
 
 const root = ReactDOM.createRoot(
@@ -33,6 +35,8 @@ root.render(
               <Route path="qr-code-reader" element={<QRCodeReader />} />
               <Route path="qr-read-result" element={<QRReadResult />} />
               <Route path="qr-generator" element={<QRGenerator />} />
+              <Route path="file-upload" element={<UploadImageForm />} />
+              <Route path="json-upload" element={<UploadJSONDataForm />} />
             </Route>
           </Routes>
         </BrowserRouter>
