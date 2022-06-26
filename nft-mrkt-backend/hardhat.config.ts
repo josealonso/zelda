@@ -24,12 +24,18 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 const config: HardhatUserConfig = {
   solidity: "0.8.4",
+  paths: {
+    artifacts: "../nft-mrkt-frontend/src/artifacts",
+  },
+  typechain: {
+    outDir: "../nft-mrkt-frontend/src/typechain",
+  },
   networks: {
     hardhat: {    // Local network
 
     },
     mumbai: {
-      url: process.env.MUMBAI_API_KEY_URL,
+      url: process.env.MUMBAI_API_KEY_URL || "",
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     ropsten: {
