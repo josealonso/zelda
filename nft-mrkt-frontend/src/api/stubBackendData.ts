@@ -8,38 +8,44 @@ export default class StubBackendData implements BackendData {
     // Thats fine, I'll just access the 0 index for now
     async getCollectionData(manuContractAddress: string): Promise<CollectionData[]> {
         return [
-            {
+            {   
+                // NETWORK: POLYGON
                 productName: "Golden Tickets",
                 makerAddress: "0x123...456",
                 productUri: "https://gateway.pinata.cloud/ipfs/QmSEDNjgtMagXZNciEbQt4HNqekEeg1DdV7jLXuyCvo64G", // Weird pic of my dog
                 price: 12,
                 numberProduced: 5,
-                tokens: [
-                    {
+                tokens: [ // We're missing tokenID. I added it 6/27/22.
+                    {  
+                        tokenId: ethers.BigNumber.from(1),
                         name: "Ticket 1",
                         sold: true,
                         forSale: false,
                         currentOwner: "0x987...654"
                     },
-                    {
+                    {   
+                        tokenId: ethers.BigNumber.from(2),
                         name: "Ticket 2",
                         sold: true,
                         forSale: false,
                         currentOwner: "0xABC...DEF"
                     },
-                    {
+                    {   
+                        tokenId: ethers.BigNumber.from(3),
                         name: "Ticket 3",
                         sold: true,
                         forSale: false,
                         currentOwner: "0xBCD...EFG"
                     },
-                    {
+                    {   
+                        tokenId: ethers.BigNumber.from(4),
                         name: "Ticket 4",
                         sold: true,
                         forSale: false,
                         currentOwner: "0xAAA...AAA"
                     },
-                    {
+                    {   
+                        tokenId: ethers.BigNumber.from(5),
                         name: "Ticket 5",
                         sold: true,
                         forSale: false,

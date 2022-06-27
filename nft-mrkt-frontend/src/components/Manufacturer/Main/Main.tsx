@@ -4,7 +4,7 @@ import StubBackendData from "../../../api/stubBackendData";
 import TwitterLogo from "../../Assets/TwitterLogo.png";
 import { tokenData } from '../../../api/BackendIf';
 import LineInfo from "./LineInfo/LineInfo";
-
+import { ethers } from 'ethers';
 
 interface MainProps {
     chosenLine: string
@@ -12,6 +12,15 @@ interface MainProps {
 
 const Main: React.FC<MainProps> = ({ chosenLine }) => {
   
+  const [name, setName] = useState<string>();
+  const [makerAddr, setMakerAddr] = useState<string>();
+  const [productUri, setProductUri] = useState<string>();
+  const [price, setPrice] = useState<number>();
+  const [quantity, setQuantity] =useState<number>();
+  const [loaded, setLoaded] = useState<boolean>();
+  const [tokens, setTokens] = useState<tokenData[]>();
+  const [QRData, setQRData] = useState<string>();
+
   useEffect(() => {
     async function populate() {
         if(chosenLine) {
@@ -23,25 +32,12 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
             setProductUri(item.productUri);
             setPrice(item.price);
             setQuantity(item.numberProduced);
-            setLoaded(true);
             setTokens(item.tokens)
+            setLoaded(true);
         }
     }
     populate();
   }, [chosenLine]);
-
-  const [name, setName] = useState<string>();
-  const [makerAddr, setMakerAddr] = useState<string>();
-  const [productUri, setProductUri] = useState<string>();
-  const [price, setPrice] = useState<number>();
-  const [quantity, setQuantity] =useState<number>();
-  const [loaded, setLoaded] = useState<boolean>();
-  const [tokens, setTokens] = useState<tokenData[]>();
-
-
-    function log(val: any) {
-      console.log(typeof val)
-  }
 
   if (loaded === true) {
     return (

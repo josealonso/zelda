@@ -12,6 +12,7 @@ export type NFTData = {
 
 // Created by Joey 6/23/22 for displaying token info in manufacturer>main>items component
 export type tokenData = {
+    tokenId: ethers.BigNumber
     name: string
     sold: boolean
     forSale: boolean

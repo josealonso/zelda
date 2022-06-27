@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "./lineInfo.scss";
+// import { typeToEmbeddedString } from "../../../../models/QRCodeModel";
+// import { QRNFTType } from "../../../../models/QRCodeModel";
+import { ethers } from 'ethers';
+import QRGenerator from "../../../QRCode/QRGenerator/QRGenerator";
+import { typeToEmbeddedString, stringToType, QRNFTType } from "../../../../models/QRCodeModel";
 
 interface LineInfoProps {
     i: {
+        tokenId: ethers.BigNumber
         name: string
         sold: boolean
         forSale: boolean
@@ -11,6 +17,19 @@ interface LineInfoProps {
 }
 
 const LineInfo: React.FC<LineInfoProps>= ({ i }) => {
+
+  useEffect(() => {
+    const stringified = typeToEmbeddedString({
+      network: "polygon", 
+      address: "owner", 
+      tokenId: ethers.BigNumber.from(1)
+  });
+    setQRData(stringToType(stringified))
+  }, [])
+
+  const [QRData, setQRData] = useState<QRNFTType>();
+  const [viewCode, setViewCode] = useState<boolean>(false);
+
   return (
     <div key={i.name} className="token x">
         <div className='wrapper'>
@@ -29,9 +48,13 @@ const LineInfo: React.FC<LineInfoProps>= ({ i }) => {
           <div className='title'>Current Owner:&nbsp;&nbsp;</div>
           <div className='data'>{i.currentOwner}</div>
         </div>
-        {/* 
-          Make QR code out of models>QRCodeModel.ts interface w/ QRCode>QRCodeGenerator method. Render QR code image in the token line info
-        */}
+        <div className='qr'>
+          { 
+            viewCode ? 
+            <div onClick={() => setViewCode(false)}><QRGenerator data={QRData} /></div> : 
+            <button onClick={() => setViewCode(true)}>QR Code</button>
+          }
+        </div>
     </div>
   )
 }
