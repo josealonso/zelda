@@ -52,7 +52,7 @@ const config: HardhatUserConfig = {
     apiKey: {
       ropsten: process.env.ETHERSCAN_API_KEY || "",
       polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
-    }
+    },
   },
 };
 

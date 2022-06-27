@@ -4,22 +4,25 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
+import * as fs from "fs";
+import * as envfile from "envfile";
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+  const StubNFTMarketplaceImpl = await ethers.getContractFactory(
+    "StubNFTMarketplaceImpl"
+  );
+  const stubNFTMarketplaceImpl = await StubNFTMarketplaceImpl.deploy({});
 
-  // We get the contract to deploy
-  const Greeter = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  await stubNFTMarketplaceImpl.deployed();
 
-  await greeter.deployed();
-
-  console.log("Greeter deployed to:", greeter.address);
+  console.log(
+    "StubNFTMarketplaceImpl deployed to:",
+    stubNFTMarketplaceImpl.address
+  );
+  const envPath = "../nft-mrkt-frontend/.env";
+  const parsedFile = envfile.parse(fs.readFileSync(envPath, "utf8"));
+  parsedFile.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS = stubNFTMarketplaceImpl.address;
+  fs.writeFileSync(envPath, envfile.stringify(parsedFile));
 }
 
 // We recommend this pattern to be able to use async/await everywhere

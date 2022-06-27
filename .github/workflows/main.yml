@@ -19,4 +19,8 @@ jobs:
         run: cd nft-mrkt-frontend && npm ci
       - name: Run tests
         run: cd nft-mrkt-frontend && CI=true npm test
+      - name: Install hardhat dependencies
+        run: cd nft-mrkt-backend && npm ci
+      - name: Run hardhat tests
+        run: cd nft-mrkt-backend && npx hardhat test
 
