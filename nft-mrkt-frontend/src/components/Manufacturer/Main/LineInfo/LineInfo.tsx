@@ -29,6 +29,9 @@ const LineInfo: React.FC<LineInfoProps>= ({ i }) => {
           <div className='title'>Current Owner:&nbsp;&nbsp;</div>
           <div className='data'>{i.currentOwner}</div>
         </div>
+        {/* 
+          Make QR code out of models>QRCodeModel.ts interface w/ QRCode>QRCodeGenerator method. Render QR code image in the token line info
+        */}
     </div>
   )
 }

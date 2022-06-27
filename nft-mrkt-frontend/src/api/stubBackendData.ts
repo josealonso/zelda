@@ -114,7 +114,7 @@ export default class StubBackendData implements BackendData {
         }]
     }
 
-    // 6/27/22 - we need to figure out what is being passed here. I believe it needs to be `tokenId` adn `address.
+    // 6/27/22 - we need to figure out what is being passed here. I believe it needs to be `tokenId` adn`address.
     // getNFTsForSale() returns an ethers.BigNumber for tokenID, so I changed its type to that. 
     async buyNFT(address: string, tokenId: ethers.BigNumber): Promise<boolean> {
         alert("bought!")

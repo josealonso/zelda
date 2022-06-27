@@ -10,10 +10,13 @@ export type QRNFTType  = {
     tokenId: ethers.BigNumber
 }
 
+// Call  typeToEmbeddedString 1st
+
 export function typeToEmbeddedString(qrNFTType: QRNFTType): string {
     return `${NETWORK_STRING}:${qrNFTType.network} ${ADDRESS_STRING}:${qrNFTType.address} ${TOKENID_STRING}:${qrNFTType.tokenId}`
 }
 
+// With that return call this:
 export function stringToType(qrString: string): QRNFTType {
     let splitted = qrString.split(" ");
     if (splitted.length > 3) {

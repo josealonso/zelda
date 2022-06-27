@@ -53,7 +53,7 @@ const Browse: React.FC = () => {
       <div className='browseBox'>
         <div className='navigation'>
           <h3 className='browseTitle'> Browse Items</h3>
-          <button className='refreshButton' onClick={log}>Refresh</button>
+          {/* <button className='refreshButton' onClick={log}>Refresh</button> */}
         </div>
         <div className='itemCards'>
           {
