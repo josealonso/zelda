@@ -57,8 +57,28 @@ interface StubNFTMarketplaceImplInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
 
-  events: {};
+  events: {
+    "BuyItem(address,address,uint256)": EventFragment;
+    "CreateNftCollectionContract(address,address)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "BuyItem"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "CreateNftCollectionContract"
+  ): EventFragment;
 }
+
+export type BuyItemEvent = TypedEvent<
+  [string, string, BigNumber] & {
+    nftContractAddress: string;
+    buyer: string;
+    tokenId: BigNumber;
+  }
+>;
+
+export type CreateNftCollectionContractEvent = TypedEvent<
+  [string, string] & { nftContractAddress: string; seller: string }
+>;
 
 export class StubNFTMarketplaceImpl extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -223,7 +243,41 @@ export class StubNFTMarketplaceImpl extends BaseContract {
     >;
   };
 
-  filters: {};
+  filters: {
+    "BuyItem(address,address,uint256)"(
+      nftContractAddress?: string | null,
+      buyer?: string | null,
+      tokenId?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { nftContractAddress: string; buyer: string; tokenId: BigNumber }
+    >;
+
+    BuyItem(
+      nftContractAddress?: string | null,
+      buyer?: string | null,
+      tokenId?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { nftContractAddress: string; buyer: string; tokenId: BigNumber }
+    >;
+
+    "CreateNftCollectionContract(address,address)"(
+      nftContractAddress?: string | null,
+      seller?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { nftContractAddress: string; seller: string }
+    >;
+
+    CreateNftCollectionContract(
+      nftContractAddress?: string | null,
+      seller?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { nftContractAddress: string; seller: string }
+    >;
+  };
 
   estimateGas: {
     buyItem(

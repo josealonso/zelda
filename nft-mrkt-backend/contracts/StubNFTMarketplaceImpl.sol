@@ -12,6 +12,17 @@ contract StubNFTMarketplaceImpl is StubNFTMarketplaceIf {
     mapping(uint256 =>address) allAddresses;
     uint256 allAddressesCounter;
 
+    event CreateNftCollectionContract(
+        address indexed nftContractAddress,
+        address indexed seller
+    );
+
+    event BuyItem(
+        address indexed nftContractAddress,
+        address indexed buyer,
+        uint256 tokenId
+    );
+
     constructor () { }
 
     // msg.sender is maker's address
@@ -23,6 +34,7 @@ contract StubNFTMarketplaceImpl is StubNFTMarketplaceIf {
         collectionsForSale[_newNftCollection.nftContractAddress] = _newNftCollection;
         allAddresses[allAddressesCounter] = _newNftCollection.nftContractAddress;
         allAddressesCounter += 1;
+        emit CreateNftCollectionContract(_newNftCollection.nftContractAddress, msg.sender);
     }
     // msg.sender is buyer's address
     // msg.value is price sender willing to pay
@@ -34,6 +46,7 @@ contract StubNFTMarketplaceImpl is StubNFTMarketplaceIf {
         require(msg.value > price);
         StubMaker col = StubMaker(collectionAddress);
         uint256 id = col.mint(msg.sender);
+        emit BuyItem(collectionAddress, msg.sender, id);
         return id;
     }
 
