@@ -17,6 +17,7 @@ const Manufacturer: React.FC = () => {
 
   const [makerInfo, setMakerInfo] = useState<ManufacturerData>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [logo, setLogo] = useState<string | undefined>("");
   const [chosenLine, setChosenLine] = useState<any>(""); // Running into type problem here. IDE complains that it can be undefined
 
   useEffect(() => {
@@ -28,11 +29,18 @@ const Manufacturer: React.FC = () => {
     getInfo(makerAddress);
   }, [])
 
+  useEffect(() => {
+    async function setLogoUri() {
+      setLogo(makerInfo?.manufacturerLogoUri)
+    }
+    setLogoUri();
+  }, [makerInfo])
+
   return (
     <div className='manufacturer'>
       <div className='sidebar toplevel'>
         <h3 className='makerName'>{makerInfo?.name}</h3>
-        <img src={EtherscanLogoDark} className='makerImg' alt="company logo"></img>
+        <img src={logo} className='makerImg' alt="company logo"></img>
         <div className='productLines'>
           { makerInfo?.addresses.map((i) => (
               // <div key={i} className='line x' data-address={i} onClick={(e) => testSetter(e.currentTarget.dataset.address)}>{i}</div>

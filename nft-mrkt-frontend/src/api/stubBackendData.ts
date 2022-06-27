@@ -4,14 +4,14 @@ import {BigNumber, ethers} from "ethers";
 export default class StubBackendData implements BackendData {
 
     // I changed this from an array param to a single string. We will need to query 
-    // with contract address and then return the info below. I couldn't get it to return correctly not as an array tho.
-    // Thats fine tho, I'll just access the 0 index for now
+    // with contract address and then return the info below. I couldn't get it to return correctly // not as an array tho.
+    // Thats fine, I'll just access the 0 index for now
     async getCollectionData(manuContractAddress: string): Promise<CollectionData[]> {
         return [
             {
                 productName: "Golden Tickets",
                 makerAddress: "0x123...456",
-                productUri: "photo",
+                productUri: "https://gateway.pinata.cloud/ipfs/QmSEDNjgtMagXZNciEbQt4HNqekEeg1DdV7jLXuyCvo64G", // Weird pic of my dog
                 price: 12,
                 numberProduced: 5,
                 tokens: [
@@ -50,10 +50,12 @@ export default class StubBackendData implements BackendData {
         ];
     }
 
+    // Added field for manufacturer logo 6/27/22
     async getManufacturerData(manufacturerAddress: string): Promise<ManufacturerData> {
         return {
             addresses: ["0x123...345", "0x234...567"],
-            name: "Wonka Industries"
+            name: "Wonka Industries",
+            manufacturerLogoUri: "https://gateway.pinata.cloud/ipfs/Qmbf22NGZUcgocx9K2pvM8zyPP1HreFKo72LYa1beRaui9" // Weirder pic of my dog
             // Added Name so that I can populate the storefront page
         }
     }

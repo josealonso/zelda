@@ -111,7 +111,7 @@ import { useStore } from "../../../userStore";
 
               const ipfsHash = `ipfs://${resFile.data.IpfsHash}`;
               setIpfsHash(ipfsHash)
-              console.log(ipfsHash);
+              console.log("JSON: ", ipfsHash);
           } else {
               console.log("API Keys not found")
           }
@@ -152,7 +152,7 @@ import { useStore } from "../../../userStore";
 
               const ImgHash = `ipfs://${resFile.data.IpfsHash}`;
               setImgHash(ImgHash)
-              console.log(ImgHash);
+              console.log("Img: ", ImgHash);
               //Take a look at your Pinata Pinned section, you will see a new file added to you list.
           } else {
               console.log("API Keys not found")

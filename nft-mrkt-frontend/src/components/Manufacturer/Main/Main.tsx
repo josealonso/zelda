@@ -47,7 +47,7 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
     return (
         <div className='mainWrapper'>
             <div className='header'>
-                <img src={TwitterLogo} className='productImg' alt="product"></img>
+                <img src={productUri} className='productImg' alt="product"></img>
                 <div className='headerWrapper'>
                   <span className='headerTitle'>Address of line:</span>
                   <span className='headerInfo'>{chosenLine}</span>
