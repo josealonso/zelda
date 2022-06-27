@@ -11,6 +11,7 @@ export type NFTData = {
     image: string
     price: ethers.BigNumber
     auction?: Auction
+    token?: tokenData[]
 }
 
 // Created by Joey 6/23/22 for displaying token info in manufacturer>main>items component
@@ -59,7 +60,7 @@ export interface BackendAPI {
 
     getNFTsForSale(): Promise<NFTData[]>
 
-    getCollectionData(manuContractAddress: string): Promise<CollectionData[]>
+    getCollectionData(nftContractAddress: string): Promise<CollectionData[]>
 
     getManufacturerData(manufacturerAddress: string): Promise<ManufacturerData>
 

@@ -1,17 +1,18 @@
-import axios from 'axios'
-import {BigNumber, ethers} from "ethers";
+import axios from "axios";
+import { BigNumber, ethers } from "ethers";
 import {
     BackendAPI,
     CollectionData,
     CreateManufacturerResponse,
     ManufacturerData,
     NFTData,
-    SoldNFTData
+    SoldNFTData,
+    tokenData
 } from "./BackendIf";
 import Web3Modal from "web3modal";
-import MarketplaceContractArtifact from '../artifacts/contracts/StubNFTMarketplaceIf.sol/StubNFTMarketplaceIf.json'
-import MakerContractArtifact from '../artifacts/contracts/StubMaker.sol/StubMaker.json'
-import {StubNFTMarketplaceImpl} from '../typechain'
+import MarketplaceContractArtifact from "../artifacts/contracts/StubNFTMarketplaceIf.sol/StubNFTMarketplaceIf.json";
+import MakerContractArtifact from "../artifacts/contracts/StubMaker.sol/StubMaker.json";
+import { StubMaker, StubNFTMarketplaceImpl } from "../typechain";
 
 const COVALENT_CHAIN_ID = 80001
 
@@ -36,20 +37,45 @@ export default class BackendAPIImpl implements BackendAPI {
         }
     }
 
-    async getCollectionData(manuContractAddress: string): Promise<CollectionData[]> {
+    /**
+     * Probably better to use covalent for this
+     * @param nftContractAddress
+     */
+    async getCollectionData(nftContractAddress: string): Promise<CollectionData[]> {
+        const prov = await this.providerFn()
+        const nftContract = new ethers.Contract(
+          nftContractAddress, MakerContractArtifact.abi, prov) as StubMaker
+        const currentMaxToken = await nftContract.tokenIds()
+        let tokens: tokenData[] = []
+        for (let i =1; i<=currentMaxToken.toNumber(); i++ ) {
+            tokens.push(
+              {
+                  tokenId: ethers.BigNumber.from(i),
+                  name: "",
+                  sold: true,
+                  forSale: false,
+                  currentOwner: (await nftContract.ownerOf(i)).toString()
+              }
+            )
+        }
+
         const allData = await this.getNFTsForSale()
         return allData
             .filter(i => {
-                return i.ownerAddress === manuContractAddress
+                return i.address === nftContractAddress
             })
             .map(i => {
                     return {
                         productName: i.productName,
-                        makerAddress: manuContractAddress,
+                        makerAddress: i.ownerAddress,
                         productUri: i.metadata,
                         price: i.price.toNumber(),
                         numberProduced: 0,
-                        tokens: [],
+                        tokens: tokens.map(oldT => {
+                            const newT = oldT
+                            newT.name = `${i.productName} - id: ${oldT.tokenId.toString()}`
+                            return newT
+                        }),
                     }
                 }
             )
@@ -166,7 +192,7 @@ export default class BackendAPIImpl implements BackendAPI {
                 metadata: i.metadataURI,
                 ownerAddress: i.makerAddress,
                 tokenId: BigNumber.from(0),
-                price: i.price
+                price: i.price,
             }
         })
     }
