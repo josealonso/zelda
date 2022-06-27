@@ -1,9 +1,9 @@
-import {BackendData, CollectionData, CreateManufacturerResponse, ManufacturerData, NFTData, SoldNFTData} from "./BackendIf";
+import {BackendAPI, CollectionData, CreateManufacturerResponse, ManufacturerData, NFTData, SoldNFTData} from "./BackendIf";
 import {BigNumber, ethers} from "ethers";
 
-export default class StubBackendData implements BackendData {
+export default class StubBackendData implements BackendAPI {
 
-    // I changed this from an array param to a single string. We will need to query 
+    // I changed this from an array param to a single string. We will need to query
     // with contract address and then return the info below. I couldn't get it to return correctly // not as an array tho.
     // Thats fine, I'll just access the 0 index for now
     async getCollectionData(manuContractAddress: string): Promise<CollectionData[]> {
@@ -87,6 +87,7 @@ export default class StubBackendData implements BackendData {
     }
     async getUserNFTs(ownerAddress: string): Promise<NFTData[]> {
         return [{
+            productName: "product_name",
             ownerAddress: ownerAddress,
             address: "contractAddress",
             metadata: "test",
@@ -96,16 +97,18 @@ export default class StubBackendData implements BackendData {
         }]
     }
 
-    async getNFTsForSale(marketPlaceContractAddress: string): Promise<NFTData[]> {
+    async getNFTsForSale(): Promise<NFTData[]> {
         return [{
-            ownerAddress: marketPlaceContractAddress,
+            productName: "product_name",
+            ownerAddress: "test_mp_address",
             address: "contractAddress1",
             metadata: "test1",
             tokenId: ethers.BigNumber.from(1),
             image: "https://picsum.photos/200/300",
             price: BigNumber.from(1)
         }, {
-            ownerAddress: marketPlaceContractAddress,
+            productName: "product_name",
+            ownerAddress: "test_mp_address",
             address: "contractAddress2",
             metadata: "test2",
             tokenId: ethers.BigNumber.from(2),
@@ -115,7 +118,7 @@ export default class StubBackendData implements BackendData {
     }
 
     // 6/27/22 - we need to figure out what is being passed here. I believe it needs to be `tokenId` adn`address.
-    // getNFTsForSale() returns an ethers.BigNumber for tokenID, so I changed its type to that. 
+    // getNFTsForSale() returns an ethers.BigNumber for tokenID, so I changed its type to that.
     async buyNFT(address: string, tokenId: ethers.BigNumber): Promise<boolean> {
         alert("bought!")
         return true

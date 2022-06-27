@@ -1,18 +1,18 @@
-import React, { useState, forwardRef, useImperativeHandle, useRef } from "react";
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 import styles from "./Modal.module.scss";
 import { RiCloseLine } from "react-icons/ri";
-import StubBackendData from "../../../api/stubBackendData";
 import { useStore } from "../../../userStore";
+import { GetInstance } from "../../../api/BackendIf";
 
 
-  interface ModalProps {
+interface ModalProps {
       setIsOpen: any
 
   }
-  
+
   const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
-    
+
     let initialFieldNames = ["color", "size", "material"]
     let initialFieldValues = ["", "", ""]
     const [fieldNames, setFieldNames] = useState(initialFieldNames);
@@ -167,7 +167,7 @@ import { useStore } from "../../../userStore";
     async function handleCreation() {
         await sendFileToIPFS();
         await sendJSONToIPFS();
-        const backend = new StubBackendData();
+      const backend = GetInstance();
         const response = await backend.addCollectionContract(
             name,
             user.addrString,

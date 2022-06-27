@@ -21,5 +21,15 @@ module.exports = {
       { ignores: ["modules"] },
     ],
     camelcase: ["off", { ignoreImports: true }],
+    "prettier/prettier": ["error", { semi: false }],
+    semi: ["error", "never"],
   },
-};
+  overrides: [
+    {
+      files: ["*.test.ts"],
+      rules: {
+        "no-unused-expressions": "off",
+      },
+    },
+  ],
+}

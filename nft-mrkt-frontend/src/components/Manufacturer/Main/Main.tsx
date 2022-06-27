@@ -1,31 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import "./main.scss";
-import StubBackendData from "../../../api/stubBackendData";
 import TwitterLogo from "../../Assets/TwitterLogo.png";
-import { tokenData } from '../../../api/BackendIf';
+import { GetInstance, tokenData } from "../../../api/BackendIf";
 import LineInfo from "./LineInfo/LineInfo";
-
 
 interface MainProps {
     chosenLine: string
 }
 
 const Main: React.FC<MainProps> = ({ chosenLine }) => {
-  
+
   useEffect(() => {
     async function populate() {
-        if(chosenLine) {
-            const backend = new StubBackendData();
-            const response = await backend.getCollectionData(chosenLine);
-            const item = response[0];
-            setName(item.productName);
-            setMakerAddr(item.makerAddress);
-            setProductUri(item.productUri);
-            setPrice(item.price);
-            setQuantity(item.numberProduced);
-            setLoaded(true);
-            setTokens(item.tokens)
-        }
+      if (chosenLine) {
+        const backend = GetInstance();
+        const response = await backend.getCollectionData(chosenLine);
+        const item = response[0];
+        setName(item.productName);
+        setMakerAddr(item.makerAddress);
+        setProductUri(item.productUri);
+        setPrice(item.price);
+        setQuantity(item.numberProduced);
+        setLoaded(true);
+        setTokens(item.tokens);
+      }
     }
     populate();
   }, [chosenLine]);
@@ -37,11 +35,6 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
   const [quantity, setQuantity] =useState<number>();
   const [loaded, setLoaded] = useState<boolean>();
   const [tokens, setTokens] = useState<tokenData[]>();
-
-
-    function log(val: any) {
-      console.log(typeof val)
-  }
 
   if (loaded === true) {
     return (
@@ -75,7 +68,7 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
 
           </div>
           <div className='items'>
-            
+
           </div>
       </div>
       )
