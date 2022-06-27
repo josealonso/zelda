@@ -1,6 +1,9 @@
 import {ethers} from 'ethers'
+import StubBackendData from "./stubBackendData";
+import BackendAPIImpl from "./BackendImpl";
 
 export type NFTData = {
+    productName: string
     address: string
     metadata: string
     tokenId: ethers.BigNumber
@@ -44,17 +47,17 @@ export type CreateManufacturerResponse = {
 }
 export type CollectionData = {
     productName: string
-    makerAddress: string 
-    productUri:string 
+    makerAddress: string
+    productUri:string
     price: number
     numberProduced: number
     tokens: tokenData[] // This will need to be an array of objects? Metadat of each token needs to come from somewhere. Should we have a `tokenObj` type?
 }
 
-export interface BackendData {
+export interface BackendAPI {
     getUserNFTs(ownerAddress: string): Promise<NFTData[]>
 
-    getNFTsForSale(marketPlaceContractAddress: string): Promise<NFTData[]>
+    getNFTsForSale(): Promise<NFTData[]>
 
     getCollectionData(manuContractAddress: string): Promise<CollectionData[]>
 
@@ -81,4 +84,13 @@ export interface BackendData {
     changePrice(contractAddress: string, newPrice: Number): Promise<boolean>
 }
 
-
+export function GetInstance(): BackendAPI {
+    if (process.env.REACT_APP_DATA_SOURCE && process.env.REACT_APP_DATA_SOURCE === "static") {
+        console.log("Using static data source")
+        return new StubBackendData()
+    }
+    if (process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS) {
+        return new BackendAPIImpl(process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS)
+    }
+    throw new Error("cannot find REACT_APP_MARKETPLACE_CONTRACT_ADDRESS in env file")
+}

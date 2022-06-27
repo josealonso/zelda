@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import "./manufacturer.scss";
 import { useStore } from "../../userStore";
-import StubBackendData from '../../api/stubBackendData';
-import { ManufacturerData } from '../../api/BackendIf';
+import { GetInstance, ManufacturerData } from "../../api/BackendIf";
 import EtherscanLogoDark from "../Assets/EtherscanLogoDark.png";
 import Modal from "./Modal/Modal";
 import Main from './Main/Main';
-
-// import { useOutletContext } from "react-router-dom";
-
 
 const Manufacturer: React.FC = () => {
 
@@ -22,7 +18,7 @@ const Manufacturer: React.FC = () => {
 
   useEffect(() => {
     async function getInfo(_makerAddress: string) {
-      let backend = new StubBackendData();
+      const backend = GetInstance();
       const response = await backend.getManufacturerData(makerAddress);
       setMakerInfo(response);
     }

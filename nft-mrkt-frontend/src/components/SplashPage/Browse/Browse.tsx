@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import "./browse.scss";
-import StubBackendData from '../../../api/stubBackendData';
-import { NFTData } from '../../../api/BackendIf';
+import { GetInstance, NFTData } from "../../../api/BackendIf";
 import ItemCard from './ItemCard';
 
 const Browse: React.FC = () => {
 
   let [nfts, setNfts] = useState<NFTData[]>([]);
   const [loadingState, setLoadingState] = useState('not-loaded')
-  
-  async function getNFT(str: string) {
-    let backend = new StubBackendData();
-    return await backend.getNFTsForSale(str);
+
+  async function getNFT() {
+    let backend = GetInstance();
+    return await backend.getNFTsForSale();
   }
 
   useEffect(() => {
@@ -19,35 +18,15 @@ const Browse: React.FC = () => {
   }, [])
 
   async function loadNfts() {
-    let data: NFTData[] = await getNFT("string-test");
-
-    const items = await Promise.all(data.map(async i => {
-      const address = i.address
-      const metadata = i.metadata
-      const tokenId = i.tokenId
-      const ownerAddress = i.ownerAddress
-      const image = i.image
-      const price = i.price
-      
-      let item: NFTData = {
-        address,
-        metadata,
-        tokenId,
-        ownerAddress,
-        image,
-        price,
-      }
-      return item
-    }))
-
-    setNfts(items);
+    let data: NFTData[] = await getNFT();
+    setNfts(data);
     setLoadingState('loaded')
   }
 
   function log(): void {
     console.log(nfts)
   }
-  
+
   return (
     <div className='browseWrapper'>
       <div className='browseBox'>

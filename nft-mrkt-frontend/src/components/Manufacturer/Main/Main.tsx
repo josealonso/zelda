@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import "./main.scss";
-import StubBackendData from "../../../api/stubBackendData";
 import TwitterLogo from "../../Assets/TwitterLogo.png";
-import { tokenData } from '../../../api/BackendIf';
+import { GetInstance, tokenData } from "../../../api/BackendIf";
 import LineInfo from "./LineInfo/LineInfo";
 import { ethers } from 'ethers';
 
@@ -24,7 +23,7 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
   useEffect(() => {
     async function populate() {
         if(chosenLine) {
-            const backend = new StubBackendData();
+            const backend = GetInstance();
             const response = await backend.getCollectionData(chosenLine);
             const item = response[0];
             setName(item.productName);
@@ -72,7 +71,7 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
 
           </div>
           <div className='items'>
-            
+
           </div>
       </div>
       )

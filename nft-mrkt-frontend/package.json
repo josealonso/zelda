@@ -30,7 +30,8 @@
     "zustand": "^4.0.0-rc.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "REACT_APP_DATA_SOURCE=static react-scripts start",
+    "start2": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -52,5 +53,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "ethers": "^5.6.9",
+    "hardhat-ethers": "^1.0.1"
   }
 }
