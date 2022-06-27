@@ -13,7 +13,7 @@ export type QRNFTType  = {
 // Call  typeToEmbeddedString 1st
 
 export function typeToEmbeddedString(qrNFTType: QRNFTType): string {
-    return `${NETWORK_STRING}:${qrNFTType.network} ${ADDRESS_STRING}:${qrNFTType.address} ${TOKENID_STRING}:${qrNFTType.tokenId}`
+    return `${NETWORK_STRING}:${qrNFTType.network} ${ADDRESS_STRING}:${qrNFTType.address} ${TOKENID_STRING}:${qrNFTType.tokenId.toString()}`
 }
 
 // With that return call this:
@@ -23,23 +23,23 @@ export function stringToType(qrString: string): QRNFTType {
         throw new Error(`cannot parse string: ${qrString}: too many spaces in string`)
     }
     let network = split(NETWORK_STRING, splitted[0])
-    let address = split(ADDRESS_STRING, splitted[0])
-    let tokenId = split(TOKENID_STRING, splitted[0])
+    let address = split(ADDRESS_STRING, splitted[1])
+    let tokenId = split(TOKENID_STRING, splitted[2])
     let tokenIDBigInt = ethers.BigNumber.from(tokenId)
     if (tokenIDBigInt.lt(0)) {
         throw new Error("token ID needs to be positive")
     }
     return {
         network: network,
-        address:address,
+        address: address,
         tokenId: tokenIDBigInt
     }
 }
 
 function split(key: string, element: string): string {
-    let splitted = element.split(" ");
+    let splitted = element.split(":");
     if (splitted.length > 2 || splitted[0] !== key) {
-        throw new Error(`cannot parse string: ${element}: can't read using key ${key}`)
+        throw new Error(`cannot parse string: ${element} - can't read using key ${key}`)
     }
-    return element[1]
+    return splitted[1]
 }
