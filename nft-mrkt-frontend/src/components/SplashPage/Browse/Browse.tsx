@@ -58,7 +58,7 @@ const Browse: React.FC = () => {
         <div className='itemCards'>
           {
             nfts.map(i => (
-              <ItemCard key={i.address} address={i.ownerAddress} _price={i.price} date={i.metadata}/>
+              <ItemCard key={i.address} ownerAddress={i.ownerAddress} contractAddress={i.address} tokenId={i.tokenId} _price={i.price} />
             ))
           }
           {/* <ItemCard owner={"owwwner"} price={"100"} date={'12'}/> */}

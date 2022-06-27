@@ -65,7 +65,7 @@ export interface BackendData {
      */
     getSoldNFTData(manufacturerAddress: string): Promise<SoldNFTData[]>
 
-    buyNFT(address:string): Promise<boolean>
+    buyNFT(address: string, tokenId: ethers.BigNumber): Promise<boolean>
 
 
     addCollectionContract(

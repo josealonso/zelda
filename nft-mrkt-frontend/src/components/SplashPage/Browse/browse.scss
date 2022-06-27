@@ -54,7 +54,7 @@
                 margin: 1%;
                 height: 30%;
                 width: 30%;
-                background-color: aquamarine;
+                background-color: rgb(207, 191, 41);
 
                 img{
                     height: 75%;
@@ -62,9 +62,11 @@
                 }
                 .data{
                     display: flex;
+                    width: 100%;
                     flex-direction: column;
                     justify-content: space-between;
                     margin: 10px 10px;
+                    overflow: auto;
 
                     .title{
                         font-size: 1.8vw;
@@ -75,6 +77,11 @@
                         padding-left: 20px;
                         font-size: 1.6vw;
                         font-weight: 500;
+                    }
+                    .purchase{
+                        width: 100%;
+                        border: none;
+                        border-radius: 10px;
                     }
                 }
             }
