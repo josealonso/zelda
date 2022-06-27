@@ -40,7 +40,11 @@ const Manufacturer: React.FC = () => {
         <div className='productLines'>
           { makerInfo?.addresses.map((i) => (
               // <div key={i} className='line x' data-address={i} onClick={(e) => testSetter(e.currentTarget.dataset.address)}>{i}</div>
-              <div key={i} className='line x' data-address={i} onClick={(e) => setChosenLine(e.currentTarget.dataset.address?.toString())}>{i}</div>
+              <div key={i} className='line x'
+                   data-address={i}
+                   onClick={(e) =>
+                     setChosenLine(e.currentTarget.dataset.address?.toString())}
+              >{i}</div>
             ))
           }
           <button className='addLine'  onClick={() => setIsOpen(true)}>Add line + </button>

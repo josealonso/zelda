@@ -3,14 +3,13 @@ import "./main.scss";
 import TwitterLogo from "../../Assets/TwitterLogo.png";
 import { GetInstance, tokenData } from "../../../api/BackendIf";
 import LineInfo from "./LineInfo/LineInfo";
-import { ethers } from 'ethers';
 
 interface MainProps {
     chosenLine: string
 }
 
 const Main: React.FC<MainProps> = ({ chosenLine }) => {
-  
+
   const [name, setName] = useState<string>();
   const [makerAddr, setMakerAddr] = useState<string>();
   const [productUri, setProductUri] = useState<string>();
@@ -23,16 +22,18 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
   useEffect(() => {
     async function populate() {
         if(chosenLine) {
-            const backend = GetInstance();
-            const response = await backend.getCollectionData(chosenLine);
+          const backend = GetInstance();
+          const response = await backend.getCollectionData(chosenLine);
+          if (response.length > 0) {
             const item = response[0];
             setName(item.productName);
             setMakerAddr(item.makerAddress);
             setProductUri(item.productUri);
             setPrice(item.price);
             setQuantity(item.numberProduced);
-            setTokens(item.tokens)
+            setTokens(item.tokens);
             setLoaded(true);
+          }
         }
     }
     populate();

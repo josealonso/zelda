@@ -2,6 +2,7 @@ import { BigNumber, ethers } from 'ethers';
 import React, { useEffect } from 'react';
 import GitHubLogo from "../../Assets/GitHubLogo.png";
 import stubBackendData from "../../../api/stubBackendData";
+import { GetInstance } from "../../../api/BackendIf";
 
 interface Props {
   ownerAddress: string
@@ -12,11 +13,11 @@ interface Props {
 }
 
 const ItemCard: React.FC<Props> = ({ownerAddress, contractAddress, tokenId, image, _price}) => {
-  
+
   const price = _price.toNumber();
-  
+
   async function purchase(_address: string, _token: ethers.BigNumber) {
-    const backend = new stubBackendData();
+    const backend = GetInstance();
     const response = backend.buyNFT(_address, _token)
     console.log(response);
   }
