@@ -4,26 +4,27 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract ExampleMarketplace is ReentrancyGuard {
+contract FinalMarketplace is ReentrancyGuard {
     address payable public immutable feeAccount;
     uint256 public immutable feePercent;
     uint256 public immutable collectionItems;
-    Item[] itemsForSale;
-    Item[] itemsOwnedByUser;
+    uint256 public collectionItemsArray;
+    MarketItem[] itemsForSale;
+    MarketItem[] itemsOwnedByUser;
     uint256 public itemCount;
 
-    struct Item {
+    struct MarketItem {
         uint256 itemId;
-        IERC721 nftCollection;
+        IERC721 nftCollection; // this parameter is a ERC721 contract (address), so all the ERC721 functions can be used here
         uint256 tokenId;
         uint256 price;
         address payable seller;
         bool sold;
     }
-    mapping(uint256 => Item) public items;
+    mapping(uint256 => MarketItem) public items;
 
-    event NewItem(
-        // "indexed" allows to use that field as a filter
+    event MarketItemAdded(
+        // "indexed" applied to a field allows to use that field as a filter
         uint256 itemId,
         address indexed nftCollection,
         uint256 tokenId,
@@ -31,7 +32,7 @@ contract ExampleMarketplace is ReentrancyGuard {
         address indexed seller
     );
 
-    event BoughtItem(
+    event MarketItemPurchase(
         uint256 itemId,
         address indexed nftCollection,
         uint256 tokenId,
@@ -47,7 +48,7 @@ contract ExampleMarketplace is ReentrancyGuard {
         collectionItems = _collectionItems;
     }
 
-    function makeItem(
+    function addMarketItem(
         IERC721 _nft,
         uint256 _tokenId,
         uint256 _price
@@ -58,7 +59,7 @@ contract ExampleMarketplace is ReentrancyGuard {
         itemCount++;
         // transfer nft. For this to work, the user has to call `approve()` first
         _nft.transferFrom(msg.sender, address(this), _tokenId);
-        items[itemCount] = Item(
+        items[itemCount] = MarketItem(
             itemCount,
             _nft,
             _tokenId,
@@ -66,12 +67,12 @@ contract ExampleMarketplace is ReentrancyGuard {
             payable(msg.sender),
             false
         );
-        emit NewItem(itemCount, address(_nft), _tokenId, _price, msg.sender);
+        emit MarketItemAdded(itemCount, address(_nft), _tokenId, _price, msg.sender);
     }
 
-    function buyItem(uint256 _itemId) external payable nonReentrant {
+    function buyMarketItem(uint256 _itemId) external payable nonReentrant {
         uint256 _totalPrice = getTotalPrice(_itemId);
-        Item storage item = items[_itemId];
+        MarketItem storage item = items[_itemId];
         require(_itemId > 0 && _itemId <= itemCount, "item doesn't exist");
         require(msg.value == _totalPrice, "not enough money");
         require(!item.sold, "item already sold");
@@ -85,7 +86,7 @@ contract ExampleMarketplace is ReentrancyGuard {
             msg.sender,
             item.tokenId
         );
-        emit BoughtItem(
+        emit MarketItemPurchase(
             _itemId,
             address(item.nftCollection),
             item.tokenId,
@@ -99,7 +100,7 @@ contract ExampleMarketplace is ReentrancyGuard {
         return (items[_itemId].price * (100 - feePercent / 100));
     }
 
-    function getItemsForSale() public returns (Item[] memory) {
+    function getItemsForSale() public returns (MarketItem[] memory) {
         for (uint256 i = 0; i < collectionItems; ) {
             if (!items[i].sold) {
                 itemsForSale.push(items[i]);
@@ -111,11 +112,12 @@ contract ExampleMarketplace is ReentrancyGuard {
         return itemsForSale;
     }
 
-    function getItemsOwnedByUser() public returns (Item[] memory) {
+    function getItemsOwnedByUser() public returns (MarketItem[] memory) {
         delete itemsOwnedByUser;
         for (uint256 i = 0; i < collectionItems; ) {
-            if (items[i].seller == msg.sender) {  // Not sure
-                itemsForSale.push(items[i]);
+            if (items[i].seller == msg.sender) {
+                // Not sure
+                itemsOwnedByUser.push(items[i]);
             }
             unchecked {
                 i++;
