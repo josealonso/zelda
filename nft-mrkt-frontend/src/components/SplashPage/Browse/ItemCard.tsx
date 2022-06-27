@@ -7,10 +7,11 @@ interface Props {
   ownerAddress: string
   contractAddress: string
   tokenId: ethers.BigNumber
+  image: string
   _price: ethers.BigNumber
 }
 
-const ItemCard: React.FC<Props> = ({ownerAddress, contractAddress, tokenId, _price}) => {
+const ItemCard: React.FC<Props> = ({ownerAddress, contractAddress, tokenId, image, _price}) => {
   
   const price = _price.toNumber();
   
@@ -22,7 +23,7 @@ const ItemCard: React.FC<Props> = ({ownerAddress, contractAddress, tokenId, _pri
 
   return (
     <div className='itemCardWrapper'>
-        <img src={GitHubLogo} alt="placeholder img"></img>
+        <img src={image} alt="placeholder img"></img>
         <div className='data'>
             <span className='owner title'>Owner:</span>
             <span className='info ownerinfo'>{ownerAddress}</span>
