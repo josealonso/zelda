@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import "./lineInfo.scss";
 // import { typeToEmbeddedString } from "../../../../models/QRCodeModel";
 // import { QRNFTType } from "../../../../models/QRCodeModel";
@@ -32,10 +33,10 @@ const LineInfo: React.FC<LineInfoProps>= ({ i }) => {
 
   return (
     <div key={i.name} className="token x">
-        <div className='wrapper'>
+        <Link to="/itemDetail" className='wrapper first'>
           <div className='title'>Title:&nbsp;&nbsp;</div>
           <div className='data'>{i.name}</div>
-        </div>
+        </Link>
         <div className='wrapper'>
           <div className='title'>Sold:&nbsp;&nbsp;</div>
           {i.sold === true ? <div className='data'>yes</div> : <div className='data'>no</div>}

@@ -58,6 +58,7 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
                 </div>
             </div>
             <div className='items'>
+                <div className='tempInstructions'>Please click Title to see more info</div>
                 { tokens?.map((i) => (
                     <LineInfo i={i} />
                 ))}

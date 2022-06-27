@@ -10,11 +10,12 @@ import Consumer from './components/Consumer/Consumer';
 import About from './components/About/About';
 import Browse from './components/SplashPage/Browse/Browse';
 // import { QRCodeReader } from "./components/QRCodeReader/QRCodeReader";
-import QRCodeReader from "./components/QRCode/QRCodeReader/QRCodeReader";
-import QRReadResult from "./components/QRCode/QRReadResult/QRReadResult";
-import QRGenerator from "./components/QRCode/QRGenerator/QRGenerator";
-import UploadImageForm from "./components/UploadImageForm/UploadImageForm";
-import UploadJSONDataForm from "./components/UploadJSONDataForm/UploadJSONDataForm";
+// import QRCodeReader from "./components/QRCode/QRCodeReader/QRCodeReader";
+// import QRReadResult from "./components/QRCode/QRReadResult/QRReadResult";
+// import QRGenerator from "./components/QRCode/QRGenerator/QRGenerator";
+// import UploadImageForm from "./components/UploadImageForm/UploadImageForm";
+// import UploadJSONDataForm from "./components/UploadJSONDataForm/UploadJSONDataForm";
+import ItemDetail from './components/ItemDetail/ItemDetail';
 
 
 const root = ReactDOM.createRoot(
@@ -32,11 +33,12 @@ root.render(
               {/* <Route path="browse" element={<Browse />} /> */}
               <Route path="about" element={<About />} />
               <Route path="browse" element={<Browse />} />
-              <Route path="qr-code-reader" element={<QRCodeReader />} />
+              <Route path="itemDetail" element={<ItemDetail />} />
+              {/* <Route path="qr-code-reader" element={<QRCodeReader />} />
               <Route path="qr-read-result" element={<QRReadResult />} />
               <Route path="qr-generator" element={<QRGenerator />} />
               <Route path="file-upload" element={<UploadImageForm />} />
-              <Route path="json-upload" element={<UploadJSONDataForm />} />
+              <Route path="json-upload" element={<UploadJSONDataForm />} /> */}
             </Route>
           </Routes>
         </BrowserRouter>

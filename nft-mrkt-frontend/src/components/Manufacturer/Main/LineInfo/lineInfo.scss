@@ -3,9 +3,21 @@
     justify-content: flex-start;
     width: 95%;
     height: 15vh;
-    margin-left: 2%;
+    margin: 1% 0  0 2%;
     align-items: center;
-    border-bottom: 2px solid rgb(184, 123, 0);
+    background-color: rgb(252, 191, 116);
+    border-radius: 10px;
+
+    .first{
+        margin-left: 2%;
+        text-decoration: none;
+        color: black;
+        transition-duration: .3s;
+        
+    }
+    .first:hover{
+        transform: scale(1.1);
+    }
 
     .wrapper{
         display:flex;

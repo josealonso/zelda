@@ -1,0 +1,9 @@
+.itemDetailWrapper{
+    display: flex;
+    top: 60px;
+    position: relative;
+    height: calc(100vh - 120px);
+    width: 100vw;
+    justify-content: space-around;
+    align-items: center;
+}
