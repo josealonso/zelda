@@ -46,6 +46,12 @@
             margin-right: 8%;
         }
         .connectMMBtn{
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-around;
+            align-items: center;
+            width: 35%;
+            max-height: 52%;
             font-weight: 900;
             font-size: 1.2vw;
             padding: 2% 2%;
@@ -54,6 +60,10 @@
             color: rgb(219, 193, 160);
             margin-right: 3%;
             border: none;
+
+            img{
+                width: 20%;
+            }
         }
     }
 }
