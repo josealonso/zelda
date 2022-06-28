@@ -6,7 +6,7 @@
     border-radius: 10px;
     background-color: bisque;
     overflow: scroll;
-    
+
     .header{
         display: flex;
         flex-direction: column;
@@ -18,7 +18,7 @@
         align-items: center;
         border-radius: 10px 10px 0 0;
         // padding: 2% 0;
-        
+
         .top{
             display: flex;
             min-width: 100%;
@@ -29,14 +29,11 @@
             .headerWrapper{
                 display: flex;
                 flex-direction: column;
-                
                 .headerTitle{
-                    
                 }
                 .headerInfo{
                     font-size: 2.2vw;
                     font-weight: 900;
-    
                 }
             }
         }
