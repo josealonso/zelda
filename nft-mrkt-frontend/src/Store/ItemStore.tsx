@@ -35,7 +35,7 @@ export const itemStore = create<ItemState>((set) => ({
         ) => {
         set(() => ({
             item: {
-                contractAddress: _contractAddress, 
+                contractAddress: _contractAddress,
                 tokenId: _tokenId, 
                 forSale: _forSale, 
                 price: _price, 
