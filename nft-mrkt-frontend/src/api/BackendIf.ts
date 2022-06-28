@@ -90,6 +90,12 @@ export function GetInstance(): BackendAPI {
         console.log("Using static data source")
         return new StubBackendData()
     }
+    if (process.env.REACT_APP_DATA_SOURCE && process.env.REACT_APP_DATA_SOURCE === "mumbai") {
+        if (process.env.REACT_APP_MUMBAI_MARKETPLACE_CONTRACT_ADDRESS) {
+            return new BackendAPIImpl(process.env.REACT_APP_MUMBAI_MARKETPLACE_CONTRACT_ADDRESS)
+        }
+        throw new Error("cannot get mumbai market place contract address")
+    }
     if (process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS) {
         return new BackendAPIImpl(process.env.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS)
     }

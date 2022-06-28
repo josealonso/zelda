@@ -8,23 +8,27 @@ import * as fs from "fs"
 import * as envfile from "envfile"
 
 async function main() {
-  console.log(process.env.HARDHAT_NETWORK)
-  // const StubNFTMarketplaceImpl = await ethers.getContractFactory(
-  //   "StubNFTMarketplaceImpl"
-  // )
-  // const stubNFTMarketplaceImpl = await StubNFTMarketplaceImpl.deploy({})
-  //
-  // await stubNFTMarketplaceImpl.deployed()
-  //
-  // console.log(
-  //   "StubNFTMarketplaceImpl deployed to:",
-  //   stubNFTMarketplaceImpl.address
-  // )
-  // const envPath = "../nft-mrkt-frontend/.env"
-  // const parsedFile = envfile.parse(fs.readFileSync(envPath, "utf8"))
-  // parsedFile.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS =
-  //   stubNFTMarketplaceImpl.address
-  // fs.writeFileSync(envPath, envfile.stringify(parsedFile))
+  const StubNFTMarketplaceImpl = await ethers.getContractFactory(
+    "StubNFTMarketplaceImpl"
+  )
+  const stubNFTMarketplaceImpl = await StubNFTMarketplaceImpl.deploy({})
+
+  await stubNFTMarketplaceImpl.deployed()
+
+  console.log(
+    "StubNFTMarketplaceImpl deployed to:",
+    stubNFTMarketplaceImpl.address
+  )
+  const envPath = "../nft-mrkt-frontend/.env"
+  const parsedFile = envfile.parse(fs.readFileSync(envPath, "utf8"))
+  if (process.env.HARDHAT_NETWORK === "mumbai") {
+    parsedFile.REACT_APP_MUMBAI_MARKETPLACE_CONTRACT_ADDRESS =
+      stubNFTMarketplaceImpl.address
+  } else if (process.env.HARDHAT_NETWORK === "localhost") {
+    parsedFile.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS =
+      stubNFTMarketplaceImpl.address
+  }
+  fs.writeFileSync(envPath, envfile.stringify(parsedFile))
 }
 
 // We recommend this pattern to be able to use async/await everywhere
