@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import "./manufacturer.scss";
+import "./maker.scss";
 import { userStore } from "../../Store/userStore";
-import { GetInstance, ManufacturerData } from "../../api/BackendIf";
+import { GetInstance, MakerData } from "../../api/BackendIf";
 import Modal from "./Modal/Modal";
 import Main from './Main/Main';
 import { MakeDispAddr } from "../../models/Address";
 
-const Manufacturer: React.FC = () => {
+const Maker: React.FC = () => {
 
   const { user } = userStore();
   const makerAddress: string = user.addrString;
 
-  const [makerInfo, setMakerInfo] = useState<ManufacturerData>();
+  const [makerInfo, setMakerInfo] = useState<MakerData>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [logo, setLogo] = useState<string | undefined>("");
   const [chosenLine, setChosenLine] = useState<any>(""); // Running into type problem here. IDE complains that it can be undefined
@@ -19,7 +19,7 @@ const Manufacturer: React.FC = () => {
   useEffect(() => {
     async function getInfo(_makerAddress: string) {
       const backend = GetInstance();
-      const response = await backend.getManufacturerData(makerAddress);
+      const response = await backend.getMakerData(makerAddress);
       setMakerInfo(response);
     }
     getInfo(makerAddress);
@@ -27,13 +27,13 @@ const Manufacturer: React.FC = () => {
 
   useEffect(() => {
     async function setLogoUri() {
-      setLogo(makerInfo?.manufacturerLogoUri)
+      setLogo(makerInfo?.makerLogoUri)
     }
     setLogoUri();
   }, [makerInfo])
 
   return (
-    <div className='manufacturer'>
+    <div className='maker'>
       <div className='sidebar toplevel'>
         <h3 className='makerName'>{makerInfo?.name}</h3>
         <img src={logo} className='makerImg' alt="company logo"></img>
@@ -57,4 +57,4 @@ const Manufacturer: React.FC = () => {
   )
 }
 
-export default Manufacturer
+export default Maker

@@ -1,7 +1,7 @@
 import React from 'react';
 import "./itemDetail.scss";
-import "../Manufacturer/Main/main.scss";
-import Header from "../Manufacturer/Main/Header";
+import "../Maker/Main/main.scss";
+import Header from "../Maker/Main/Header";
 import { itemStore } from "../../Store/ItemStore";
 
 

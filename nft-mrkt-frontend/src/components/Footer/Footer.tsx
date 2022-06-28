@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
   return (
     <div className='footer' id="footer">
       <div className='left'>
-        <Link to="/manufacturer" className='text'> Manufacturers </Link>
+        <Link to="/maker" className='text'> Makers </Link>
         <Link to="/about" className='text about'> About </Link>
       </div>
       <div className='right'>

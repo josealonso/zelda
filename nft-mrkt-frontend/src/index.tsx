@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 import SplashPage from './components/SplashPage/SplashPage';
-import Manufacturer from './components/Manufacturer/Manufacturer';
+import Maker from './components/Maker/Maker';
 import Consumer from './components/Consumer/Consumer';
 import About from './components/About/About';
 import Browse from './components/SplashPage/Browse/Browse';
@@ -28,7 +28,7 @@ root.render(
               <Route path="/health" element={<div>Hey There!!! The App is Healthy</div>} />
               <Route path="/" element={<App />} >
               <Route index element={<SplashPage />} />
-              <Route path="manufacturer" element={<Manufacturer />} />
+              <Route path="maker" element={<Maker />} />
               <Route path="consumer" element={<Consumer />} />
               <Route path="about" element={<About />} />
               <Route path="browse" element={<Browse />} />

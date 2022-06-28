@@ -1,4 +1,4 @@
-import {BackendAPI, CollectionData, CreateManufacturerResponse, ManufacturerData, NFTData, SoldNFTData} from "./BackendIf";
+import {BackendAPI, CollectionData, CreateMakerResponse, MakerData, NFTData, SoldNFTData} from "./BackendIf";
 import {BigNumber, ethers} from "ethers";
 
 export default class StubBackendData implements BackendAPI {
@@ -6,7 +6,7 @@ export default class StubBackendData implements BackendAPI {
     // I changed this from an array param to a single string. We will need to query
     // with contract address and then return the info below. I couldn't get it to return correctly // not as an array tho.
     // Thats fine, I'll just access the 0 index for now
-    async getCollectionData(manuContractAddress: string): Promise<CollectionData[]> {
+    async getCollectionData(makerContractAddress: string): Promise<CollectionData[]> {
         return [
             {   
                 // NETWORK: POLYGON
@@ -56,21 +56,21 @@ export default class StubBackendData implements BackendAPI {
         ];
     }
 
-    // Added field for manufacturer logo 6/27/22
-    async getManufacturerData(manufacturerAddress: string): Promise<ManufacturerData> {
+    // Added field for maker logo 6/27/22
+    async getMakerData(makerAddress: string): Promise<MakerData> {
         return {
             addresses: ["0x123...345", "0x234...567"],
             name: "Wonka Industries",
-            manufacturerLogoUri: "https://gateway.pinata.cloud/ipfs/Qmbf22NGZUcgocx9K2pvM8zyPP1HreFKo72LYa1beRaui9" // Weirder pic of my dog
+            makerLogoUri: "https://gateway.pinata.cloud/ipfs/Qmbf22NGZUcgocx9K2pvM8zyPP1HreFKo72LYa1beRaui9" // Weirder pic of my dog
             // Added Name so that I can populate the storefront page
         }
     }
-    async getSoldNFTData(manufacturerAddress: string): Promise<SoldNFTData[]> {
+    async getSoldNFTData(makerAddress: string): Promise<SoldNFTData[]> {
         return [{
             contractAddress: "string",
             metadata: "string",
             tokenID: ethers.BigNumber.from(1),
-            manufacturerAddress: "testAddress",
+            makerAddress: "testAddress",
             salePrice: ethers.BigNumber.from(1),
             saleDate: "2022-01-01",
             currentOwnerAddress: "test_address"
@@ -83,7 +83,7 @@ export default class StubBackendData implements BackendAPI {
         productMetadataUri: string,
         price: Number,
         numberProduced: Number,
-    ): Promise<CreateManufacturerResponse> {
+    ): Promise<CreateMakerResponse> {
         return {
             contractAddress: "test_address"
         }

@@ -65,9 +65,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FinalMarketplaceV2__factory>;
     getContractFactory(
-      name: "Manufacturer",
+      name: "Maker",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Manufacturer__factory>;
+    ): Promise<Contracts.Maker__factory>;
     getContractFactory(
       name: "OzNFT",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -155,10 +155,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.FinalMarketplaceV2>;
     getContractAt(
-      name: "Manufacturer",
+      name: "Maker",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Manufacturer>;
+    ): Promise<Contracts.Maker>;
     getContractAt(
       name: "OzNFT",
       address: string,

@@ -14,7 +14,7 @@ export type NFTData = {
     token?: tokenData[]
 }
 
-// Created by Joey 6/23/22 for displaying token info in manufacturer>main>items component
+// Created by Joey 6/23/22 for displaying token info in maker>main>items component
 export type tokenData = {
     tokenId: ethers.BigNumber
     name: string
@@ -31,19 +31,19 @@ export type SoldNFTData = {
     contractAddress: string
     metadata: string
     tokenID: ethers.BigNumber
-    manufacturerAddress: string
+    makerAddress: string
     salePrice: ethers.BigNumber
     saleDate: string
     currentOwnerAddress: string
 }
 
-export type ManufacturerData = {
+export type MakerData = {
     addresses: string[]
     name: string
-    manufacturerLogoUri: string
+    makerLogoUri: string
 }
 
-export type CreateManufacturerResponse = {
+export type CreateMakerResponse = {
     contractAddress: string
 }
 export type CollectionData = {
@@ -62,25 +62,25 @@ export interface BackendAPI {
 
     getCollectionData(nftContractAddress: string): Promise<CollectionData[]>
 
-    getManufacturerData(manufacturerAddress: string): Promise<ManufacturerData>
+    getMakerData(makerAddress: string): Promise<MakerData>
 
     /**
      * Returns all sold NFTs
-     * @param manufacturerAddress
+     * @param makerAddress
      */
-    getSoldNFTData(manufacturerAddress: string): Promise<SoldNFTData[]>
+    getSoldNFTData(makerAddress: string): Promise<SoldNFTData[]>
 
     buyNFT(address: string, tokenId: ethers.BigNumber): Promise<boolean>
 
 
     addCollectionContract(
         productName: string, //Product Line
-        makerAddress: string, // Manufacturer address
+        makerAddress: string, // Maker address
         productImgUri:string, // Product Image
         productMetadataUri: string,
         price: Number,  // Price
         numberProduced: Number, // Max TokenId
-    ): Promise<CreateManufacturerResponse>
+    ): Promise<CreateMakerResponse>
 
     changePrice(contractAddress: string, newPrice: Number): Promise<boolean>
 }

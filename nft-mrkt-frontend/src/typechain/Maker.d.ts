@@ -19,7 +19,7 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
-interface ManufacturerInterface extends ethers.utils.Interface {
+interface MakerInterface extends ethers.utils.Interface {
   functions: {
     "addAdmin(address)": FunctionFragment;
     "addContract(address)": FunctionFragment;
@@ -61,7 +61,7 @@ interface ManufacturerInterface extends ethers.utils.Interface {
   events: {};
 }
 
-export class Manufacturer extends BaseContract {
+export class Maker extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -102,7 +102,7 @@ export class Manufacturer extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: ManufacturerInterface;
+  interface: MakerInterface;
 
   functions: {
     addAdmin(

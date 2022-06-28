@@ -3,8 +3,8 @@ import { BigNumber, ethers } from "ethers";
 import {
     BackendAPI,
     CollectionData,
-    CreateManufacturerResponse,
-    ManufacturerData,
+    CreateMakerResponse,
+    MakerData,
     NFTData,
     SoldNFTData,
     tokenData
@@ -88,7 +88,7 @@ export default class BackendAPIImpl implements BackendAPI {
         productMetadataUri: string,
         price: Number,
         numberProduced: Number
-    ): Promise<CreateManufacturerResponse> {
+    ): Promise<CreateMakerResponse> {
         if (productMetadataUri === "") {
             productMetadataUri = "test_product_uri"
         }
@@ -167,16 +167,16 @@ export default class BackendAPIImpl implements BackendAPI {
         throw new Error('Method not implemented.');
     }
 
-    async getManufacturerData(manufacturerAddress: string): Promise<ManufacturerData> {
+    async getMakerData(makerAddress: string): Promise<MakerData> {
         const prov = await this.providerFn()
         const mpContract = new ethers.Contract(this.mpContractAddress, MarketplaceContractArtifact.abi, prov) as StubNFTMarketplaceImpl
         const response = await mpContract.getAllCollectionsForSale()
         return {
-            addresses: response.filter(i => i.makerAddress === manufacturerAddress).map(i => {
+            addresses: response.filter(i => i.makerAddress === makerAddress).map(i => {
                 return i.nftContractAddress
             }),
             name:"something",
-            manufacturerLogoUri: "https://gateway.pinata.cloud/ipfs/Qmbf22NGZUcgocx9K2pvM8zyPP1HreFKo72LYa1beRaui9",
+            makerLogoUri: "https://gateway.pinata.cloud/ipfs/Qmbf22NGZUcgocx9K2pvM8zyPP1HreFKo72LYa1beRaui9",
         }
     }
 
@@ -198,7 +198,7 @@ export default class BackendAPIImpl implements BackendAPI {
         })
     }
 
-    async getSoldNFTData(manufacturerAddress: string): Promise<SoldNFTData[]> {
+    async getSoldNFTData(makerAddress: string): Promise<SoldNFTData[]> {
         throw new Error('Method not implemented.');
     }
 }
