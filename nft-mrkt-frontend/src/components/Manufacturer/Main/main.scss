@@ -7,36 +7,51 @@
     background-color: bisque;
     overflow: scroll;
     
-
     .header{
         display: flex;
+        flex-direction: column;
         width: 100%;
         min-width: 100%;
-        height: 10%;
+        min-height: 15%;
         background-color: rgb(252, 191, 116);
         justify-content: space-around;
         align-items: center;
         border-radius: 10px 10px 0 0;
         // padding: 2% 0;
         
-        .headerWrapper{
+        .top{
             display: flex;
-            flex-direction: column;
-            
-            .headerTitle{
-                
-            }
-            .headerInfo{
-                font-size: 2.2vw;
-                font-weight: 900;
+            min-width: 100%;
+            padding-top: 3%;
+            justify-content: space-around;
+            align-items: center;
 
+            .headerWrapper{
+                display: flex;
+                flex-direction: column;
+                
+                .headerTitle{
+                    
+                }
+                .headerInfo{
+                    font-size: 2.2vw;
+                    font-weight: 900;
+    
+                }
             }
+        }
+        .bottom{
+            display: flex;
+            min-width: 100%;
+            justify-content: space-around;
+            align-items: center;
         }
     }
     .items{
         .tempInstructions{
             display: flex;
             justify-content: center;
+            overflow: scroll;
         }
     }
 }
