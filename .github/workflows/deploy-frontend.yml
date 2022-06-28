@@ -15,6 +15,7 @@ env:
   CONTAINER_NAME: frontend-container                     # set this to the name of the container in the
                                                          # containerDefinitions section of your task definition
   REACT_APP_COVALENT_API_KEY: ${{ secrets.REACT_APP_COVALENT_API_KEY }}
+  REACT_APP_MUMBAI_MARKETPLACE_CONTRACT_ADDRESS: $ {{secrets.REACT_APP_MUMBAI_MARKETPLACE_CONTRACT_ADDRESS}}
 
 jobs:
 
