@@ -3,25 +3,35 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "./NFTCollection.sol";
 
-contract FinalMarketplace is ReentrancyGuard {
+/*
+ * 1.- Deploy at least one NFTCollection contract.
+ * 2.- Execute the `addCollection` function once per collection.
+ * 3.- Execute the `chooseCollection` function once.  ---> NO
+ * 3.- The first collection of the array will be used.
+ */
+contract FinalMarketplaceV2 is ReentrancyGuard, Ownable {
     address payable public immutable feeAccount;
+    NFTCollection[] public nftCollectionsArray;
     uint256 public immutable feePercent;
     uint256 public collectionItems;
-    uint256[] public collectionItemsArray;
+
     MarketItem[] itemsForSale;
     MarketItem[] itemsOwnedByUser;
     uint256 public itemCount;
 
     struct MarketItem {
         uint256 itemId;
-        IERC721 nftCollection; // this parameter is a ERC721 contract (address), so all the ERC721 functions can be used here
+        IERC721 nftCollection; // this parameter is a ERC721 contract, so all the ERC721 functions can be used here
         uint256 tokenId;
         uint256 price;
         address payable seller;
         bool sold;
     }
     mapping(uint256 => MarketItem) public items;
+    mapping(NFTCollection => uint256) public collectionToItemId;
 
     event MarketItemAdded(
         // "indexed" applied to a field allows to use that field as a filter
@@ -41,17 +51,29 @@ contract FinalMarketplace is ReentrancyGuard {
         address indexed buyer
     );
 
-    constructor(uint256 _collectionItems, uint256 _feePercent) {
+    constructor(uint256 _feePercent) {
         // script ---> .....deploy(1)
         feeAccount = payable(msg.sender); // the account that receives the fees
         feePercent = _feePercent;
-        collectionItems = _collectionItems;
-        addCollection(collectionItems);
+        // The first collection of the array will be used.
+        uint256 collectionId = collectionToItemId[nftCollectionsArray[0]];
+        collectionItems = nftCollectionsArray[collectionId]
+            .getNumOfCollectionItems();
     }
 
-    function addCollection(uint256 _collectionItems) public {
-        // TODO ---> The collection identifier should be an address
-        collectionItemsArray.push(_collectionItems);
+    function addCollection(address _nftCollectionAddress) public {
+        NFTCollection nftCollection = NFTCollection(_nftCollectionAddress);
+        nftCollectionsArray.push(nftCollection);
+    }
+
+    // Not used
+    function chooseCollection(uint256 _collectionIndex) public {
+        uint256 collectionId = collectionToItemId[
+            nftCollectionsArray[_collectionIndex]
+        ];
+        collectionItems = nftCollectionsArray[collectionId]
+            .getNumOfCollectionItems();
+        // MarketItem storage currentMarketItem = items[collectionItems];
     }
 
     function addMarketItem(
@@ -106,6 +128,10 @@ contract FinalMarketplace is ReentrancyGuard {
             item.seller,
             msg.sender
         );
+    }
+
+    function withdraw() public onlyOwner {
+        // TODO
     }
 
     function getTotalPrice(uint256 _itemId) public view returns (uint256) {
