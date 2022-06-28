@@ -30,15 +30,9 @@ root.render(
               <Route index element={<SplashPage />} />
               <Route path="manufacturer" element={<Manufacturer />} />
               <Route path="consumer" element={<Consumer />} />
-              {/* <Route path="browse" element={<Browse />} /> */}
               <Route path="about" element={<About />} />
               <Route path="browse" element={<Browse />} />
               <Route path="itemDetail" element={<ItemDetail />} />
-              {/* <Route path="qr-code-reader" element={<QRCodeReader />} />
-              <Route path="qr-read-result" element={<QRReadResult />} />
-              <Route path="qr-generator" element={<QRGenerator />} />
-              <Route path="file-upload" element={<UploadImageForm />} />
-              <Route path="json-upload" element={<UploadJSONDataForm />} /> */}
             </Route>
           </Routes>
         </BrowserRouter>
