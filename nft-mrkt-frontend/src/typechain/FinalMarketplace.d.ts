@@ -22,11 +22,12 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface FinalMarketplaceInterface extends ethers.utils.Interface {
   functions: {
-    "addCollection(uint256)": FunctionFragment;
+    "addCollection(address)": FunctionFragment;
     "addMarketItem(address,uint256,uint256)": FunctionFragment;
     "buyMarketItem(uint256)": FunctionFragment;
+    "chooseCollection(uint256)": FunctionFragment;
     "collectionItems()": FunctionFragment;
-    "collectionItemsArray(uint256)": FunctionFragment;
+    "collectionToItemId(address)": FunctionFragment;
     "feeAccount()": FunctionFragment;
     "feePercent()": FunctionFragment;
     "getItemsForSale()": FunctionFragment;
@@ -34,11 +35,16 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
     "getTotalPrice(uint256)": FunctionFragment;
     "itemCount()": FunctionFragment;
     "items(uint256)": FunctionFragment;
+    "nftCollectionsArray(uint256)": FunctionFragment;
+    "owner()": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+    "withdraw()": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "addCollection",
-    values: [BigNumberish]
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "addMarketItem",
@@ -49,12 +55,16 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "chooseCollection",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "collectionItems",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "collectionItemsArray",
-    values: [BigNumberish]
+    functionFragment: "collectionToItemId",
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "feeAccount",
@@ -78,6 +88,20 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "itemCount", values?: undefined): string;
   encodeFunctionData(functionFragment: "items", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "nftCollectionsArray",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [string]
+  ): string;
+  encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "addCollection",
@@ -92,11 +116,15 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "chooseCollection",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "collectionItems",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "collectionItemsArray",
+    functionFragment: "collectionToItemId",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "feeAccount", data: BytesLike): Result;
@@ -115,14 +143,30 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "itemCount", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "items", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "nftCollectionsArray",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
     "MarketItemAdded(uint256,address,uint256,uint256,address)": EventFragment;
     "MarketItemPurchase(uint256,address,uint256,uint256,address,address)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "MarketItemAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MarketItemPurchase"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
 
 export type MarketItemAddedEvent = TypedEvent<
@@ -144,6 +188,10 @@ export type MarketItemPurchaseEvent = TypedEvent<
     seller: string;
     buyer: string;
   }
+>;
+
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string] & { previousOwner: string; newOwner: string }
 >;
 
 export class FinalMarketplace extends BaseContract {
@@ -191,7 +239,7 @@ export class FinalMarketplace extends BaseContract {
 
   functions: {
     addCollection(
-      _collectionItems: BigNumberish,
+      _nftCollectionAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -207,10 +255,15 @@ export class FinalMarketplace extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    chooseCollection(
+      _collectionIndex: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     collectionItems(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    collectionItemsArray(
-      arg0: BigNumberish,
+    collectionToItemId(
+      arg0: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -246,10 +299,30 @@ export class FinalMarketplace extends BaseContract {
         sold: boolean;
       }
     >;
+
+    nftCollectionsArray(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    withdraw(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   addCollection(
-    _collectionItems: BigNumberish,
+    _nftCollectionAddress: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -265,10 +338,15 @@ export class FinalMarketplace extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  chooseCollection(
+    _collectionIndex: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   collectionItems(overrides?: CallOverrides): Promise<BigNumber>;
 
-  collectionItemsArray(
-    arg0: BigNumberish,
+  collectionToItemId(
+    arg0: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -305,9 +383,29 @@ export class FinalMarketplace extends BaseContract {
     }
   >;
 
+  nftCollectionsArray(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  owner(overrides?: CallOverrides): Promise<string>;
+
+  renounceOwnership(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  transferOwnership(
+    newOwner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  withdraw(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     addCollection(
-      _collectionItems: BigNumberish,
+      _nftCollectionAddress: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -323,10 +421,15 @@ export class FinalMarketplace extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    chooseCollection(
+      _collectionIndex: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     collectionItems(overrides?: CallOverrides): Promise<BigNumber>;
 
-    collectionItemsArray(
-      arg0: BigNumberish,
+    collectionToItemId(
+      arg0: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -380,6 +483,22 @@ export class FinalMarketplace extends BaseContract {
         sold: boolean;
       }
     >;
+
+    nftCollectionsArray(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    owner(overrides?: CallOverrides): Promise<string>;
+
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    withdraw(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -454,11 +573,27 @@ export class FinalMarketplace extends BaseContract {
         buyer: string;
       }
     >;
+
+    "OwnershipTransferred(address,address)"(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
+    >;
+
+    OwnershipTransferred(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
+    >;
   };
 
   estimateGas: {
     addCollection(
-      _collectionItems: BigNumberish,
+      _nftCollectionAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -474,10 +609,15 @@ export class FinalMarketplace extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    chooseCollection(
+      _collectionIndex: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     collectionItems(overrides?: CallOverrides): Promise<BigNumber>;
 
-    collectionItemsArray(
-      arg0: BigNumberish,
+    collectionToItemId(
+      arg0: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -501,11 +641,31 @@ export class FinalMarketplace extends BaseContract {
     itemCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     items(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    nftCollectionsArray(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    withdraw(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     addCollection(
-      _collectionItems: BigNumberish,
+      _nftCollectionAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -521,10 +681,15 @@ export class FinalMarketplace extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    chooseCollection(
+      _collectionIndex: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     collectionItems(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    collectionItemsArray(
-      arg0: BigNumberish,
+    collectionToItemId(
+      arg0: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -550,6 +715,26 @@ export class FinalMarketplace extends BaseContract {
     items(
       arg0: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    nftCollectionsArray(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdraw(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }
