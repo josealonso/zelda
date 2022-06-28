@@ -16,7 +16,7 @@ buy a token from a collection, and see the current tokens they own.
 ### Prereqs
 
 - Node.js
-- hardhat
+- hardhat with Typescript support
 - npm install 
 - Add the hardhat network to your metamask:
   - RPC URL: http://127.0.0.1:8545
