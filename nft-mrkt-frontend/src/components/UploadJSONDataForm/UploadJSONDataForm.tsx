@@ -83,8 +83,6 @@ function UploadJSONDataForm() {
         }
 
         try {
-            console.log("various variables", process.env)
-
             const api_key = process.env.REACT_APP_PINATA_API_KEY
             const api_secret_key = process.env.REACT_APP_PINATA_API_SECRET_KEY
 
