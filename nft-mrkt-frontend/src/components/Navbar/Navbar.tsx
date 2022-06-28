@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import Metamask from "../Assets/Metamask.svg";
 
-import { useStore } from "../../userStore";
+import { useStore } from "../../Store/userStore";
 import { MakeDispAddr } from "../../models/Address";
 // import {JsonRpcSigner, Web3Provider} from "@ethersproject/providers";
 // import { GeneralObject } from '../interfaces';
