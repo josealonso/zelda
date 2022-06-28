@@ -57,10 +57,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.NFTCollection__factory>;
     getContractFactory(
-      name: "FinalMarketplace",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.FinalMarketplace__factory>;
-    getContractFactory(
       name: "FinalMarketplaceV2",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FinalMarketplaceV2__factory>;
@@ -144,11 +140,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.NFTCollection>;
-    getContractAt(
-      name: "FinalMarketplace",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.FinalMarketplace>;
     getContractAt(
       name: "FinalMarketplaceV2",
       address: string,
