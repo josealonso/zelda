@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./FinalCollection.sol";
+import "./NFTCollection.sol";
 
 /*
  * 1.- Deploy at least one NFTCollection contract.
@@ -12,7 +12,7 @@ import "./FinalCollection.sol";
  * 3.- Execute the `chooseCollection` function once.  ---> NO
  * 3.- The first collection of the array will be used.
  */
-contract FinalMarketplaceV2 is ReentrancyGuard, Ownable {
+contract FinalMarketplace is ReentrancyGuard, Ownable {
     address payable public immutable feeAccount;
     NFTCollection[] public nftCollectionsArray;
     uint256 public immutable feePercent;
@@ -30,12 +30,11 @@ contract FinalMarketplaceV2 is ReentrancyGuard, Ownable {
         address payable seller;
         bool sold;
     }
-
     mapping(uint256 => MarketItem) public items;
     mapping(NFTCollection => uint256) public collectionToItemId;
 
     event MarketItemAdded(
-    // "indexed" applied to a field allows to use that field as a filter
+        // "indexed" applied to a field allows to use that field as a filter
         uint256 itemId,
         address indexed nftCollection,
         uint256 tokenId,
@@ -53,14 +52,12 @@ contract FinalMarketplaceV2 is ReentrancyGuard, Ownable {
     );
 
     constructor(uint256 _feePercent) {
-        // script ---> .....deploy(1)
-        feeAccount = payable(msg.sender);
-        // the account that receives the fees
+        feeAccount = payable(msg.sender); // the account that receives the fees
         feePercent = _feePercent;
         // The first collection of the array will be used.
-        uint256 collectionId = collectionToItemId[nftCollectionsArray[0]];
-        collectionItems = nftCollectionsArray[collectionId]
-        .getNumOfCollectionItems();
+        // uint256 collectionId = collectionToItemId[nftCollectionsArray[0]];
+        // collectionItems = nftCollectionsArray[collectionId]
+        //     .getNumOfCollectionItems();
     }
 
     function addCollection(address _nftCollectionAddress) public {
@@ -71,10 +68,10 @@ contract FinalMarketplaceV2 is ReentrancyGuard, Ownable {
     // Not used
     function chooseCollection(uint256 _collectionIndex) public {
         uint256 collectionId = collectionToItemId[
-        nftCollectionsArray[_collectionIndex]
+            nftCollectionsArray[_collectionIndex]
         ];
         collectionItems = nftCollectionsArray[collectionId]
-        .getNumOfCollectionItems();
+            .getNumOfCollectionItems();
         // MarketItem storage currentMarketItem = items[collectionItems];
     }
 
@@ -87,7 +84,7 @@ contract FinalMarketplaceV2 is ReentrancyGuard, Ownable {
             revert("Price must be greater than zero");
         }
         itemCount++;
-        // transfer nft. For this to work, the user has to call `approve()` first
+        // transfer nft. For this to work, the user has to call `setApprovalForAll()` first
         _nft.transferFrom(msg.sender, address(this), _tokenId);
         items[itemCount] = MarketItem(
             itemCount,
@@ -141,27 +138,27 @@ contract FinalMarketplaceV2 is ReentrancyGuard, Ownable {
     }
 
     function getItemsForSale() public returns (MarketItem[] memory) {
-        for (uint256 i = 0; i < collectionItems;) {
+        for (uint256 i = 0; i < collectionItems; ) {
             if (!items[i].sold) {
                 itemsForSale.push(items[i]);
             }
-        unchecked {
-            i++;
-        }
+            unchecked {
+                i++;
+            }
         }
         return itemsForSale;
     }
 
     function getItemsOwnedByUser() public returns (MarketItem[] memory) {
         delete itemsOwnedByUser;
-        for (uint256 i = 0; i < collectionItems;) {
+        for (uint256 i = 0; i < collectionItems; ) {
             if (items[i].seller == msg.sender) {
                 // Not sure
                 itemsOwnedByUser.push(items[i]);
             }
-        unchecked {
-            i++;
-        }
+            unchecked {
+                i++;
+            }
         }
         return itemsOwnedByUser;
     }
