@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import "./lineInfo.scss";
-// import { typeToEmbeddedString } from "../../../../models/QRCodeModel";
-// import { QRNFTType } from "../../../../models/QRCodeModel";
 import { ethers } from 'ethers';
 import QRGenerator from "../../../QRCode/QRGenerator/QRGenerator";
 import { typeToEmbeddedString, stringToType, QRNFTType } from "../../../../models/QRCodeModel";
+import { itemStore } from "../../../../Store/ItemStore";
 
 interface LineInfoProps {
     i: {
@@ -15,9 +14,15 @@ interface LineInfoProps {
         forSale: boolean
         currentOwner: string
     }
+    chosenLine: string
+    productUri: string | undefined
 }
 
-const LineInfo: React.FC<LineInfoProps>= ({ i }) => {
+const LineInfo: React.FC<LineInfoProps>= ({ i, chosenLine, productUri }) => {
+
+  const {item, setItem} = itemStore();
+  const [QRData, setQRData] = useState<QRNFTType>();
+  const [viewCode, setViewCode] = useState<boolean>(false);
 
   useEffect(() => {
     const stringified = typeToEmbeddedString({
@@ -28,15 +33,14 @@ const LineInfo: React.FC<LineInfoProps>= ({ i }) => {
     setQRData(stringToType(stringified))
   }, [])
 
-  const [QRData, setQRData] = useState<QRNFTType>();
-  const [viewCode, setViewCode] = useState<boolean>(false);
+
 
   return (
     <div key={i.name} className="token x">
-        <Link to="/itemDetail" className='wrapper first'>
+        <Link onClick={() => setItem(chosenLine, i.tokenId.toString(), i.forSale, 12, i.name, productUri)} to="/ItemDetail" className='wrapper first'>
           <div className='title'>Title:&nbsp;&nbsp;</div>
           <div className='data'>{i.name}</div>
-        </Link>
+        </Link >
         <div className='wrapper'>
           <div className='title'>Sold:&nbsp;&nbsp;</div>
           {i.sold === true ? <div className='data'>yes</div> : <div className='data'>no</div>}

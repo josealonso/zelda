@@ -6,6 +6,7 @@
     border-radius: 10px;
     background-color: bisque;
     overflow: scroll;
+    
 
     .header{
         display: flex;
@@ -16,7 +17,7 @@
         justify-content: space-around;
         align-items: center;
         border-radius: 10px 10px 0 0;
-        padding: 2% 0;
+        // padding: 2% 0;
         
         .headerWrapper{
             display: flex;

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./main.scss";
-import TwitterLogo from "../../Assets/TwitterLogo.png";
 import { GetInstance, tokenData } from "../../../api/BackendIf";
 import LineInfo from "./LineInfo/LineInfo";
+import Header from "./Header";
 
 interface MainProps {
     chosenLine: string
@@ -17,7 +17,6 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
   const [quantity, setQuantity] =useState<number>();
   const [loaded, setLoaded] = useState<boolean>();
   const [tokens, setTokens] = useState<tokenData[]>();
-  const [QRData, setQRData] = useState<string>();
 
   useEffect(() => {
     async function populate() {
@@ -42,34 +41,20 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
   if (loaded === true) {
     return (
         <div className='mainWrapper'>
-            <div className='header'>
-                <img src={productUri} className='productImg' alt="product"></img>
-                <div className='headerWrapper'>
-                  <span className='headerTitle'>Address of line:</span>
-                  <span className='headerInfo'>{chosenLine}</span>
-                </div>
-                <div className='headerWrapper'>
-                  <span className='headerTitle'>Name of line:</span>
-                  <span className='headerInfo'>{name}</span>
-                </div>
-                <div className='headerWrapper'>
-                  <span className='headerTitle'>Price of Items</span>
-                  <span className='headerInfo'>{price}</span>
-                </div>
-            </div>
-            <div className='items'>
-                <div className='tempInstructions'>Please click Title to see more info</div>
-                { tokens?.map((i) => (
-                    <LineInfo i={i} />
-                ))}
-            </div>
+          <Header productUri={productUri} chosenLine={chosenLine} name={name} price={price} />
+          <div className='items'>
+              <div className='tempInstructions'>Please click Title to see more info</div>
+              { tokens?.map((i) => (
+                  <LineInfo i={i} chosenLine={chosenLine} productUri={productUri} />
+              ))}
+          </div>
         </div>
     )
   } else {
     return (
       <div className='mainWrapper'>
           <div className='header'>
-
+            Please select a product line to the left
           </div>
           <div className='items'>
 

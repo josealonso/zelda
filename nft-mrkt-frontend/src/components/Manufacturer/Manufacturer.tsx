@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "./manufacturer.scss";
-import { useStore } from "../../userStore";
+import { useStore } from "../../Store/userStore";
 import { GetInstance, ManufacturerData } from "../../api/BackendIf";
 import Modal from "./Modal/Modal";
 import Main from './Main/Main';
