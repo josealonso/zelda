@@ -29,3 +29,12 @@ main()
     console.error(error);
     process.exit(1);
   });
+
+/*
+* DEPLOY
+* `npx hardhat run scripts/deployCollection.ts --network mumbai`
+*
+* VERIFY
+*  `npx hardhat verify 0x5e3dF86A4C35885E1C6A1492970d6708CBAECaaf "Wood Tables" "WTB" 40 "Wood Tables" 0xFE2de2924c17C5A5E351E5fD13E2657836716BdD --network mumbai`
+*  (without commas)
+*/
