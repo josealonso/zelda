@@ -24,10 +24,17 @@ interface NFTCollectionInterface extends ethers.utils.Interface {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
+    "getCollectionAddress()": FunctionFragment;
+    "getMakerAddress()": FunctionFragment;
+    "getNumOfCollectionItems()": FunctionFragment;
+    "getProductName()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
+    "makerAddress()": FunctionFragment;
+    "maxNumOfItems()": FunctionFragment;
     "mint(string)": FunctionFragment;
     "name()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
+    "productName()": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
@@ -47,14 +54,42 @@ interface NFTCollectionInterface extends ethers.utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "getCollectionAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMakerAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getNumOfCollectionItems",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getProductName",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "makerAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "maxNumOfItems",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "mint", values: [string]): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "ownerOf",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "productName",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "safeTransferFrom",
@@ -89,12 +124,40 @@ interface NFTCollectionInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getCollectionAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMakerAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getNumOfCollectionItems",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getProductName",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "isApprovedForAll",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "makerAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "maxNumOfItems",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "productName",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "safeTransferFrom",
     data: BytesLike
@@ -203,11 +266,23 @@ export class NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    getCollectionAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    getMakerAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    getNumOfCollectionItems(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getProductName(overrides?: CallOverrides): Promise<[string]>;
+
     isApprovedForAll(
       owner: string,
       operator: string,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    makerAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    maxNumOfItems(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     mint(
       _tokenURI: string,
@@ -220,6 +295,8 @@ export class NFTCollection extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    productName(overrides?: CallOverrides): Promise<[string]>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -277,11 +354,23 @@ export class NFTCollection extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  getCollectionAddress(overrides?: CallOverrides): Promise<string>;
+
+  getMakerAddress(overrides?: CallOverrides): Promise<string>;
+
+  getNumOfCollectionItems(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getProductName(overrides?: CallOverrides): Promise<string>;
+
   isApprovedForAll(
     owner: string,
     operator: string,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  makerAddress(overrides?: CallOverrides): Promise<string>;
+
+  maxNumOfItems(overrides?: CallOverrides): Promise<BigNumber>;
 
   mint(
     _tokenURI: string,
@@ -291,6 +380,8 @@ export class NFTCollection extends BaseContract {
   name(overrides?: CallOverrides): Promise<string>;
 
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+  productName(overrides?: CallOverrides): Promise<string>;
 
   "safeTransferFrom(address,address,uint256)"(
     from: string,
@@ -345,17 +436,31 @@ export class NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    getCollectionAddress(overrides?: CallOverrides): Promise<string>;
+
+    getMakerAddress(overrides?: CallOverrides): Promise<string>;
+
+    getNumOfCollectionItems(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getProductName(overrides?: CallOverrides): Promise<string>;
+
     isApprovedForAll(
       owner: string,
       operator: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    makerAddress(overrides?: CallOverrides): Promise<string>;
+
+    maxNumOfItems(overrides?: CallOverrides): Promise<BigNumber>;
+
     mint(_tokenURI: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
     ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    productName(overrides?: CallOverrides): Promise<string>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -467,11 +572,23 @@ export class NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getCollectionAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getMakerAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getNumOfCollectionItems(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getProductName(overrides?: CallOverrides): Promise<BigNumber>;
+
     isApprovedForAll(
       owner: string,
       operator: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    makerAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    maxNumOfItems(overrides?: CallOverrides): Promise<BigNumber>;
 
     mint(
       _tokenURI: string,
@@ -484,6 +601,8 @@ export class NFTCollection extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    productName(overrides?: CallOverrides): Promise<BigNumber>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -545,11 +664,27 @@ export class NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getCollectionAddress(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getMakerAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getNumOfCollectionItems(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getProductName(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     isApprovedForAll(
       owner: string,
       operator: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    makerAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    maxNumOfItems(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     mint(
       _tokenURI: string,
@@ -562,6 +697,8 @@ export class NFTCollection extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    productName(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,

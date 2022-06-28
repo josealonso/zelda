@@ -102,7 +102,7 @@ export default class BackendAPIImpl implements BackendAPI {
         const makerContract = await cf.deploy("name", "symbol", numberProduced)
 
         const mpContract = new ethers.Contract(this.mpContractAddress, MarketplaceContractArtifact.abi, signer) as StubNFTMarketplaceImpl
-        await mpContract.createNftCollectionContract({
+        const tx = await mpContract.createNftCollectionContract({
             productName: productName,
             price: BigNumber.from(price),
             makerAddress: makerAddress,
@@ -111,6 +111,7 @@ export default class BackendAPIImpl implements BackendAPI {
             symbol: "SYM",
             nftContractAddress: makerContract.address
         })
+        await tx.wait()
         return {contractAddress: makerContract.address}
     }
 

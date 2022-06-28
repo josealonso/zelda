@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import "./manufacturer.scss";
 import { useStore } from "../../userStore";
 import { GetInstance, ManufacturerData } from "../../api/BackendIf";
-import EtherscanLogoDark from "../Assets/EtherscanLogoDark.png";
 import Modal from "./Modal/Modal";
 import Main from './Main/Main';
+import { MakeDispAddr } from "../../models/Address";
 
 const Manufacturer: React.FC = () => {
 
@@ -39,12 +39,11 @@ const Manufacturer: React.FC = () => {
         <img src={logo} className='makerImg' alt="company logo"></img>
         <div className='productLines'>
           { makerInfo?.addresses.map((i) => (
-              // <div key={i} className='line x' data-address={i} onClick={(e) => testSetter(e.currentTarget.dataset.address)}>{i}</div>
               <div key={i} className='line x'
                    data-address={i}
                    onClick={(e) =>
                      setChosenLine(e.currentTarget.dataset.address?.toString())}
-              >{i}</div>
+              >{MakeDispAddr(i)}</div>
             ))
           }
           <button className='addLine'  onClick={() => setIsOpen(true)}>Add line + </button>
@@ -59,5 +58,3 @@ const Manufacturer: React.FC = () => {
 }
 
 export default Manufacturer
-
-// key={generateKey(makerInfo?.addresses)}
