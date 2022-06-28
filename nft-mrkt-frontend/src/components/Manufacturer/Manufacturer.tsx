@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "./manufacturer.scss";
-import { useStore } from "../../Store/userStore";
+import { userStore } from "../../Store/userStore";
 import { GetInstance, ManufacturerData } from "../../api/BackendIf";
 import Modal from "./Modal/Modal";
 import Main from './Main/Main';
@@ -8,7 +8,7 @@ import { MakeDispAddr } from "../../models/Address";
 
 const Manufacturer: React.FC = () => {
 
-  const { user } = useStore();
+  const { user } = userStore();
   const makerAddress: string = user.addrString;
 
   const [makerInfo, setMakerInfo] = useState<ManufacturerData>();

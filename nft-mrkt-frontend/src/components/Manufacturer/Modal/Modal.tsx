@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import styles from "./Modal.module.scss";
 import { RiCloseLine } from "react-icons/ri";
-import { useStore } from "../../../Store/userStore";
+import { userStore } from "../../../Store/userStore";
 import { GetInstance } from "../../../api/BackendIf";
 import Confirm from "./Confirm";
 
@@ -16,7 +16,7 @@ const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
   const [fieldNames, setFieldNames] = useState(initialFieldNames);
   const [fieldValues, setFieldValues] = useState(initialFieldValues);
   const [ipfsHash, setIpfsHash] = useState<string>("");
-  const { user } = useStore();
+  const { user } = userStore();
   const [fileImg, setFileImg] = useState<File | null>(null);
   const [imgHash, setImgHash] = useState<string>("");
   const [name, setName] = useState<string>("");

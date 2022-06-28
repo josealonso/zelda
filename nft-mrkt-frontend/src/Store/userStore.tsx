@@ -7,7 +7,7 @@ interface UserState {
   setAddress: (addrString: string) => void
 }
 
-export const useStore = create<UserState>((set) => ({
+export const userStore = create<UserState>((set) => ({
   // initial state
   user: {network: "", addrString: ""},
   // methods for manipulating state

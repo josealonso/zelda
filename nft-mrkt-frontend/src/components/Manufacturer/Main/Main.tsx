@@ -45,7 +45,7 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
           <div className='items'>
               <div className='tempInstructions'>Please click Title to see more info</div>
               { tokens?.map((i) => (
-                  <LineInfo i={i} chosenLine={chosenLine} productUri={productUri} />
+                  <LineInfo key={i.tokenId.toString()} i={i} chosenLine={chosenLine} productUri={productUri} />
               ))}
           </div>
         </div>
