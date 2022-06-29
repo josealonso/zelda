@@ -22,6 +22,9 @@ buy a token from a collection, and see the current tokens they own.
   - RPC URL: http://127.0.0.1:8545
   - Chain ID: 31337
   - Currency Symbol: GO
+- Create an empty `.env` file in the /nft-mrkt-frontend folder: 
+  `touch ./nft-mrkt-frontend/.env`
+
 
 
 ### Commands
