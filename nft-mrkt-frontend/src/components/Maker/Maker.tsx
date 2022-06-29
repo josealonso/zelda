@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import "./maker.scss";
-import { userStore } from "../../Store/userStore";
 import { GetInstance, MakerData } from "../../api/BackendIf";
+import { MakeDispAddr } from "../../models/Address";
+import React, { useEffect, useState } from 'react';
+import { userStore } from "../../Store/userStore";
 import Modal from "./Modal/Modal";
 import Main from './Main/Main';
-import { MakeDispAddr } from "../../models/Address";
+import "./maker.scss";
 
 const Maker: React.FC = () => {
 
@@ -35,19 +35,23 @@ const Maker: React.FC = () => {
   return (
     <div className='maker'>
       <div className='sidebar toplevel'>
-        <h3 className='makerName'>{makerInfo?.name}</h3>
-        <img src={logo} className='makerImg' alt="company logo"></img>
-        <div className='productLines'>
-          { makerInfo?.addresses.map((i) => (
-              <div key={i} className='line x'
-                   data-address={i}
-                   onClick={(e) =>
-                     setChosenLine(e.currentTarget.dataset.address?.toString())}
-              >{MakeDispAddr(i)}</div>
-            ))
-          }
-          <button className='addLine'  onClick={() => setIsOpen(true)}>Add line + </button>
-          {isOpen && <Modal setIsOpen={setIsOpen} />}
+        <div className="sideTop">
+          <h3 className='makerName'>{makerInfo?.name}</h3>
+          <img src={logo} className='makerImg' alt="company logo"></img>
+        </div>
+        <div className="sideBottom">
+          <div className='productLines'>
+            { makerInfo?.addresses.map((i, index) => (
+                <div key={i} className='line x'
+                    data-address={i}
+                    onClick={(e) =>
+                      setChosenLine(e.currentTarget.dataset.address?.toString())}
+                >Product Line {(index + 1)}</div>
+              ))
+            }
+            <button className='addLine'  onClick={() => setIsOpen(true)}>Add line + </button>
+            {isOpen && <Modal setIsOpen={setIsOpen} />}
+          </div>
         </div>
       </div>
       <div className='main toplevel'>

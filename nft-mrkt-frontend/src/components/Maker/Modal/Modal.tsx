@@ -11,8 +11,10 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
+
   let initialFieldNames = ["color", "size", "material"];
   let initialFieldValues = ["", "", ""];
+
   const [fieldNames, setFieldNames] = useState(initialFieldNames);
   const [fieldValues, setFieldValues] = useState(initialFieldValues);
   const [ipfsHash, setIpfsHash] = useState<string>("");
@@ -186,28 +188,27 @@ const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
       <div className={styles.centered}>
         <div className={styles.modal}>
           <div className={styles.modalHeader}>
-            <h5 className={styles.heading}>Add a Product Line:</h5>
+            <h5 className={styles.heading}>Add Product Line</h5>
           </div>
-          <button className={styles.closeBtn} onClick={() => setIsOpen(false)}>
-            <RiCloseLine style={{ marginBottom: "-3px" }} />
-          </button>
           <div className={styles.modalContent}>
             <form className={styles.modalForm}>
-              <label> Name of Product:
-                <input placeholder="Golden Ticket" type="text" onChange={e => setName(e.target.value)}></input>
-              </label>
-              <label> Price:
-                <input placeholder="$99" type="number" onChange={e => setPrice(parseInt(e.target.value))}></input>
-                {/* I could only make this work with parseInt... any thoughts? */}
-              </label>
-              <label> Quantity:
-                <input placeholder="100" type="number" onChange={e => setQuantity(parseInt(e.target.value))}></input>
-                {/* I could only make this work with parseInt... any thoughts? */}
-              </label>
-              <label> Product Image:
-                <input type="file" onChange={(e) => setFileImg(e.target.files ? e.target.files[0] : null)} required />
-              </label>
-              <label> Product info:
+              <div className={styles.stndrdInputs}>
+                <label> Product Name:&nbsp;
+                  <input className={styles.rightAlign} placeholder="Golden Ticket" type="text" onChange={e => setName(e.target.value)}></input>
+                </label>
+                <label> Product Price:&nbsp;&nbsp;
+                  <input className={styles.rightAlign} placeholder="$99" type="number" onChange={e => setPrice(parseInt(e.target.value))}></input>
+                  {/* I could only make this work with parseInt... any thoughts? */}
+                </label>
+                <label> Quantity:&nbsp;
+                  <input className={styles.rightAlign} placeholder="100" type="number" onChange={e => setQuantity(parseInt(e.target.value))}></input>
+                  {/* I could only make this work with parseInt... any thoughts? */}
+                </label>
+                <label> Product Image:&nbsp;&nbsp;
+                  <input className={styles.rightAlign} type="file" onChange={(e) => setFileImg(e.target.files ? e.target.files[0] : null)} required />
+                </label>
+              </div>
+              <label> Other info:
                 <form onSubmit={submit}>
                   {fieldNames.map((key: string, i: number) => {
                     return (

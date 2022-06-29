@@ -22,6 +22,10 @@ buy a token from a collection, and see the current tokens they own.
   - RPC URL: http://127.0.0.1:8545
   - Chain ID: 31337
   - Currency Symbol: GO
+- Create an empty `.env` file in the /nft-mrkt-frontend folder: 
+  `touch ./nft-mrkt-frontend/.env`
+- To reproduce the full application you'll need API keys for Covalent and Pinata, and to append those keys to `.env` after step 4 below. 
+
 
 
 ### Commands

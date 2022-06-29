@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import "./browse.scss";
 import { GetInstance, NFTData } from "../../../api/BackendIf";
+import { useLocation, useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
 import ItemCard from './ItemCard';
 import "../splashPage.scss";
-import { useLocation, useParams } from "react-router-dom";
-
+import "./browse.scss";
 
 export const USER_ADDRESS_PARAM = "userAddress"
-
 
 const Browse: React.FC = () => {
 
   const params= useParams();
   const userAddress = params[USER_ADDRESS_PARAM]
-  const locData =useLocation()
+  const locData = useLocation()
   const isConsumerPage = locData.pathname.startsWith("/consumer")
-  let [nfts, setNfts] = useState<NFTData[]>([]);
+  const [nfts, setNfts] = useState<NFTData[]>([]);
   const [loadingState, setLoadingState] = useState("loading")
 
   async function getNFT() {
@@ -39,16 +37,12 @@ const Browse: React.FC = () => {
     }
   }
 
-  function log(): void {
-    console.log(nfts)
-  }
-
   return (
     <div className='splashcardwrapper'>
     <div className='browseWrapper'>
       <div className='browseBox'>
         <div className='navigation'>
-          <h3 className='browseTitle'>{ isConsumerPage ? "My Items" : "Browse Items"}</h3>
+          <h3 className='browseTitle'>{ isConsumerPage ? "My Items" : "Browse"}</h3>
         </div>
         <div className='itemCards'>
           {nfts.length > 0 ?
@@ -64,6 +58,3 @@ const Browse: React.FC = () => {
 }
 
 export default Browse
-
-
-// ownerAddress={i.ownerAddress} contractAddress={i.address} tokenId={i.tokenId} image={i.image} _price={i.price}

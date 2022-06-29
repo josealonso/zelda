@@ -1,10 +1,8 @@
-import { BigNumber, ethers } from 'ethers';
-import React, { useEffect } from 'react';
-import GitHubLogo from "../../Assets/GitHubLogo.png";
-import stubBackendData from "../../../api/stubBackendData";
+import { itemStore } from "../../../Store/ItemStore";
 import { GetInstance } from "../../../api/BackendIf";
 import { Link } from 'react-router-dom';
-import { itemStore } from "../../../Store/ItemStore";
+import { ethers } from 'ethers';
+import React from 'react';
 
 interface ItemCardProps {
   i: {
@@ -17,11 +15,6 @@ interface ItemCardProps {
     price: ethers.BigNumber
   },
   forSale: boolean
-  // ownerAddress: string
-  // contractAddress: string
-  // tokenId: ethers.BigNumber
-  // image: string
-  // _price: ethers.BigNumber
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
@@ -37,7 +30,11 @@ const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
 
   return (
     <div className='itemCardWrapper'>
+      <div className="left">
         <img src={i.image} alt="placeholder img"></img>
+        {forSale && <button className='purchase title' onClick={() => purchase(i.address, i.tokenId)}>Purchase</button>}
+      </div>
+      <div className="right">
         <div className='data'>
             <span className='name title'>Name:</span>
             <span className='info nameinfo'>{i.productName}</span>
@@ -45,10 +42,10 @@ const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
             <span className='info ownerinfo'>{i.ownerAddress}</span>
             <span className='price title'>Price:</span>
             <span className='info priceinfo'>{price} ether</span>
-          {forSale && <button className='purchase title' onClick={() => purchase(i.address, i.tokenId)}>Purchase</button>}
-            <Link onClick={() => setItem(i.address, i.tokenId.toString(), false, i.price.toNumber(), i.productName, i.image)} to="/itemDetail">View details</Link>
+            <Link className="detailLink" onClick={() => setItem(i.address, i.tokenId.toString(), false, i.price.toNumber(), i.productName, i.image)} to="/itemDetail">View details</Link>
             {/* NEED TO ADD: FOR SALE,  */}
         </div>
+      </div>
     </div>
   )
 }
