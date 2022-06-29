@@ -34,7 +34,7 @@
             flex-wrap: wrap;
             height: 90%;
             width: 100%;
-            background-color: #e9d690;
+            background-color: var(--ZELDABEIGE);
             border-radius: 0 0 10px 10px;
 
             .itemCardWrapper{
@@ -45,7 +45,7 @@
                 margin: 1%;
                 height: 35%;
                 width: 30%;
-                background-color: var(--ZELDABEIGE);
+                background-color: #e9d690;
                 border: 1px solid rgb(204, 180, 2);
 
                 .left{
