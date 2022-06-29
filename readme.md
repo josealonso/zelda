@@ -24,6 +24,7 @@ buy a token from a collection, and see the current tokens they own.
   - Currency Symbol: GO
 - Create an empty `.env` file in the /nft-mrkt-frontend folder: 
   `touch ./nft-mrkt-frontend/.env`
+- To reproduce the full application you'll need API keys for Covalent and Pinata, and to append those keys to `.env` after step 4 below. 
 
 
 
