@@ -42,7 +42,7 @@ const Browse: React.FC = () => {
     <div className='browseWrapper'>
       <div className='browseBox'>
         <div className='navigation'>
-          <h3 className='browseTitle'>{ isConsumerPage ? "My Items" : "Browse Items"}</h3>
+          <h3 className='browseTitle'>{ isConsumerPage ? "My Items" : "Browse"}</h3>
         </div>
         <div className='itemCards'>
           {nfts.length > 0 ?
