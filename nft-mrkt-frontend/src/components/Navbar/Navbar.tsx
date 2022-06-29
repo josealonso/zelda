@@ -5,6 +5,7 @@ import Metamask from "../Assets/Metamask.svg";
 import { Link } from "react-router-dom";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
+import LogoText from "../Assets/Logo-Text.png";
 import './navbar.scss'
 
 const { ethereum } = window as any;
@@ -28,7 +29,9 @@ const Navbar: React.FC = () => {
   return (
     <div className='navbar' id="navbar">
       <div className='left'>
-        <Link to="/" className='title'> Our3 Marketplace </Link>
+        <Link to="/" className='title'>
+          <img src={LogoText} alt="Zelda Logo"></img>
+        </Link>
       </div>
       <div className='right'>
         <Link to={"/consumer/" + user.addrString} className='consumerLink'> My Items </Link>
