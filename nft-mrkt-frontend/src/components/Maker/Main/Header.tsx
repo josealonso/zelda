@@ -26,9 +26,6 @@ const Header: React.FC<HeaderProps> = ({ productUri, chosenLine, name, price }) 
                 <span className='headerInfo'>{price}</span>
             </div>
         </div>
-        <div className='bottom'>
-            <div className='temp'>Click Title to see product details</div>
-        </div>
     </div>
   )
 }
