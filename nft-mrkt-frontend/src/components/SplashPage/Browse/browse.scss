@@ -45,8 +45,9 @@
                 margin: 1%;
                 height: 35%;
                 width: 30%;
-                background-color: #e2d4a0;
-                border: 2px solid rgb(204, 180, 2);
+                background-color: var(--ZELDABEIGE);
+                border: 2px solid var(--ZELDAGREEN);
+                box-shadow: 6px 6px 21px -6px #3F370F;
 
                 .left{
                     display: flex;

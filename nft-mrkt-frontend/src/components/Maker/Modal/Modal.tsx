@@ -194,21 +194,21 @@ const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
             <form className={styles.modalForm}>
               <div className={styles.stndrdInputs}>
                 <label> Product Name:&nbsp;
-                  <input placeholder="Golden Ticket" type="text" onChange={e => setName(e.target.value)}></input>
+                  <input className={styles.rightAlign} placeholder="Golden Ticket" type="text" onChange={e => setName(e.target.value)}></input>
                 </label>
                 <label> Product Price:&nbsp;&nbsp;
-                  <input placeholder="$99" type="number" onChange={e => setPrice(parseInt(e.target.value))}></input>
+                  <input className={styles.rightAlign} placeholder="$99" type="number" onChange={e => setPrice(parseInt(e.target.value))}></input>
                   {/* I could only make this work with parseInt... any thoughts? */}
                 </label>
-                <label> Product Quantity:&nbsp;
-                  <input placeholder="100" type="number" onChange={e => setQuantity(parseInt(e.target.value))}></input>
+                <label> Quantity:&nbsp;
+                  <input className={styles.rightAlign} placeholder="100" type="number" onChange={e => setQuantity(parseInt(e.target.value))}></input>
                   {/* I could only make this work with parseInt... any thoughts? */}
                 </label>
-                <label> Product Image:
-                  <input type="file" onChange={(e) => setFileImg(e.target.files ? e.target.files[0] : null)} required />
+                <label> Product Image:&nbsp;&nbsp;
+                  <input className={styles.rightAlign} type="file" onChange={(e) => setFileImg(e.target.files ? e.target.files[0] : null)} required />
                 </label>
               </div>
-              <label> Product info:
+              <label> Other info:
                 <form onSubmit={submit}>
                   {fieldNames.map((key: string, i: number) => {
                     return (

@@ -41,12 +41,12 @@ const Maker: React.FC = () => {
         </div>
         <div className="sideBottom">
           <div className='productLines'>
-            { makerInfo?.addresses.map((i) => (
+            { makerInfo?.addresses.map((i, index) => (
                 <div key={i} className='line x'
                     data-address={i}
                     onClick={(e) =>
                       setChosenLine(e.currentTarget.dataset.address?.toString())}
-                >{MakeDispAddr(i)}</div>
+                >Product Line {(index + 1)}</div>
               ))
             }
             <button className='addLine'  onClick={() => setIsOpen(true)}>Add line + </button>

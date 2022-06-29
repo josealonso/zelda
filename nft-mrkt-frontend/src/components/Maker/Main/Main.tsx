@@ -64,7 +64,7 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
           <div className="bottomMain">
             <div className='items'>
               <div className="indexMain">
-                Please choose a product line to the left to get started
+                Please choose a Product Line to the left to get started
               </div>
             </div>
           </div>

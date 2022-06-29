@@ -17,8 +17,8 @@
 }
 
 .modal {
-  width: 40vw;
-  height: 30vw;
+  width: 45vw;
+  height: 35vw;
   background: var(--ZELDABEIGE);
   color: rgb(234, 241, 250);
   z-index: 10;
@@ -49,7 +49,12 @@
   height: 60%;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+}
+
+.rightAlign{
+  display: flex;
+  justify-content: center;
 }
 
 .heading {
@@ -71,7 +76,7 @@
 
 .modalForm{
   display: flex;
-  height: 70%;
+  height: 80%;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
