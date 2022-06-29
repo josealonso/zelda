@@ -41,24 +41,34 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
   if (loaded === true) {
     return (
         <div className='mainWrapper'>
-          <Header productUri={productUri} chosenLine={chosenLine} name={name} price={price} />
-          <div className='items'>
-              { tokens?.map((i) => (
-                  <LineInfo key={i.tokenId.toString()} i={i} chosenLine={chosenLine} productUri={productUri} />
-              ))}
+          <div className="topMain">
+            <Header productUri={productUri} chosenLine={chosenLine} name={name} price={price} />
+          </div>
+          <div className="bottomMain">
+            <div className='items'>
+                { tokens?.map((i) => (
+                    <LineInfo key={i.tokenId.toString()} i={i} chosenLine={chosenLine} productUri={productUri} />
+                ))}
+            </div>
           </div>
         </div>
     )
   } else {
     return (
       <div className='mainWrapper'>
-          <div className='header'>
-            Please select a product line to the left
+          <div className="topMain">
+            <div className="indexHeader">
+              Welcome to your company dashboard
+            </div>
           </div>
-          <div className='items'>
-
+          <div className="bottomMain">
+            <div className='items'>
+              <div className="indexMain">
+                Please choose a product line to the left to get started
+              </div>
+            </div>
           </div>
-      </div>
+        </div>
       )
   }
 }
