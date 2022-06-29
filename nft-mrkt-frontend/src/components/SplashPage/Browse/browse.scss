@@ -12,7 +12,7 @@
         height: 95%;
         width: 95%;
         border-radius: 10px;
-        background-color: var(--ZELDABEIGE);
+        background-color: var(--ZELDAGREEN);
         // background-color: var(--ZELDAGREEN);
 
         .navigation{
@@ -34,7 +34,7 @@
             flex-wrap: wrap;
             height: 90%;
             width: 100%;
-            background-color: var(--ZELDAGREEN);
+            background-color: #e9d690;
             border-radius: 0 0 10px 10px;
 
             .itemCardWrapper{
@@ -46,6 +46,7 @@
                 height: 35%;
                 width: 30%;
                 background-color: var(--ZELDABEIGE);
+                border: 2px solid black;
 
                 .left{
                     display: flex;
@@ -60,10 +61,10 @@
                     }
                     
                     .purchase{
-                        width: 100%;
+                        width: 90%;
                         font-weight: 900;
                         font-size: 1.4vw;
-                        margin-right: auto;
+                        margin-right: 0;
                         margin-left: auto;
                         border-radius: 10px;
                         background-color: transparent;

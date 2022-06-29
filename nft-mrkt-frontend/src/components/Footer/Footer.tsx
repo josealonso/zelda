@@ -1,9 +1,9 @@
+import EtherscanLogo from "../Assets/EtherscanLogoLight.png";
+import TwitterLogo from "../Assets/TwitterLogo.png";
+import GitHubLogo  from "../Assets/GitHubLogo.png";
+import { Link } from "react-router-dom";
 import React from 'react'
 import "./footer.scss";
-import { Link } from "react-router-dom";
-import GitHubLogo  from "../Assets/GitHubLogo.png";
-import TwitterLogo from "../Assets/TwitterLogo.png";
-import EtherscanLogo from "../Assets/EtherscanLogoLight.png";
 
 const Footer: React.FC = () => {
   return (

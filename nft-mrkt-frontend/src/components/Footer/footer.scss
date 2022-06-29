@@ -4,7 +4,7 @@
     width: 100%;
     position: fixed;
     display: flex;
-    background-color: rgb(155, 147, 63);
+    background-color: var(--gray);
     bottom: 0;
     z-index: 3;
     transition: all 1s ease;
@@ -13,16 +13,20 @@
 
     .left{
         display: flex;
+        width: 30%;
+        height: 100%;
+        align-items: flex-start;
+        margin-left: 1%;
 
         .text{
             font-weight: 700;
             font-size: 2vw;
             padding: .5% 5%;
             border-radius: 10px;
-            // text-decoration: none;
-            // background-color: rgb(219, 193, 160);
-            color: rgb(0, 0, 0);
+            color: var(--ZELDABEIGE);
             margin-left: 5%;
+            text-decoration: none;
+            border: 2px solid var(--ZELDABEIGE)
         }
         .about{
 
