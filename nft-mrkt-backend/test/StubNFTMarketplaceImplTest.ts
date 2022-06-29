@@ -72,9 +72,9 @@ describe.only("Marketplace Contract", function () {
         value: BigNumber.from("50000000000000000"),
       })
       const receipt = await tx.wait()
-      expect(receipt.gasUsed).equals(107587)
+      expect(receipt.gasUsed).equals(130275)
       const newBalance = await user2.getBalance()
-      expect(newBalance.toString()).equals("9999949826858544790945")
+      expect(newBalance.toString()).equals("9999949790355703507400")
       // eslint-disable-next-line no-unused-expressions
       expect(receipt.events).not.to.be.undefined
       if (receipt.events) {

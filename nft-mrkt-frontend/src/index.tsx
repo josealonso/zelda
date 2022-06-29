@@ -29,7 +29,8 @@ root.render(
               <Route path="/" element={<App />} >
               <Route index element={<SplashPage />} />
               <Route path="maker" element={<Maker />} />
-              <Route path="consumer" element={<Consumer />} />
+              <Route path="consumer" element={<Browse />} />
+              <Route path="/consumer/:userAddress" element={<Browse />} />
               <Route path="about" element={<About />} />
               <Route path="browse" element={<Browse />} />
               <Route path="itemDetail" element={<ItemDetail />} />

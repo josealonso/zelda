@@ -3,15 +3,9 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/utils/Base64.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
 import "./Models.sol";
-import "hardhat/console.sol";
 
-contract StubMaker is ERC721, Ownable {
+contract StubMaker is ERC721, ERC721URIStorage {
     uint256 public maxTokenId;
     uint256 public tokenIds;
 
@@ -21,11 +15,22 @@ contract StubMaker is ERC721, Ownable {
         maxTokenId = maxTokenId_;
     }
 
-    function mint(address toOwner) public payable returns (uint256) {
+    function mint(address toOwner, string memory _tokenURI) public payable returns (uint256) {
         require(tokenIds < maxTokenId, "Exceed maximum supply");
-        console.log("mint: msg sender is %s, msg.value is %s", msg.sender, msg.value);
         tokenIds += 1;
         _safeMint(toOwner, tokenIds);
+        _setTokenURI(tokenIds, _tokenURI);
         return tokenIds;
+    }
+
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
+
+    function tokenURI(uint256 tokenId) public view
+    override(ERC721, ERC721URIStorage)
+    returns (string memory)
+    {
+        return super.tokenURI(tokenId);
     }
 }

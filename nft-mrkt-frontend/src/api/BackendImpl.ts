@@ -133,6 +133,7 @@ export default class BackendAPIImpl implements BackendAPI {
             }
             return i["nft_data"].map(function (j: any) {
                     return {
+                        productName: i["contract_name"],
                         ownerAddress: ownerAddress,
                         address: i["contract_address"],
                         metadata: j["external_data"],
@@ -149,8 +150,9 @@ export default class BackendAPIImpl implements BackendAPI {
         const prov = await this.providerFn()
         const signer = await prov.getSigner()
         const contract = new ethers.Contract(this.mpContractAddress, MarketplaceContractArtifact.abi, signer) as StubNFTMarketplaceImpl
+        const price = await contract.getPrice(nftContractAddress)
         try {
-            const response = await contract.buyItem(nftContractAddress, {value:1000, gasLimit:23000000})
+            const response = await contract.buyItem(nftContractAddress, {value:price, gasLimit:13000000})
             const receipt = await response.wait()
             if (receipt.events) {
                 console.log("token id minted", parseInt(receipt.events[0]["topics"][3],16))
@@ -160,7 +162,6 @@ export default class BackendAPIImpl implements BackendAPI {
             console.log(e)
             throw new Error(`transaction error ${e}`)
         }
-        throw new Error("fail")
     }
 
     async changePrice(contractAddress: string, newPrice: Number): Promise<boolean> {

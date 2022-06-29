@@ -25,6 +25,7 @@ interface StubNFTMarketplaceImplInterface extends ethers.utils.Interface {
     "buyItem(address)": FunctionFragment;
     "createNftCollectionContract((string,string,string,string,address,address,uint256))": FunctionFragment;
     "getAllCollectionsForSale()": FunctionFragment;
+    "getPrice(address)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "buyItem", values: [string]): string;
@@ -46,6 +47,7 @@ interface StubNFTMarketplaceImplInterface extends ethers.utils.Interface {
     functionFragment: "getAllCollectionsForSale",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "getPrice", values: [string]): string;
 
   decodeFunctionResult(functionFragment: "buyItem", data: BytesLike): Result;
   decodeFunctionResult(
@@ -56,6 +58,7 @@ interface StubNFTMarketplaceImplInterface extends ethers.utils.Interface {
     functionFragment: "getAllCollectionsForSale",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getPrice", data: BytesLike): Result;
 
   events: {
     "BuyItem(address,address,uint256)": EventFragment;
@@ -175,6 +178,11 @@ export class StubNFTMarketplaceImpl extends BaseContract {
         })[];
       }
     >;
+
+    getPrice(
+      collectionAddress: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
   };
 
   buyItem(
@@ -209,6 +217,11 @@ export class StubNFTMarketplaceImpl extends BaseContract {
     })[]
   >;
 
+  getPrice(
+    collectionAddress: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   callStatic: {
     buyItem(
       collectionAddress: string,
@@ -241,6 +254,11 @@ export class StubNFTMarketplaceImpl extends BaseContract {
         price: BigNumber;
       })[]
     >;
+
+    getPrice(
+      collectionAddress: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   filters: {
@@ -299,6 +317,11 @@ export class StubNFTMarketplaceImpl extends BaseContract {
     ): Promise<BigNumber>;
 
     getAllCollectionsForSale(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getPrice(
+      collectionAddress: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -321,6 +344,11 @@ export class StubNFTMarketplaceImpl extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getAllCollectionsForSale(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getPrice(
+      collectionAddress: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

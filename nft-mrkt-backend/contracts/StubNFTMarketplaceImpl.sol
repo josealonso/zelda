@@ -43,11 +43,19 @@ contract StubNFTMarketplaceImpl is StubNFTMarketplaceIf {
     returns (uint256) {
         uint256 price = collectionsForSale[collectionAddress].price;
         console.log("buyItem: msg sender is %s, msg.value is %s, price is %s", msg.sender, msg.value, price);
-        require(msg.value > price);
+        require(msg.value >= price);
         StubMaker col = StubMaker(collectionAddress);
-        uint256 id = col.mint(msg.sender);
+        uint256 id = col.mint(msg.sender, "test_uri");
         emit BuyItem(collectionAddress, msg.sender, id);
         return id;
+    }
+
+    // msg.sender is buyer's address
+    // msg.value is price sender willing to pay
+    function getPrice(address collectionAddress)
+    external view override
+    returns (uint256) {
+        return collectionsForSale[collectionAddress].price;
     }
 
     function getAllCollectionsForSale()

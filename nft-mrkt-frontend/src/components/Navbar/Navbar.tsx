@@ -43,7 +43,7 @@ const Navbar: React.FC = () => {
         <Link to="/" className='title'> Our3 Marketplace </Link>
       </div>
       <div className='right'>
-        <Link to="/consumer" className='consumerLink'> My Items </Link>
+        <Link to={"/consumer/" + user.addrString} className='consumerLink'> My Items </Link>
         {user?.addrString ?
           <button className='connectMMBtn'>
             <img src={Metamask} alt="metamask logo" ></img>

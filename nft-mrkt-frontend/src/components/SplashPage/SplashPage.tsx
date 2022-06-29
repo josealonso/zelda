@@ -1,6 +1,5 @@
 import React from 'react'
-import { useOutletContext } from 'react-router-dom';
-import "./splashPage.scss";
+// import "../splashPage.scss";
 import Browse from './Browse/Browse';
 
 const SplashPage: React.FC = () => {
@@ -9,9 +8,8 @@ const SplashPage: React.FC = () => {
 
 
   return (
-  <div className='splashcardwrapper'>
+
     <Browse />
-  </div>
   )
 }
 

@@ -1,5 +1,5 @@
-import { ethers } from "hardhat";
-import { writeFileSync } from "fs";
+import { ethers } from "hardhat"
+import { writeFileSync } from "fs"
 
 async function main() {
   // URL from where we can extract the metadata for the NFTs

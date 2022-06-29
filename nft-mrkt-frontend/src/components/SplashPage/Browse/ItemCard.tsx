@@ -15,7 +15,8 @@ interface ItemCardProps {
     ownerAddress: string
     image: string
     price: ethers.BigNumber
-  }
+  },
+  forSale: boolean
   // ownerAddress: string
   // contractAddress: string
   // tokenId: ethers.BigNumber
@@ -23,7 +24,7 @@ interface ItemCardProps {
   // _price: ethers.BigNumber
 }
 
-const ItemCard: React.FC<ItemCardProps> = ({i}) => {
+const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
 
   const {item, setItem} = itemStore();
   const price = i.price.toNumber();
@@ -38,11 +39,13 @@ const ItemCard: React.FC<ItemCardProps> = ({i}) => {
     <div className='itemCardWrapper'>
         <img src={i.image} alt="placeholder img"></img>
         <div className='data'>
+            <span className='name title'>Name:</span>
+            <span className='info nameinfo'>{i.productName}</span>
             <span className='owner title'>Owner:</span>
             <span className='info ownerinfo'>{i.ownerAddress}</span>
             <span className='price title'>Price:</span>
             <span className='info priceinfo'>{price} ether</span>
-            <button className='purchase title' onClick={() => purchase(i.address, i.tokenId)}>Purchase</button>
+          {forSale && <button className='purchase title' onClick={() => purchase(i.address, i.tokenId)}>Purchase</button>}
             <Link onClick={() => setItem(i.address, i.tokenId.toString(), false, i.price.toNumber(), i.productName, i.image)} to="/itemDetail">View details</Link>
             {/* NEED TO ADD: FOR SALE,  */}
         </div>
