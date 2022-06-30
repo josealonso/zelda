@@ -1,20 +1,15 @@
 import axios from "axios";
 import { BigNumber, ethers } from "ethers";
-import {
-    BackendAPI,
-    CollectionData,
-    CreateMakerResponse,
-    MakerData,
-    NFTData,
-    SoldNFTData,
-    tokenData
-} from "./BackendIf";
+import { BackendAPI, FinalNFTContract, FinalToken } from "./BackendIf";
 import Web3Modal from "web3modal";
 import MarketplaceContractArtifact from "../artifacts/contracts/StubNFTMarketplaceIf.sol/StubNFTMarketplaceIf.json";
 import MakerContractArtifact from "../artifacts/contracts/StubMaker.sol/StubMaker.json";
 import { StubMaker, StubNFTMarketplaceImpl } from "../typechain";
 
 const COVALENT_CHAIN_ID = 80001
+const MAX_TOKENS = 999
+const COMPANY_NAME = "My Company Name"
+const COMPANY_LOGO = "https://picsum.photos/200"
 
 export default class BackendAPIImpl implements BackendAPI {
     private readonly mpContractAddress: string
@@ -22,6 +17,7 @@ export default class BackendAPIImpl implements BackendAPI {
         const web3Modal = new Web3Modal()
         return new ethers.providers.Web3Provider(await web3Modal.connect())
     }
+    private readonly network: string = "mumbai"
 
     constructor(
         mpContractAddress?: string,
@@ -41,56 +37,53 @@ export default class BackendAPIImpl implements BackendAPI {
      * Probably better to use covalent for this
      * @param nftContractAddress
      */
-    async getCollectionData(nftContractAddress: string): Promise<CollectionData[]> {
+    async getCollectionData(nftContractAddress: string): Promise<FinalNFTContract> {
         const prov = await this.providerFn()
+        const allData = await this.getNFTsForSale()
+        let firstContract : FinalNFTContract | null = null
+        if (allData) {
+            const first = allData
+              .find(i => {
+                  return i.contract.contractAddress === nftContractAddress
+              })
+            if (first) {
+                firstContract = first.contract
+            }
+        }
+        if (!firstContract) {
+            throw new Error("cannot get contract data")
+        }
+
         const nftContract = new ethers.Contract(
           nftContractAddress, MakerContractArtifact.abi, prov) as StubMaker
         const currentMaxToken = await nftContract.tokenIds()
-        let tokens: tokenData[] = []
+        let tokens: FinalToken[] = []
         for (let i =1; i<=currentMaxToken.toNumber(); i++ ) {
             tokens.push(
               {
-                  tokenId: ethers.BigNumber.from(i),
-                  name: "",
-                  sold: true,
+                  id: BigNumber.from(i),
+                  ownerAddress: (await nftContract.ownerOf(i)).toString(),
+                  contract: firstContract,
                   forSale: false,
-                  currentOwner: (await nftContract.ownerOf(i)).toString()
+                  salePrice: firstContract.makerSalePrice,
+                  minted: true,
               }
             )
         }
-
-        const allData = await this.getNFTsForSale()
-        return allData
-            .filter(i => {
-                return i.address === nftContractAddress
-            })
-            .map(i => {
-                    return {
-                        productName: i.productName,
-                        makerAddress: i.ownerAddress,
-                        productUri: i.metadata,
-                        price: i.price.toNumber(),
-                        numberProduced: 0,
-                        tokens: tokens.map(oldT => {
-                            const newT = oldT
-                            newT.name = `${i.productName} - id: ${oldT.tokenId.toString()}`
-                            return newT
-                        }),
-                    }
-                }
-            )
+        firstContract.tokensMinted = tokens
+        return firstContract
     }
 
     async addCollectionContract(
-        productName: string,
-        makerAddress: string,
-        productImgUri: string,
-        productMetadataUri: string,
-        price: Number,
-        numberProduced: Number
-    ): Promise<CreateMakerResponse> {
-        if (productMetadataUri === "") {
-            productMetadataUri = "test_product_uri"
+      productName: string, //Product Line
+      makerAddress: string, // Manufacturer address
+      productImgUri: string, // Product Image
+      productMetadata: string,
+      makerSalePrice: BigNumber,  // Price
+      numberProduced: number // Max TokenId
+    ): Promise<FinalNFTContract> {
+        if (productMetadata === "") {
+            productMetadata = "test_product_meta"
         }
         if (productImgUri === "") {
             productImgUri = "test_image_uri"
@@ -98,21 +91,42 @@ export default class BackendAPIImpl implements BackendAPI {
 
         const prov = await this.providerFn()
         const signer = await prov.getSigner(makerAddress)
-        const cf = new ethers.ContractFactory(MakerContractArtifact.abi, MakerContractArtifact.bytecode, signer);
+        const cf = new ethers.ContractFactory(
+          MakerContractArtifact.abi,
+          MakerContractArtifact.bytecode,
+          signer
+        );
         const makerContract = await cf.deploy("name", "symbol", numberProduced)
 
-        const mpContract = new ethers.Contract(this.mpContractAddress, MarketplaceContractArtifact.abi, signer) as StubNFTMarketplaceImpl
+        const mpContract = new ethers.Contract(
+          this.mpContractAddress,
+          MarketplaceContractArtifact.abi,
+          signer
+        ) as StubNFTMarketplaceImpl
         const tx = await mpContract.createNftCollectionContract({
             productName: productName,
-            price: BigNumber.from(price),
+            price: makerSalePrice,
             makerAddress: makerAddress,
-            metadataURI: productMetadataUri,
+            metadataURI: productMetadata,
             imageURI: productImgUri,
             symbol: "SYM",
             nftContractAddress: makerContract.address
         })
         await tx.wait()
-        return {contractAddress: makerContract.address}
+        return {
+            contractAddress: makerContract.address,
+            maker: {
+                companyLogoUri: COMPANY_LOGO,
+                companyName: COMPANY_NAME,
+                network: this.network,
+                userAddress: makerAddress
+            },
+            makerSalePrice: makerSalePrice,
+            numberProduced: numberProduced,
+            productMeta: productMetadata,
+            productName: productName,
+            productUri: productImgUri
+        }
     }
 
     /**
@@ -121,7 +135,7 @@ export default class BackendAPIImpl implements BackendAPI {
      * testing or local development.
      * @param ownerAddress
      */
-    async getUserNFTs(ownerAddress: string): Promise<NFTData[]> {
+    async getUserNFTs(ownerAddress: string): Promise<FinalToken[]> {
         let url = `https://api.covalenthq.com/v1/${COVALENT_CHAIN_ID}/address/${ownerAddress}/balances_v2/?format=JSON&nft=true&key=${process.env.REACT_APP_COVALENT_API_KEY}`
         let response = await axios.get(url)
         let items = response.data["data"]["items"]
@@ -133,73 +147,116 @@ export default class BackendAPIImpl implements BackendAPI {
             }
             return i["nft_data"].map(function (j: any) {
                     return {
-                        productName: i["contract_name"],
+                        id: BigNumber,
                         ownerAddress: ownerAddress,
-                        address: i["contract_address"],
-                        metadata: j["external_data"],
-                        tokenId: ethers.BigNumber.from(j["token_id"]),
-                        image: j["external_data"]["image"],
-                        price: BigNumber.from(0)
+                        contract: {
+                            contractAddress: i["contract_address"],
+                            maker: {
+                                companyLogoUri: "",
+                                companyName: "",
+                                network: "",
+                                userAddress: ""
+                            },
+                            makerSalePrice: BigNumber.from(0),
+                            productUri: "",
+                            productName: "",
+                            productMeta: "",
+                            numberProduced: 0,
+                        },
+                        forSale: false,
+                        salePrice: BigNumber.from(0),
+                        minted: true,
                     }
                 }
             )
         })
     }
 
-    async buyNFT(nftContractAddress: string, tokenId: ethers.BigNumber): Promise<boolean> {
+    async buyNFT(nftContractAddress: string, tokenId: BigNumber): Promise<BigNumber> {
         const prov = await this.providerFn()
         const signer = await prov.getSigner()
-        const contract = new ethers.Contract(this.mpContractAddress, MarketplaceContractArtifact.abi, signer) as StubNFTMarketplaceImpl
-        const price = await contract.getPrice(nftContractAddress)
-        try {
-            const response = await contract.buyItem(nftContractAddress, {value:price, gasLimit:13000000})
-            const receipt = await response.wait()
-            if (receipt.events) {
-                console.log("token id minted", parseInt(receipt.events[0]["topics"][3],16))
-            }
-            return true
-        } catch (e) {
-            console.log(e)
-            throw new Error(`transaction error ${e}`)
+        const contract = new ethers.Contract(
+          this.mpContractAddress,
+          MarketplaceContractArtifact.abi,
+          signer
+        ) as StubNFTMarketplaceImpl;
+        const price = await contract.getPrice(nftContractAddress);
+        const response = await contract.buyItem(
+          nftContractAddress,
+          { value: price, gasLimit: 13000000 }
+        );
+        const receipt = await response.wait();
+        if (receipt.events) {
+            const tokenID = parseInt(receipt.events[0]["topics"][3], 16);
+            return BigNumber.from(tokenID);
         }
+        throw new Error("canont get token id")
     }
 
     async changePrice(contractAddress: string, newPrice: Number): Promise<boolean> {
         throw new Error('Method not implemented.');
     }
 
-    async getMakerData(makerAddress: string): Promise<MakerData> {
+    async getMakerData(makerAddress: string): Promise<FinalNFTContract[]> {
         const prov = await this.providerFn()
-        const mpContract = new ethers.Contract(this.mpContractAddress, MarketplaceContractArtifact.abi, prov) as StubNFTMarketplaceImpl
-        const response = await mpContract.getAllCollectionsForSale()
-        return {
-            addresses: response.filter(i => i.makerAddress === makerAddress).map(i => {
-                return i.nftContractAddress
-            }),
-            name:"something",
-            makerLogoUri: "https://gateway.pinata.cloud/ipfs/Qmbf22NGZUcgocx9K2pvM8zyPP1HreFKo72LYa1beRaui9",
-        }
-    }
-
-    async getNFTsForSale(): Promise<NFTData[]> {
-        const prov = await this.providerFn()
-        const signer = await prov.getSigner()
-        const mpContract = new ethers.Contract(this.mpContractAddress, MarketplaceContractArtifact.abi, signer) as StubNFTMarketplaceImpl
+        const mpContract = new ethers.Contract(
+          this.mpContractAddress,
+          MarketplaceContractArtifact.abi,
+          prov
+        ) as StubNFTMarketplaceImpl
         const response = await mpContract.getAllCollectionsForSale()
         return response.map(i => {
-            return {
+            let t: FinalNFTContract = {
+                contractAddress: i.nftContractAddress,
+                maker: {
+                    companyLogoUri: COMPANY_LOGO,
+                    companyName: COMPANY_NAME,
+                    network: this.network,
+                    userAddress: i.makerAddress
+                },
+                makerSalePrice: i.price,
+                productUri: i.imageURI,
                 productName: i.productName,
-                address: i.nftContractAddress,
-                image: i.metadataURI,
-                metadata: i.metadataURI,
-                ownerAddress: i.makerAddress,
-                tokenId: BigNumber.from(0),
-                price: i.price,
+                productMeta: i.metadataURI,
+                numberProduced: MAX_TOKENS
             }
+            return t;
         })
     }
 
-    async getSoldNFTData(makerAddress: string): Promise<SoldNFTData[]> {
-        throw new Error('Method not implemented.');
+    async getNFTsForSale(): Promise<FinalToken[]> {
+        const prov = await this.providerFn()
+        const signer = await prov.getSigner()
+        const mpContract = new ethers.Contract(
+          this.mpContractAddress,
+          MarketplaceContractArtifact.abi,
+          signer
+        ) as StubNFTMarketplaceImpl
+        const response = await mpContract.getAllCollectionsForSale()
+        return response.map(i => {
+            let t: FinalToken;
+            t = {
+                contract: {
+                    contractAddress: i.nftContractAddress,
+                    maker: {
+                        companyLogoUri: COMPANY_LOGO,
+                        companyName: COMPANY_NAME,
+                        network: this.network,
+                        userAddress: i.makerAddress
+                    },
+                    makerSalePrice: i.price,
+                    productUri: i.imageURI,
+                    productName: i.productName,
+                    productMeta: i.metadataURI,
+                    numberProduced: MAX_TOKENS,
+                },
+                forSale: true,
+                id: BigNumber.from(0),
+                minted: false,
+                ownerAddress: i.makerAddress,
+                salePrice: BigNumber.from(i.price)
+            };
+            return t
+        })
     }
 }

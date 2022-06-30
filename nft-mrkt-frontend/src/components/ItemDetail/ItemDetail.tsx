@@ -14,7 +14,11 @@ const ItemDetail: React.FC<ItemDetailProps> = () => {
 
   return (
     <div className='itemDetailWrapper'>
-        <Header productUri={item.contractAddress} chosenLine={item.contractAddress} name={item.name} price={item.price} />
+        <Header
+          productUri={item.contract.contractAddress}
+          chosenLine={item.contract.contractAddress}
+          name={item.contract.productName}
+          price={item.salePrice.toNumber()} />
         <div className='body'>
             {/*
               TODO: Fill in all information of the item. It doesn't make sense to work on this until we know

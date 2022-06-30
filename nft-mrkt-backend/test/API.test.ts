@@ -39,21 +39,21 @@ describe.only("backend test api", async () => {
       await manuSigner.getAddress(),
       "test_uri",
       "test_uri",
-      11,
+      BigNumber.from(11),
       12
     )
     const nftContractAddress = createResponse.contractAddress
     expect(createResponse).to.exist
     const forSale = await api.getNFTsForSale()
     expect(forSale).have.lengthOf(1)
-    expect(forSale[0].address).to.equals(nftContractAddress)
+    expect(forSale[0].contract.contractAddress).to.equals(nftContractAddress)
     expect(forSale[0].ownerAddress).to.equals(await manuSigner.getAddress())
 
     const buyerSigner = await provider.getSigner(0)
 
     // buy nft
     const buyResponse = await api.buyNFT(nftContractAddress, BigNumber.from(1))
-    expect(buyResponse).to.equals(true)
+    expect(buyResponse).to.equals(BigNumber.from(1))
 
     // get nft contract
     const nftContract = new ethers.Contract(

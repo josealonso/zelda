@@ -1,9 +1,9 @@
-import { GetInstance, NFTData } from "../../../api/BackendIf";
-import { useLocation, useParams } from "react-router-dom";
-import React, { useEffect, useState } from 'react'
-import ItemCard from './ItemCard';
-import "../splashPage.scss";
+import React, { useEffect, useState } from "react";
 import "./browse.scss";
+import { FinalToken, GetInstance } from "../../../api/BackendIf";
+import ItemCard from "./ItemCard";
+import "../splashPage.scss";
+import { useLocation, useParams } from "react-router-dom";
 
 export const USER_ADDRESS_PARAM = "userAddress"
 
@@ -13,7 +13,7 @@ const Browse: React.FC = () => {
   const userAddress = params[USER_ADDRESS_PARAM]
   const locData = useLocation()
   const isConsumerPage = locData.pathname.startsWith("/consumer")
-  const [nfts, setNfts] = useState<NFTData[]>([]);
+  let [nfts, setNfts] = useState<FinalToken[]>([]);
   const [loadingState, setLoadingState] = useState("loading")
 
   async function getNFT() {
@@ -29,7 +29,7 @@ const Browse: React.FC = () => {
   }, [])
 
   async function loadNfts() {
-    let data: NFTData[] = await getNFT();
+    let data: FinalToken[] = await getNFT();
     setNfts(data);
     setLoadingState("Loaded")
     if (data.length) {
@@ -47,7 +47,7 @@ const Browse: React.FC = () => {
         <div className='itemCards'>
           {nfts.length > 0 ?
             nfts.map(i => (
-              <ItemCard key={i.address} i={i} forSale={!isConsumerPage}/>
+              <ItemCard key={i.contract.contractAddress} i={i} forSale={!isConsumerPage}/>
             )) : loadingState
           }
         </div>

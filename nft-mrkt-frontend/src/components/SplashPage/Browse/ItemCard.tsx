@@ -1,26 +1,18 @@
+import { ethers } from "ethers";
+import React from "react";
+import { FinalToken, GetInstance } from "../../../api/BackendIf";
+import { Link } from "react-router-dom";
 import { itemStore } from "../../../Store/ItemStore";
-import { GetInstance } from "../../../api/BackendIf";
-import { Link } from 'react-router-dom';
-import { ethers } from 'ethers';
-import React from 'react';
 
 interface ItemCardProps {
-  i: {
-    productName: string
-    address: string
-    metadata: string
-    tokenId: ethers.BigNumber
-    ownerAddress: string
-    image: string
-    price: ethers.BigNumber
-  },
+  i: FinalToken,
   forSale: boolean
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
 
   const {item, setItem} = itemStore();
-  const price = i.price.toNumber();
+  const price = i.salePrice.toNumber();
 
   async function purchase(_address: string, _token: ethers.BigNumber) {
     const backend = GetInstance();
@@ -31,18 +23,18 @@ const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
   return (
     <div className='itemCardWrapper'>
       <div className="left">
-        <img src={i.image} alt="placeholder img"></img>
-        {forSale && <button className='purchase title' onClick={() => purchase(i.address, i.tokenId)}>Purchase</button>}
+        <img src={i.contract.productUri} alt="placeholder img"/>
+        {forSale && <button className='purchase title' data-testid="purchase-button" onClick={() => purchase(i.contract.contractAddress, i.id)}>Purchase</button>}
       </div>
       <div className="right">
         <div className='data'>
             <span className='name title'>Name:</span>
-            <span className='info nameinfo'>{i.productName}</span>
+            <span className='info nameinfo'>{i.contract.productName}</span>
             <span className='owner title'>Owner:</span>
             <span className='info ownerinfo'>{i.ownerAddress}</span>
             <span className='price title'>Price:</span>
             <span className='info priceinfo'>{price} ether</span>
-            <Link className="detailLink" onClick={() => setItem(i.address, i.tokenId.toString(), false, i.price.toNumber(), i.productName, i.image)} to="/itemDetail">View details</Link>
+            <Link className="detailLink" data-testid="item-details-link" onClick={() => setItem(i)} to="/itemDetail">View details</Link>
             {/* NEED TO ADD: FOR SALE,  */}
         </div>
       </div>

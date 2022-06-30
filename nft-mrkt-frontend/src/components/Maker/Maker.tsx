@@ -1,7 +1,7 @@
-import { GetInstance, MakerData } from "../../api/BackendIf";
-import { MakeDispAddr } from "../../models/Address";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
+import "./maker.scss";
 import { userStore } from "../../Store/userStore";
+import { GetInstance, FinalNFTContract } from "../../api/BackendIf";
 import Modal from "./Modal/Modal";
 import Main from './Main/Main';
 import "./maker.scss";
@@ -11,7 +11,7 @@ const Maker: React.FC = () => {
   const { user } = userStore();
   const makerAddress: string = user.addrString;
 
-  const [makerInfo, setMakerInfo] = useState<MakerData>();
+  const [makerInfo, setMakerInfo] = useState<FinalNFTContract[]>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [logo, setLogo] = useState<string | undefined>("");
   const [chosenLine, setChosenLine] = useState<any>(""); // Running into type problem here. IDE complains that it can be undefined
@@ -27,7 +27,9 @@ const Maker: React.FC = () => {
 
   useEffect(() => {
     async function setLogoUri() {
-      setLogo(makerInfo?.makerLogoUri)
+      if (makerInfo && makerInfo[0]) {
+        setLogo(makerInfo[0].maker.companyLogoUri)
+      }
     }
     setLogoUri();
   }, [makerInfo])
@@ -36,20 +38,20 @@ const Maker: React.FC = () => {
     <div className='maker'>
       <div className='sidebar toplevel'>
         <div className="sideTop">
-          <h3 className='makerName'>{makerInfo?.name}</h3>
+          <h3 className='makerName'>{makerInfo && makerInfo[0].maker.companyName}</h3>
           <img src={logo} className='makerImg' alt="company logo"></img>
         </div>
         <div className="sideBottom">
           <div className='productLines'>
-            { makerInfo?.addresses.map((i, index) => (
-                <div key={i} className='line x'
-                    data-address={i}
+            {  makerInfo?.map((i, index) => (
+                <div key={i.contractAddress} className='line x'
+                    data-address={i.contractAddress}
                     onClick={(e) =>
-                      setChosenLine(e.currentTarget.dataset.address?.toString())}
+                      setChosenLine(e.currentTarget.dataset.address)}
                 >Product Line {(index + 1)}</div>
               ))
             }
-            <button className='addLine'  onClick={() => setIsOpen(true)}>Add line + </button>
+            <button className='addLine' onClick={() => setIsOpen(true)}>Add line + </button>
             {isOpen && <Modal setIsOpen={setIsOpen} />}
           </div>
         </div>

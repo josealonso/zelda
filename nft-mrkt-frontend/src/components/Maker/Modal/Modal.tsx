@@ -5,6 +5,7 @@ import { RiCloseLine } from "react-icons/ri";
 import { userStore } from "../../../Store/userStore";
 import { GetInstance } from "../../../api/BackendIf";
 import Confirm from "./Confirm";
+import { ethers } from "ethers";
 
 interface ModalProps {
   setIsOpen: any
@@ -175,7 +176,7 @@ const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
       user.addrString,
       imgHash,
       ipfsHash,
-      price,
+      ethers.BigNumber.from(price),
       quantity
     );
     setContractAddress(response.contractAddress);

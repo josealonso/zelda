@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./main.scss";
-import { GetInstance, tokenData } from "../../../api/BackendIf";
+import { FinalToken, GetInstance } from "../../../api/BackendIf";
 import LineInfo from "./LineInfo/LineInfo";
 import Header from "./Header";
 
@@ -13,24 +13,23 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
   const [name, setName] = useState<string>();
   const [makerAddr, setMakerAddr] = useState<string>();
   const [productUri, setProductUri] = useState<string>();
-  const [price, setPrice] = useState<number>();
+  const [price, setPrice] = useState<number>(0);
   const [quantity, setQuantity] =useState<number>();
   const [loaded, setLoaded] = useState<boolean>();
-  const [tokens, setTokens] = useState<tokenData[]>();
+  const [tokens, setTokens] = useState<FinalToken[]>();
 
   useEffect(() => {
     async function populate() {
         if(chosenLine) {
           const backend = GetInstance();
-          const response = await backend.getCollectionData(chosenLine);
-          if (response.length > 0) {
-            const item = response[0];
+          const item = await backend.getCollectionData(chosenLine);
+          if (item) {
             setName(item.productName);
-            setMakerAddr(item.makerAddress);
+            setMakerAddr(item.maker.userAddress);
             setProductUri(item.productUri);
-            setPrice(item.price);
+            setPrice(item.makerSalePrice.toNumber());
             setQuantity(item.numberProduced);
-            setTokens(item.tokens);
+            setTokens(item.tokensMinted);
             setLoaded(true);
           }
         }
@@ -47,7 +46,7 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
           <div className="bottomMain">
             <div className='items'>
                 { tokens?.map((i) => (
-                    <LineInfo key={i.tokenId.toString()} i={i} chosenLine={chosenLine} productUri={productUri} />
+                    <LineInfo key={i.id.toString()} i={i} chosenLine={chosenLine} productUri={productUri} />
                 ))}
             </div>
           </div>

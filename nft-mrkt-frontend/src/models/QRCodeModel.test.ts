@@ -1,4 +1,3 @@
-import BackendImpl from "../api/BackendImpl";
 import { QRNFTType, stringToType, typeToEmbeddedString } from "./QRCodeModel";
 import { ethers } from "ethers";
 

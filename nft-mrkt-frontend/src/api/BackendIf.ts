@@ -1,86 +1,59 @@
-import {ethers} from 'ethers'
+import { BigNumber, ethers } from "ethers";
 import StubBackendData from "./stubBackendData";
 import BackendAPIImpl from "./BackendImpl";
 
-export type NFTData = {
-    productName: string
-    address: string
-    metadata: string
-    tokenId: ethers.BigNumber
+export type FinalToken = {
+    id: BigNumber
     ownerAddress: string
-    image: string
-    price: ethers.BigNumber
-    auction?: Auction
-    token?: tokenData[]
-}
-
-// Created by Joey 6/23/22 for displaying token info in maker>main>items component
-export type tokenData = {
-    tokenId: ethers.BigNumber
-    name: string
-    sold: boolean
+    contract: FinalNFTContract
     forSale: boolean
-    currentOwner: string
+    salePrice: BigNumber
+    minted: boolean
 }
 
-export type Auction = {
-    auctionEnds: number
-}
-
-export type SoldNFTData = {
+export type FinalNFTContract = {
     contractAddress: string
-    metadata: string
-    tokenID: ethers.BigNumber
-    makerAddress: string
-    salePrice: ethers.BigNumber
-    saleDate: string
-    currentOwnerAddress: string
-}
-
-export type MakerData = {
-    addresses: string[]
-    name: string
-    makerLogoUri: string
-}
-
-export type CreateMakerResponse = {
-    contractAddress: string
-}
-export type CollectionData = {
+    maker: FinalMakerUser
+    makerSalePrice: BigNumber
+    productUri: string
     productName: string
-    makerAddress: string
-    productUri:string
-    price: number
+    productMeta: string
     numberProduced: number
-    tokens: tokenData[] // This will need to be an array of objects? Metadat of each token needs to come from somewhere. Should we have a `tokenObj` type?
+    tokensMinted?: FinalToken[]
+}
+
+export type FinalUser = {
+    network: string
+    userAddress: string
+}
+
+export type FinalMakerUser = FinalUser & {
+    companyName: string
+    companyLogoUri: string
 }
 
 export interface BackendAPI {
-    getUserNFTs(ownerAddress: string): Promise<NFTData[]>
+    getUserNFTs(ownerAddress: string): Promise<FinalToken[]>
 
-    getNFTsForSale(): Promise<NFTData[]>
+    getNFTsForSale(): Promise<FinalToken[]>
 
-    getCollectionData(nftContractAddress: string): Promise<CollectionData[]>
+    getCollectionData(nftContractAddress: string): Promise<FinalNFTContract>
 
-    getMakerData(makerAddress: string): Promise<MakerData>
+    // contracts address - get a list
+    // name - get name from first contract
+    // logo - get logo from first contract
+    getMakerData(manufacturerAddress: string): Promise<FinalNFTContract[]>
 
-    /**
-     * Returns all sold NFTs
-     * @param makerAddress
-     */
-    getSoldNFTData(makerAddress: string): Promise<SoldNFTData[]>
-
-    buyNFT(address: string, tokenId: ethers.BigNumber): Promise<boolean>
-
+    buyNFT(address: string, tokenId: BigNumber): Promise<BigNumber>
 
     addCollectionContract(
         productName: string, //Product Line
-        makerAddress: string, // Maker address
+        makerAddress: string, // Manufacturer address
         productImgUri:string, // Product Image
-        productMetadataUri: string,
-        price: Number,  // Price
-        numberProduced: Number, // Max TokenId
-    ): Promise<CreateMakerResponse>
+        productMetadata: string,
+        makerSalePrice: BigNumber,  // Price
+        numberProduced: number, // Max TokenId
+    ): Promise<FinalNFTContract>
 
     changePrice(contractAddress: string, newPrice: Number): Promise<boolean>
 }
