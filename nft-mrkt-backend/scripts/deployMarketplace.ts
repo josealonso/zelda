@@ -17,8 +17,11 @@ async function main() {
   console.log("Marketplace Contract Address:", deployedMarketplaceContract.address);
 
   // To be changed
-  writeFileSync('../frontend/config.ts', `export const marketplaceAddress = "${deployedMarketplaceContract.address}"
-  `);
+  writeFileSync(
+    "../frontend/config.ts",
+    `export const marketplaceAddress = "${deployedMarketplaceContract.address}"
+  `
+  );
 }
 
 // Call the main function and catch if there is any error
@@ -28,4 +31,3 @@ main()
     console.error(error);
     process.exit(1);
   });
-
