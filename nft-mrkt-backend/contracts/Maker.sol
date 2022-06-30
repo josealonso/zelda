@@ -36,6 +36,14 @@ contract Maker {
         admins.push(_newAdmin);
     }
 
+    function getCompanyName() external view returns(string memory) {
+        return companyName;
+    }
+
+    function getLogoUri() external view returns(string memory) {
+        return logoIpfsUrl;
+    }
+
     function getAdmin(uint256 _index) external view returns(address) {
         return(admins[_index]);
     }

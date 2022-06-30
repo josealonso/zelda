@@ -7,6 +7,10 @@ interface Maker {
 
     function addAdmin(address _newAdmin) external;
 
+    function getCompanyName() external view returns(string memory);
+
+    function getLogoUri() external view returns(string memory);
+
     function getAdmin(uint256 _index) external view returns(address);
 
     function getAdminCount() external view returns(uint256);
