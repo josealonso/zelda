@@ -28,7 +28,7 @@ contract FinalMarketplace is ReentrancyGuard, Ownable {
         uint256 tokenId;
         uint256 price;
         address payable seller;
-        bool sold;
+        bool forSale; // sold => forSale. Its more informative. Technically every NFT is sold.
     }
     mapping(uint256 => MarketItem) public items;
     mapping(NFTCollection => uint256) public collectionToItemId;
@@ -92,7 +92,7 @@ contract FinalMarketplace is ReentrancyGuard, Ownable {
             _tokenId,
             _price,
             payable(msg.sender),
-            false
+            true
         );
         emit MarketItemAdded(
             itemCount,
@@ -108,11 +108,11 @@ contract FinalMarketplace is ReentrancyGuard, Ownable {
         MarketItem storage item = items[_itemId];
         require(_itemId > 0 && _itemId <= itemCount, "item doesn't exist");
         require(msg.value == _totalPrice, "not enough money");
-        require(!item.sold, "item already sold");
+        require(!item.forSale, "item not for sale!");
         // pay seller and feeAccount
         item.seller.transfer(item.price);
         feeAccount.transfer(_totalPrice - item.price);
-        item.sold = true;
+        item.forSale = false;
         // transfer nft to buyer
         item.nftCollection.transferFrom(
             address(this),
@@ -139,7 +139,7 @@ contract FinalMarketplace is ReentrancyGuard, Ownable {
 
     function getItemsForSale() public returns (MarketItem[] memory) {
         for (uint256 i = 0; i < collectionItems; ) {
-            if (!items[i].sold) {
+            if (items[i].forSale) {
                 itemsForSale.push(items[i]);
             }
             unchecked {
