@@ -3,6 +3,9 @@ import { BigNumber, ethers } from "ethers";
 import { TestContract, TestTokenWithID, TestUser } from "../models/TestModels";
 
 export default class StubBackendData implements BackendAPI {
+  addMaker(address: string, logoIpfsUrl: string): Promise<FinalMakerUser> {
+    throw new Error("Method not implemented.");
+  }
 
   async getCollectionData(manuContractAddress: string): Promise<FinalNFTContract> {
     const tokens = [

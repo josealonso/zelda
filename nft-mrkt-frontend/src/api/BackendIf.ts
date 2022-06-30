@@ -46,6 +46,8 @@ export interface BackendAPI {
 
     buyNFT(address: string, tokenId: BigNumber): Promise<BigNumber>
 
+    addMaker(address: string, logoIpfsUrl: string): Promise<FinalMakerUser>
+
     addCollectionContract(
         productName: string, //Product Line
         makerAddress: string, // Manufacturer address

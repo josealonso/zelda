@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BigNumber, ethers } from "ethers";
-import { BackendAPI, FinalNFTContract, FinalToken } from "./BackendIf";
+import { BackendAPI, FinalNFTContract, FinalToken, FinalMakerUser } from "./BackendIf";
 import Web3Modal from "web3modal";
 import MarketplaceContractArtifact from "../artifacts/contracts/StubNFTMarketplaceIf.sol/StubNFTMarketplaceIf.json";
 import MakerContractArtifact from "../artifacts/contracts/StubMaker.sol/StubMaker.json";
@@ -31,6 +31,9 @@ export default class BackendAPIImpl implements BackendAPI {
         if (providerFnOverride) {
             this.providerFn = providerFnOverride
         }
+    }
+    addMaker(address: string, logoIpfsUrl: string): Promise<FinalMakerUser> {
+        throw new Error("Method not implemented.");
     }
 
     /**
