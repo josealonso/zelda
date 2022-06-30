@@ -296,7 +296,7 @@ export class FinalMarketplace extends BaseContract {
         tokenId: BigNumber;
         price: BigNumber;
         seller: string;
-        sold: boolean;
+        forSale: boolean;
       }
     >;
 
@@ -379,7 +379,7 @@ export class FinalMarketplace extends BaseContract {
       tokenId: BigNumber;
       price: BigNumber;
       seller: string;
-      sold: boolean;
+      forSale: boolean;
     }
   >;
 
@@ -446,7 +446,7 @@ export class FinalMarketplace extends BaseContract {
         tokenId: BigNumber;
         price: BigNumber;
         seller: string;
-        sold: boolean;
+        forSale: boolean;
       })[]
     >;
 
@@ -459,7 +459,7 @@ export class FinalMarketplace extends BaseContract {
         tokenId: BigNumber;
         price: BigNumber;
         seller: string;
-        sold: boolean;
+        forSale: boolean;
       })[]
     >;
 
@@ -480,7 +480,7 @@ export class FinalMarketplace extends BaseContract {
         tokenId: BigNumber;
         price: BigNumber;
         seller: string;
-        sold: boolean;
+        forSale: boolean;
       }
     >;
 
