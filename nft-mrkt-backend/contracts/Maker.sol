@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 
 contract Maker {
-
+    // this is for the test
     address[] admins;
     address[] contracts;
     string companyName;
