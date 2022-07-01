@@ -2,51 +2,55 @@ import { BigNumber, ethers } from "ethers";
 import StubBackendData from "./stubBackendData";
 import BackendAPIImpl from "./BackendImpl";
 
-export type FinalToken = {
+export type Token = {
     id: BigNumber
     ownerAddress: string
-    contract: FinalNFTContract
+    contract: NFTContract
     forSale: boolean
     salePrice: BigNumber
     minted: boolean
 }
 
-export type FinalNFTContract = {
+export type NFTContract = {
     contractAddress: string
-    maker: FinalMakerUser
+    maker: Maker
     makerSalePrice: BigNumber
     productUri: string
     productName: string
     productMeta: string
     numberProduced: number
-    tokensMinted?: FinalToken[]
+    tokensMinted?: Token[]
 }
 
-export type FinalUser = {
+export type User = {
     network: string
     userAddress: string
 }
 
-export type FinalMakerUser = FinalUser & {
-    companyName: string
-    companyLogoUri: string
-}
+export type Maker = {
+  network: string;
+  makerAddress: string;
+  companyName: string;
+  companyLogoUri: string;
+};
 
 export interface BackendAPI {
-    getUserNFTs(ownerAddress: string): Promise<FinalToken[]>
+    getUserNFTs(ownerAddress: string): Promise<Token[]>
 
-    getNFTsForSale(): Promise<FinalToken[]>
+    getNFTsForSale(): Promise<Token[]>
 
-    getCollectionData(nftContractAddress: string): Promise<FinalNFTContract>
+    getCollectionData(nftContractAddress: string): Promise<NFTContract>
 
     // contracts address - get a list
     // name - get name from first contract
     // logo - get logo from first contract
-    getMakerData(manufacturerAddress: string): Promise<FinalNFTContract[]>
+    getMakerData(manufacturerAddress: string): Promise<NFTContract[]>
 
     buyNFT(address: string, tokenId: BigNumber): Promise<BigNumber>
 
-    addMaker(address: string, logoIpfsUrl: string): Promise<FinalMakerUser>
+    addMaker(companyName: string, logoIpfsUrl: string): Promise<Maker>
+
+    getMaker(makerAdminAddress: string): Promise<Maker | boolean>
 
     addCollectionContract(
         productName: string, //Product Line
@@ -55,7 +59,7 @@ export interface BackendAPI {
         productMetadata: string,
         makerSalePrice: BigNumber,  // Price
         numberProduced: number, // Max TokenId
-    ): Promise<FinalNFTContract>
+    ): Promise<NFTContract>
 
     changePrice(contractAddress: string, newPrice: Number): Promise<boolean>
 }

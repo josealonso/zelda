@@ -61,21 +61,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FinalMarketplace__factory>;
     getContractFactory(
-      name: "Maker",
+      name: "IFinalMarketplace",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Maker__factory>;
+    ): Promise<Contracts.IFinalMarketplace__factory>;
+    getContractFactory(
+      name: "IMaker",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IMaker__factory>;
     getContractFactory(
       name: "Maker",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Maker__factory>;
-    getContractFactory(
-      name: "OzNFT",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.OzNFT__factory>;
-    getContractFactory(
-      name: "SimpleNFTs",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SimpleNFTs__factory>;
     getContractFactory(
       name: "OzNFT",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -158,25 +154,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.FinalMarketplace>;
     getContractAt(
-      name: "Maker",
+      name: "IFinalMarketplace",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Maker>;
+    ): Promise<Contracts.IFinalMarketplace>;
+    getContractAt(
+      name: "IMaker",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IMaker>;
     getContractAt(
       name: "Maker",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Maker>;
-    getContractAt(
-      name: "OzNFT",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.OzNFT>;
-    getContractAt(
-      name: "SimpleNFTs",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.SimpleNFTs>;
     getContractAt(
       name: "OzNFT",
       address: string,

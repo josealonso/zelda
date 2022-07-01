@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import styles from "./Modal.module.scss";
-import { RiCloseLine } from "react-icons/ri";
 import { userStore } from "../../../Store/userStore";
 import { GetInstance } from "../../../api/BackendIf";
 import Confirm from "./Confirm";
@@ -131,9 +130,9 @@ const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
     if (!fileImg) {
       return;
     }
-    console.log("We have found a file", fileImg);
+    // console.log("We have found a file", fileImg);
     try {
-      console.log("various variables", process.env);
+      // console.log("various variables", process.env);
 
       const api_key = process.env.REACT_APP_PINATA_API_KEY;
       const api_secret_key = process.env.REACT_APP_PINATA_API_SECRET_KEY;
@@ -171,11 +170,12 @@ const Modal: React.FC<ModalProps> = ({ setIsOpen }) => {
     await sendFileToIPFS();
     await sendJSONToIPFS();
     const backend = GetInstance();
+    console.log("we got this far!")
     const response = await backend.addCollectionContract(
       name,
       user.addrString,
       imgHash,
-      ipfsHash,
+      "",
       ethers.BigNumber.from(price),
       quantity
     );

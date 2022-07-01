@@ -11,7 +11,7 @@ contract NFTCollection is ERC721 {
 
     /* 
         Sale price needs to be defined to work with frontend
-        See frontend>src>api>Backend.if>FinalNFTContract type
+        See frontend>src>api>Backend.if>NFTContract type
     */
     uint256 public makerSalePrice;
 

@@ -6,17 +6,14 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./FinalCollection.sol";
 
-/*
- * 1.- Deploy at least one NFTCollection contract.
- * 2.- Execute the `addCollection` function once per collection.
- * 3.- Execute the `chooseCollection` function once.  ---> NO
- * 3.- The first collection of the array will be used.
- */
+// Need to add function to update fee
+
 contract FinalMarketplace is ReentrancyGuard, Ownable {
     address payable public immutable feeAccount;
     NFTCollection[] public nftCollectionsArray;
     uint256 public immutable feePercent;
     uint256 public collectionItems;
+
 
     MarketItem[] itemsForSale;
     MarketItem[] itemsOwnedByUser;
@@ -51,9 +48,9 @@ contract FinalMarketplace is ReentrancyGuard, Ownable {
         address indexed buyer
     );
 
-    constructor(uint256 _feePercent) {
+    constructor() {
         feeAccount = payable(msg.sender); // the account that receives the fees
-        feePercent = _feePercent;
+        feePercent = 2;
         // The first collection of the array will be used.
         // uint256 collectionId = collectionToItemId[nftCollectionsArray[0]];
         // collectionItems = nftCollectionsArray[collectionId]
@@ -161,5 +158,55 @@ contract FinalMarketplace is ReentrancyGuard, Ownable {
             }
         }
         return itemsOwnedByUser;
+    }
+
+
+
+    // This if for a fresh compile
+
+
+    /*
+        This is so that we can find all makers
+    */
+    address[] collections;
+
+    /*
+        Added for implementation of maker contract
+        Used store all of a makers product lines in an accessable way
+        implemented in `getMakerProductLines()` below
+    */
+    mapping(address => address[]) makerContractToProductLines;
+
+    /*
+        adder function for maker contract's product lines
+    */
+    function addMakerProductLines(address _maker, address _newProductLine) external {
+        // require msg.sender == admin[i];
+    makerContractToProductLines[_maker].push(_newProductLine);
+    }
+
+    /*
+        Getter function for maker contract's product lines
+    */
+    function getMakerProductLines(address _maker) external view returns(address[] memory) {
+        return makerContractToProductLines[_maker];
+    }
+
+    /*
+        Added to associate admins with their MakerContract
+    */
+    mapping(address => address) adminToMaker; // Does not allow one account to have many 'makers'
+
+    function setMakerContractToAdmin(address _makerContract) external {
+        /*
+            we have to add control here. Maybe allow this only to called
+            by other admins. We would pass another parameter and change the 
+            mapping's key to that instead of msg.sender
+        */
+        adminToMaker[msg.sender] = _makerContract;
+    } 
+
+    function getMakerContractToAdmin(address _admin) external view returns(address) {
+        return adminToMaker[_admin];
     }
 }

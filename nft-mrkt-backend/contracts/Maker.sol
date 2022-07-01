@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 
+
 contract Maker {
     // this is for the test
     address[] admins;
@@ -54,6 +55,10 @@ contract Maker {
 
     function addContract(address _address) external onlyAdmin {
         contracts.push(_address);
+    }
+
+    function getContracts() external view returns(address[] memory){
+        return contracts;
     }
 
     function getContractCount() external view returns(uint256) {

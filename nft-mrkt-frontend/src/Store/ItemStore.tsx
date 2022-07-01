@@ -1,10 +1,10 @@
 import create from "zustand";
-import { FinalToken } from "../api/BackendIf";
+import { Token } from "../api/BackendIf";
 import { ethers } from "ethers";
 
 interface ItemState {
-  item: FinalToken
-  setItem: (input: FinalToken) => void
+  item: Token;
+  setItem: (input: Token) => void;
 }
 
 export const itemStore = create<ItemState>((set) => ({
@@ -17,19 +17,19 @@ export const itemStore = create<ItemState>((set) => ({
         companyName: "",
         companyLogoUri: "",
         network: "",
-        userAddress: ""
+        makerAddress: "",
       },
       makerSalePrice: ethers.BigNumber.from(0),
       productUri: "",
       productName: "",
       productMeta: "",
-      numberProduced: 0
+      numberProduced: 0,
     },
     forSale: false,
     salePrice: ethers.BigNumber.from(0),
-    minted: false
+    minted: false,
   },
-  setItem: (_input: FinalToken) => {
+  setItem: (_input: Token) => {
     set(() => ({ item: _input }));
-  }
+  },
 }));

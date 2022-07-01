@@ -1,13 +1,17 @@
-import { BackendAPI, FinalMakerUser, FinalNFTContract, FinalToken, FinalUser } from "./BackendIf";
+import { BackendAPI, Maker, NFTContract, Token, User } from "./BackendIf";
 import { BigNumber, ethers } from "ethers";
-import { TestContract, TestTokenWithID, TestUser } from "../models/TestModels";
+import { TestContract, TestTokenWithID, TestUser, TestMakerUser } from "../models/TestModels";
 
 export default class StubBackendData implements BackendAPI {
-  addMaker(address: string, logoIpfsUrl: string): Promise<FinalMakerUser> {
-    throw new Error("Method not implemented.");
+  async addMaker(companyName: string, logoIpfsUrl: string): Promise<Maker> {
+    return TestMakerUser;
   }
 
-  async getCollectionData(manuContractAddress: string): Promise<FinalNFTContract> {
+  async getMaker(makerAdminAddress: string): Promise<Maker> {
+    return TestMakerUser;
+  }
+
+  async getCollectionData(manuContractAddress: string): Promise<NFTContract> {
     const tokens = [
       TestTokenWithID(10, true),
       TestTokenWithID(11, true),
@@ -18,7 +22,7 @@ export default class StubBackendData implements BackendAPI {
     return contract;
   }
 
-  async getMakerData(makerAddress: string): Promise<FinalNFTContract[]> {
+  async getMakerData(makerAddress: string): Promise<NFTContract[]> {
     return [TestContract];
   }
 
@@ -29,7 +33,7 @@ export default class StubBackendData implements BackendAPI {
     productMetadataUri: string,
     price: ethers.BigNumber,
     numberProduced: number
-  ): Promise<FinalNFTContract> {
+  ): Promise<NFTContract> {
     return TestContract;
   }
 
@@ -37,7 +41,7 @@ export default class StubBackendData implements BackendAPI {
     return true;
   }
 
-  async getUserNFTs(ownerAddress: string): Promise<FinalToken[]> {
+  async getUserNFTs(ownerAddress: string): Promise<Token[]> {
     return [{
       id: ethers.BigNumber.from(10),
       ownerAddress: ownerAddress,
@@ -48,7 +52,7 @@ export default class StubBackendData implements BackendAPI {
     }];
   }
 
-  async getNFTsForSale(): Promise<FinalToken[]> {
+  async getNFTsForSale(): Promise<Token[]> {
     return [{
       id: ethers.BigNumber.from(10),
       ownerAddress: TestUser.userAddress,

@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
       const prov = new ethers.providers.Web3Provider(await web3Modal.connect())
       const signer = await prov.getSigner()
       const address = await signer.getAddress();
-      setAddress(address);
+      setAddress(address, false); // TO UPDATE
       setDispAddr(MakeDispAddr(address))
     }
   }

@@ -3,7 +3,8 @@ pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 
-interface Maker {
+
+interface IMaker {
 
     function addAdmin(address _newAdmin) external;
 
@@ -16,6 +17,8 @@ interface Maker {
     function getAdminCount() external view returns(uint256);
 
     function addContract(address _address) external;
+
+    function getContracts() external view returns(address[] memory);
 
     function getContractCount() external view returns(uint256);
 }

@@ -25,7 +25,10 @@ interface MakerInterface extends ethers.utils.Interface {
     "addContract(address)": FunctionFragment;
     "getAdmin(uint256)": FunctionFragment;
     "getAdminCount()": FunctionFragment;
+    "getCompanyName()": FunctionFragment;
     "getContractCount()": FunctionFragment;
+    "getContracts()": FunctionFragment;
+    "getLogoUri()": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addAdmin", values: [string]): string;
@@ -39,7 +42,19 @@ interface MakerInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getCompanyName",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getContractCount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getContracts",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getLogoUri",
     values?: undefined
   ): string;
 
@@ -54,9 +69,18 @@ interface MakerInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getCompanyName",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getContractCount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getContracts",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getLogoUri", data: BytesLike): Result;
 
   events: {};
 }
@@ -122,7 +146,13 @@ export class Maker extends BaseContract {
 
     getAdminCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    getCompanyName(overrides?: CallOverrides): Promise<[string]>;
+
     getContractCount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getContracts(overrides?: CallOverrides): Promise<[string[]]>;
+
+    getLogoUri(overrides?: CallOverrides): Promise<[string]>;
   };
 
   addAdmin(
@@ -139,7 +169,13 @@ export class Maker extends BaseContract {
 
   getAdminCount(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getCompanyName(overrides?: CallOverrides): Promise<string>;
+
   getContractCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getContracts(overrides?: CallOverrides): Promise<string[]>;
+
+  getLogoUri(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
     addAdmin(_newAdmin: string, overrides?: CallOverrides): Promise<void>;
@@ -150,7 +186,13 @@ export class Maker extends BaseContract {
 
     getAdminCount(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getCompanyName(overrides?: CallOverrides): Promise<string>;
+
     getContractCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getContracts(overrides?: CallOverrides): Promise<string[]>;
+
+    getLogoUri(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {};
@@ -173,7 +215,13 @@ export class Maker extends BaseContract {
 
     getAdminCount(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getCompanyName(overrides?: CallOverrides): Promise<BigNumber>;
+
     getContractCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getContracts(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getLogoUri(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -194,6 +242,12 @@ export class Maker extends BaseContract {
 
     getAdminCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    getCompanyName(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getContractCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getContracts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getLogoUri(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

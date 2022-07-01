@@ -4,16 +4,16 @@ import { User } from "../models/User";
 
 interface UserState {
   user: User
-  setAddress: (addrString: string) => void
+  setAddress: (addrString: string, isMaker: boolean) => void
 }
 
 export const userStore = create<UserState>((set) => ({
   // initial state
-  user: {network: "", addrString: ""},
+  user: {network: "", addrString: "", isMaker: false},
   // methods for manipulating state
-  setAddress: (polyAddress: string) => {
+  setAddress: (_polyAddress: string, _isMaker: boolean) => {
     set((state) => ({
-      user: {network: "polygon", addrString: polyAddress}
+      user: {network: "polygon", addrString: _polyAddress, isMaker: _isMaker}
     }));
   }
 }));
