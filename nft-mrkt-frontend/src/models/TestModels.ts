@@ -1,5 +1,6 @@
-import { FinalMakerUser, FinalNFTContract, FinalToken, FinalUser } from "../api/BackendIf";
+import { ERC721TokenData, FinalMakerUser, FinalNFTContract, FinalToken, FinalUser } from "../api/BackendIf";
 import { BigNumber } from "ethers";
+import { ERC721 } from "../typechain";
 
 export const TestUser: FinalUser = {
   network: "test_network",
@@ -28,6 +29,14 @@ export const TestToken: FinalToken = {
   minted: false,
   ownerAddress: "test_owner_address",
   salePrice: BigNumber.from(100)
+};
+export const TestERC721Token: ERC721TokenData = {
+  contractAddress: TestContract.contractAddress,
+  description: "test_desc",
+  image: "https://picsum.photos/200",
+  name: TestContract.productName,
+  id: BigNumber.from(100),
+  ownerAddress: "test_owner_address"
 };
 export function TestTokenWithID(id: number, minted = false ): FinalToken {
   return {

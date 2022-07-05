@@ -1,10 +1,13 @@
 import axios from "axios";
 import { BigNumber, ethers } from "ethers";
-import { BackendAPI, FinalNFTContract, FinalToken } from "./BackendIf";
+import { BackendAPI, ERC721TokenData, FinalNFTContract, FinalToken } from "./BackendIf";
 import Web3Modal from "web3modal";
 import MarketplaceContractArtifact from "../artifacts/contracts/StubNFTMarketplaceIf.sol/StubNFTMarketplaceIf.json";
 import MakerContractArtifact from "../artifacts/contracts/StubMaker.sol/StubMaker.json";
-import { StubMaker, StubNFTMarketplaceImpl } from "../typechain";
+import IERC721MetadataArtifact
+    from "../artifacts/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json";
+import { IERC721Metadata, StubMaker, StubNFTMarketplaceImpl } from "../typechain";
+import { GetIPFSGatewayPrefixedLink } from "../models/IPFSUtils";
 
 const COVALENT_CHAIN_ID = 80001
 const MAX_TOKENS = 999
@@ -30,6 +33,24 @@ export default class BackendAPIImpl implements BackendAPI {
         }
         if (providerFnOverride) {
             this.providerFn = providerFnOverride
+        }
+    }
+
+    async getTokenDetail(contractAddress: string, tokenID: number): Promise<ERC721TokenData> {
+        const prov = await this.providerFn()
+        const contract = await new ethers.Contract(contractAddress, IERC721MetadataArtifact.abi, prov) as IERC721Metadata
+        const tokenURI = await contract.tokenURI(tokenID)
+        const owner = await contract.ownerOf(tokenID)
+        const httpLink = GetIPFSGatewayPrefixedLink(tokenURI)
+        const metadata = await axios.get(httpLink)
+
+        return {
+            id: BigNumber.from(tokenID),
+            ownerAddress:owner,
+            contractAddress: contractAddress,
+            name:"name" in metadata.data ? metadata.data["name"] : "",
+            description:"description" in metadata.data ? metadata.data["description"] : "",
+            image:"image" in metadata.data ? GetIPFSGatewayPrefixedLink(metadata.data["image"]) : "",
         }
     }
 
@@ -147,7 +168,7 @@ export default class BackendAPIImpl implements BackendAPI {
             }
             return i["nft_data"].map(function (j: any) {
                     return {
-                        id: BigNumber,
+                        id: BigNumber.from(j["token_id"]),
                         ownerAddress: ownerAddress,
                         contract: {
                             contractAddress: i["contract_address"],

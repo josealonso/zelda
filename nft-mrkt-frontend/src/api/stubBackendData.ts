@@ -1,6 +1,6 @@
-import { BackendAPI, FinalMakerUser, FinalNFTContract, FinalToken, FinalUser } from "./BackendIf";
+import { BackendAPI, ERC721TokenData, FinalMakerUser, FinalNFTContract, FinalToken, FinalUser } from "./BackendIf";
 import { BigNumber, ethers } from "ethers";
-import { TestContract, TestTokenWithID, TestUser } from "../models/TestModels";
+import { TestContract, TestERC721Token, TestTokenWithID, TestUser } from "../models/TestModels";
 
 export default class StubBackendData implements BackendAPI {
 
@@ -66,5 +66,9 @@ export default class StubBackendData implements BackendAPI {
   async buyNFT(address: string, tokenId: ethers.BigNumber): Promise<BigNumber> {
     alert("bought!");
     return BigNumber.from(22);
+  }
+
+  async getTokenDetail(contractAddress: string, tokenID: number): Promise<ERC721TokenData> {
+    return TestERC721Token
   }
 }

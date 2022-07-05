@@ -11,6 +11,23 @@ export type FinalToken = {
     minted: boolean
 }
 
+/**
+ * ERC721TokenData is the on chain data retrieved. This token data differs from
+ * the other representation as it should relate only to what is mentioned in the
+ * ERC721 standards or Opensea's https://docs.opensea.io/docs/metadata-standards
+ *
+ * This is not fully implemented but should be a strict subset of what data
+ * is available on-chain.
+ */
+export type ERC721TokenData = {
+    contractAddress: string,
+    name: string,
+    id: BigNumber,
+    ownerAddress: string,
+    description?: string,
+    image?: string,
+}
+
 export type FinalNFTContract = {
     contractAddress: string
     maker: FinalMakerUser
@@ -56,6 +73,8 @@ export interface BackendAPI {
     ): Promise<FinalNFTContract>
 
     changePrice(contractAddress: string, newPrice: Number): Promise<boolean>
+
+    getTokenDetail(contractAddress: string, tokenID: number): Promise<ERC721TokenData>
 }
 
 export function GetInstance(): BackendAPI {
