@@ -1,4 +1,4 @@
-import { BackendAPI, ERC721TokenData, FinalMakerUser, FinalNFTContract, FinalToken, FinalUser } from "./BackendIf";
+import { BackendAPI, ERC721TokenData, FinalNFTContract, FinalToken } from "./BackendIf";
 import { BigNumber, ethers } from "ethers";
 import { TestContract, TestERC721Token, TestTokenWithID, TestUser } from "../models/TestModels";
 

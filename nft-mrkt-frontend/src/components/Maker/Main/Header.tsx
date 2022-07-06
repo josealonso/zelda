@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ productUri, chosenLine, name, price }) 
                 <span className='headerInfo'>{name}</span>
             </div>
             <div className='headerWrapper'>
-                <span className='headerTitle'>Price of Items</span>
+                <span className='headerTitle'>Price of Items:</span>
                 <span className='headerInfo'>{price}</span>
             </div>
         </div>

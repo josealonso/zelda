@@ -1,13 +1,12 @@
 import { ERC721TokenData, FinalMakerUser, FinalNFTContract, FinalToken, FinalUser } from "../api/BackendIf";
 import { BigNumber } from "ethers";
-import { ERC721 } from "../typechain";
 
 export const TestUser: FinalUser = {
   network: "test_network",
   userAddress: "test_user_address"
 };
 export const TestMakerUser: FinalMakerUser = {
-  companyLogoUri: "test_logo_uri",
+  companyLogoUri: "https://picsum.photos/200",
   companyName: "test_company_name",
   network: "test_network",
   userAddress: "test_user_address"
@@ -19,7 +18,7 @@ export const TestContract: FinalNFTContract = {
   numberProduced: 2,
   productMeta: "test_product_meta",
   productName: "test_product_name",
-  productUri: "test_product_uri"
+  productUri: "https://picsum.photos/200"
 
 };
 export const TestToken: FinalToken = {

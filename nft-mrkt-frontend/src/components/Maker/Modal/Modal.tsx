@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import styles from "./Modal.module.scss";
-import { RiCloseLine } from "react-icons/ri";
 import { userStore } from "../../../Store/userStore";
 import { GetInstance } from "../../../api/BackendIf";
 import Confirm from "./Confirm";

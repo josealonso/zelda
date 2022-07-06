@@ -1,8 +1,7 @@
 import { ethers } from "ethers";
 import React from "react";
 import { FinalToken, GetInstance } from "../../../api/BackendIf";
-import { Link } from "react-router-dom";
-import { itemStore } from "../../../Store/ItemStore";
+import { useNavigate } from "react-router-dom";
 
 interface ItemCardProps {
   i: FinalToken,
@@ -11,7 +10,6 @@ interface ItemCardProps {
 
 const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
 
-  const {item, setItem} = itemStore();
   const price = i.salePrice.toNumber();
 
   async function purchase(_address: string, _token: ethers.BigNumber) {
@@ -19,6 +17,7 @@ const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
     const response = backend.buyNFT(_address, _token)
     console.log(response);
   }
+  const navigate = useNavigate();
 
   return (
     <div className='itemCardWrapper'>
@@ -34,7 +33,9 @@ const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
             <span className='info ownerinfo'>{i.ownerAddress}</span>
             <span className='price title'>Price:</span>
             <span className='info priceinfo'>{price} ether</span>
-            <Link className="detailLink" data-testid="item-details-link" onClick={() => setItem(i)} to="/itemDetail">View details</Link>
+            <button className="detailLink" data-testid="item-details-link" onClick={() => {
+              navigate("/itemDetail", { state: { data: i } });
+            }} >View details</button>
             {/* NEED TO ADD: FOR SALE,  */}
         </div>
       </div>

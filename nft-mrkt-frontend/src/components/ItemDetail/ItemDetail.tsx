@@ -1,37 +1,104 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import "./itemDetail.scss";
-import Header from "../Maker/Main/Header";
-import { itemStore } from "../../Store/ItemStore";
+import { Location, Params, useLocation, useParams } from "react-router-dom";
+import { BackendAPI, FinalToken, GetInstance } from "../../api/BackendIf";
+import { BigNumber, ethers } from "ethers";
 
+export const CONTRACT_ADDRESS_PARAM = "contractAddress";
+export const TOKEN_ID_PARAM = "tokenID"
+
+export type ItemDetailInput = {
+  data: FinalToken
+}
 
 interface ItemDetailProps {
-
+  api?: () => BackendAPI
 }
 
-const ItemDetail: React.FC<ItemDetailProps> = () => {
 
-  const {item, setItem} = itemStore();
+const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
+  const [item, setItem] = useState<FinalToken>();
+  const params = useParams();
+  const location = useLocation();
 
-  return (
-    <div className='itemDetailWrapper'>
-        <Header
-          productUri={item.contract.contractAddress}
-          chosenLine={item.contract.contractAddress}
-          name={item.contract.productName}
-          price={item.salePrice.toNumber()} />
-        <div className='body'>
-            {/*
-              TODO: Fill in all information of the item. It doesn't make sense to work on this until we know
-              1) what we want to display
-              2) How we can get that information
+  async function getItem(params: Params, location: Location) {
 
-              I have passed the contract address and the token Id. SO it might make sense to make a query to the chain
-              and whatever other source were storing our metada in.
-            */}
+    const contractAddress = params[CONTRACT_ADDRESS_PARAM];
+    const tokenID = params[TOKEN_ID_PARAM];
+
+    if ((contractAddress !== undefined) && (tokenID !== undefined)) {
+      // console.log(contractAddress)
+      const backend = api()
+      const tokenIDInt = parseInt(tokenID);
+      const data = await backend.getTokenDetail(contractAddress, tokenIDInt);
+      const t: FinalToken = {
+        contract: {
+          contractAddress: data.contractAddress,
+          maker: {
+            companyName: "",
+            companyLogoUri: "",
+            network: "",
+            userAddress: ""
+          },
+          makerSalePrice: ethers.BigNumber.from(0),
+          productUri: data.image ?? "",
+          productName: data.name,
+          productMeta: "",
+          numberProduced: 0
+        },
+        forSale: false,
+        id: BigNumber.from(tokenID),
+        minted: true,
+        ownerAddress: data.ownerAddress,
+        salePrice: BigNumber.from(0)
+      };
+      setItem(t);
+      return;
+    }
+    let locData = location.state as ItemDetailInput;
+    const t = locData.data;
+    t.salePrice = BigNumber.from(t.salePrice._hex);
+    setItem(t);
+    return;
+  }
+
+  useEffect(() => {
+    getItem(params, location);
+  }, []);
+
+  return (<>{item &&
+  <div className='itemDetailWrapper'>
+    <div className="itemDetailWrapper-main">
+      <div className="itemDetailWrapper-row title">
+        {item.contract.productName}
+      </div>
+      <div className="itemDetailWrapper-row title">
+        {item.contract.productMeta}
+      </div>
+      <div className="itemDetailWrapper-row">
+        <img src={item.contract.productUri} className='itemDetailWrapper-img' alt="product" />
+      </div>
+      <div className="itemDetailWrapper-row">
+        <div className="itemDetailWrapper-left">
+          Contract Address:
         </div>
+        <div className="itemDetailWrapper-right">
+          {item.contract.contractAddress}
+        </div>
+      </div>
+      <div className="itemDetailWrapper-row">
+        <div className="itemDetailWrapper-left">
+          Name:
+        </div>
+        <div className="itemDetailWrapper-right">
+          {item.contract.productName}
+        </div>
+      </div>
     </div>
-  )
-}
+    <div className='body'>
+    </div>
+  </div>}</>);
+};
 
 export default ItemDetail
 

@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 import StubBackendData from "./stubBackendData";
 import BackendAPIImpl from "./BackendImpl";
 

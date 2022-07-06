@@ -8,7 +8,7 @@ import SplashPage from "./components/SplashPage/SplashPage";
 import Maker from "./components/Maker/Maker";
 import About from "./components/About/About";
 import Browse from "./components/SplashPage/Browse/Browse";
-import ItemDetail from "./components/ItemDetail/ItemDetail";
+import ItemDetail, { CONTRACT_ADDRESS_PARAM, TOKEN_ID_PARAM } from "./components/ItemDetail/ItemDetail";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -26,6 +26,7 @@ root.render(
               <Route path="about" element={<About />} />
               <Route path="browse" element={<Browse />} />
               <Route path="itemDetail" element={<ItemDetail />} />
+              <Route path={`itemDetail/:${CONTRACT_ADDRESS_PARAM}/:${TOKEN_ID_PARAM}`} element={<ItemDetail />} />
             </Route>
           </Routes>
         </BrowserRouter>

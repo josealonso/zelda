@@ -17,9 +17,6 @@ describe("Test rendering ItemCard", () => {
     expect(
       screen.getByTestId("purchase-button")
     ).toBeInTheDocument();
-    expect(
-      screen.getByTestId("item-details-link")
-    ).toHaveAttribute('href', '/itemDetail');
   });
 
   it("Not for sale", () => {

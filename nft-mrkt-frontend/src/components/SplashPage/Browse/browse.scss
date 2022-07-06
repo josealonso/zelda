@@ -60,7 +60,7 @@
                         margin: 5% 0 0 5%;
                         border-radius: 10px;
                     }
-                    
+
                     .purchase{
                         width: 90%;
                         font-weight: 900;
@@ -71,6 +71,10 @@
                         background-color: transparent;
                         color: var(--black);
                         border: 2px solid var(--black);
+                    }
+                    .purchase:hover{
+                        background-color: var(--ZELDAGREEN);
+                        cursor: pointer;
                     }
                 }
                 .right{
@@ -83,11 +87,11 @@
                         justify-content: space-between;
                         margin: 10px 10px;
                         overflow: auto;
-    
+
                         .title{
                             font-size: 1.3vw;
                             font-weight: 600;
-    
+
                         }
                         .info{
                             padding-left: 20px;
@@ -95,10 +99,20 @@
                             font-weight: 500;
                         }
                         .detailLink{
-                            display: flex;
-                            width: 40%;
+                            width: 90%;
+                            font-weight: 900;
+                            font-size: 1.4vw;
                             margin-right: 0;
                             margin-left: auto;
+                            border-radius: 10px;
+                            background-color: transparent;
+                            color: var(--black);
+                            border: 2px solid var(--black);
+                        }
+
+                        .detailLink:hover{
+                            background-color: var(--ZELDAGREEN);
+                            cursor: pointer;
                         }
                     }
                 }
