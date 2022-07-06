@@ -3,6 +3,7 @@ import "./main.scss";
 import { FinalToken, GetInstance } from "../../../api/BackendIf";
 import LineInfo from "./LineInfo/LineInfo";
 import Header from "./Header";
+import NotFoundImg from "../../Assets/Logo.png";
 
 interface MainProps {
     chosenLine: string
@@ -41,7 +42,7 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
     return (
         <div className='mainWrapper'>
           <div className="topMain">
-            <Header productUri={productUri} chosenLine={chosenLine} name={name} price={price} />
+            <Header productUri={productUri?.startsWith("http") ? productUri : NotFoundImg} chosenLine={chosenLine} name={name} price={price} />
           </div>
           <div className="bottomMain">
             <div className='items'>

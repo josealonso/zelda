@@ -33,7 +33,7 @@
             align-items: center;
             border-radius: 10px 10px 0 0;
             // padding: 2% 0;
-    
+
             .top{
                 display: flex;
                 width: 85%;
@@ -42,11 +42,13 @@
                 min-height: 100%;
                 justify-content: space-around;
                 align-items: center;
-                
+
                 img{
-                    width: 8%;
+
+                    width: 60px;
                     height: auto;
                     border-radius: 10px;
+                    margin: 10px;
                 }
                 .headerWrapper{
                     display: flex;
@@ -85,14 +87,9 @@
                 font-weight: 800;
                 margin: 10% auto;
             }
-            
+
         }
     }
 }
 
 
-
-.productImg{
-    height: 40px;
-    width: 40px;
-}
