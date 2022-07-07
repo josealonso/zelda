@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./lineInfo.scss";
 import { BigNumber } from "ethers";
 import QRGenerator from "../../../QRCode/QRGenerator/QRGenerator";
@@ -31,13 +31,16 @@ const LineInfo: React.FC<LineInfoProps> = ({ i, chosenLine, productUri }) => {
 
   return (
     <div key={i.contract.productName} className="token x">
+      <div className='wrapper first'>
       <div className='title'>Title:&nbsp;&nbsp;</div>
-      <button
-        onClick={() => {
-          navigate("/itemDetail", { state: { data: i } });
-        }} className='wrapper first'>
+      <Link
+        to="/itemDetail"
+        state={{ data: i }}
+        className='link'>
         <div className='data'>{i.contract.productName}</div>
-      </button>
+      </Link>
+      </div>
+
       <div className='wrapper'>
         <div className='title'>Sold:&nbsp;&nbsp;</div>
         {i.forSale ? <div className='data'>yes</div> : <div className='data'>no</div>}
