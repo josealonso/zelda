@@ -1,6 +1,7 @@
 import { BigNumber } from "ethers";
 import StubBackendData from "./stubBackendData";
 import BackendAPIImpl from "./BackendImpl";
+import configJson from "../config.json"
 
 export type FinalToken = {
     id: BigNumber
@@ -83,8 +84,8 @@ export function GetInstance(): BackendAPI {
         return new StubBackendData()
     }
     if (process.env.REACT_APP_DATA_SOURCE && process.env.REACT_APP_DATA_SOURCE === "mumbai") {
-        if (process.env.REACT_APP_MUMBAI_MARKETPLACE_CONTRACT_ADDRESS) {
-            return new BackendAPIImpl(process.env.REACT_APP_MUMBAI_MARKETPLACE_CONTRACT_ADDRESS)
+        if (configJson.mumbai_marketplace_address) {
+            return new BackendAPIImpl(configJson.mumbai_marketplace_address)
         }
         throw new Error("cannot get mumbai market place contract address")
     }
