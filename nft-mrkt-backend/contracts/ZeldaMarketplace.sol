@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./FinalCollection.sol";
+import "./ZeldaCollection.sol";
 
 /*
  * 1.- Deploy at least one NFTCollection contract.
@@ -12,9 +12,9 @@ import "./FinalCollection.sol";
  * 3.- Execute the `chooseCollection` function once.  ---> NO
  * 3.- The first collection of the array will be used.
  */
-contract FinalMarketplace is ReentrancyGuard, Ownable {
+contract ZeldaMarketplace is ReentrancyGuard, Ownable {
     address payable public immutable feeAccount;
-    NFTCollection[] public nftCollectionsArray;
+    ZeldaCollection[] public nftCollectionsArray;
     uint256 public immutable feePercent;
     uint256 public collectionItems;
 
@@ -31,7 +31,7 @@ contract FinalMarketplace is ReentrancyGuard, Ownable {
         bool sold;
     }
     mapping(uint256 => MarketItem) public items;
-    mapping(NFTCollection => uint256) public collectionToItemId;
+    mapping(ZeldaCollection => uint256) public collectionToItemId;
 
     event MarketItemAdded(
         // "indexed" applied to a field allows to use that field as a filter
@@ -61,7 +61,7 @@ contract FinalMarketplace is ReentrancyGuard, Ownable {
     }
 
     function addCollection(address _nftCollectionAddress) public {
-        NFTCollection nftCollection = NFTCollection(_nftCollectionAddress);
+        ZeldaCollection nftCollection = ZeldaCollection(_nftCollectionAddress);
         nftCollectionsArray.push(nftCollection);
     }
 
@@ -71,7 +71,7 @@ contract FinalMarketplace is ReentrancyGuard, Ownable {
             nftCollectionsArray[_collectionIndex]
         ];
         collectionItems = nftCollectionsArray[collectionId]
-            .getNumOfCollectionItems();
+            .getMaxNumOfItems();
         // MarketItem storage currentMarketItem = items[collectionItems];
     }
 
