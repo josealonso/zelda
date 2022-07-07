@@ -3,6 +3,7 @@ import "./itemDetail.scss";
 import { Location, Params, useLocation, useParams } from "react-router-dom";
 import { BackendAPI, FinalToken, GetInstance } from "../../api/BackendIf";
 import { BigNumber, ethers } from "ethers";
+import NotFoundImg from "../Assets/Logo.png";
 
 export const CONTRACT_ADDRESS_PARAM = "contractAddress";
 export const TOKEN_ID_PARAM = "tokenID"
@@ -27,7 +28,6 @@ const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
     const tokenID = params[TOKEN_ID_PARAM];
 
     if ((contractAddress !== undefined) && (tokenID !== undefined)) {
-      // console.log(contractAddress)
       const backend = api()
       const tokenIDInt = parseInt(tokenID);
       const data = await backend.getTokenDetail(contractAddress, tokenIDInt);
@@ -76,7 +76,7 @@ const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
         {item.contract.productMeta}
       </div>
       <div className="itemDetailWrapper-row">
-        <img src={item.contract.productUri} className='itemDetailWrapper-img' alt="product" />
+        <img src={item.contract.productUri.startsWith("http") ? item.contract.productUri : NotFoundImg} className='itemDetailWrapper-img' alt="product" />
       </div>
       <div className="itemDetailWrapper-row">
         <div className="itemDetailWrapper-left">
