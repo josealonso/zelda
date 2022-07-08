@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
 import "hardhat/console.sol";
 
 /**
@@ -15,10 +14,10 @@ import "hardhat/console.sol";
  * data structures containing fields for each token (price, forSale and other fields),
  * data structures relating the marketplace and the collections, unit testing.
  */
-contract ZeldaCollection is ERC721URIStorage, Ownable {
+contract ZeldaCollection is ERC721Enumerable, Ownable {
   using Strings for uint256;
-  // `_baseTokenURI` points to the IPFS location containing the folder with all the JSON files, one per token.
-  string _baseTokenURI;
+  // `baseTokenURI` points to the IPFS location containing the folder with all the JSON files, one per token.
+  string public baseTokenURI;
   /**
    * @dev The value of the following three variables can be changed anytime only by the marketplace (owner).
    */
@@ -29,7 +28,7 @@ contract ZeldaCollection is ERC721URIStorage, Ownable {
   uint256 public _price = 0.01 ether;
 
   // This is a counter for the minted tokens. Its value can go from 0 to `maxNumOfItems`
-  uint256 public tokenIds;
+  uint256 public numNftsMinted;
 
   event ChangedProductName(uint256 indexed collectionId, string newValue);
 
@@ -53,7 +52,7 @@ contract ZeldaCollection is ERC721URIStorage, Ownable {
     uint256 _maxNumOfItems,
     address _makerAddress
   ) ERC721("ZeldaNFTs", "ZFTs") {
-    _baseTokenURI = _myBaseURI;
+    baseTokenURI = _myBaseURI;
     productName = _productName;
     maxNumOfItems = _maxNumOfItems;
     makerAddress = _makerAddress;
@@ -63,29 +62,37 @@ contract ZeldaCollection is ERC721URIStorage, Ownable {
   /**
    * @dev _baseURI overrides the Openzeppelin's ERC721 implementation which by default
    * returned an empty string for the baseURI
+   * @return The IPFS location containing the folder with all the JSON files for this collection.
    */
   function _baseURI() internal view virtual override returns (string memory) {
-    return _baseTokenURI;
+    return baseTokenURI;
   }
 
   /**
    * @dev This function allows to mint the tokens requested by a maker.
    * It can only be called by the owner, which is the marketplace itself. Hence its name.
-   * If a collection has 100 items, this function will have to be called 100 times.
-   * so two possible options are:
-   * - Call the function inside a loop
-   * - Use the 721A library, which allows to mint several tokens at a time.
+   * Improvement: use the 721A library, which allows to mint several tokens at a time.
+   * But it comes with a trade-off.
    */
-  function mintForMarketplace(string memory _tokenURI) public onlyOwner {
-    require(tokenIds < maxNumOfItems, "Exceed maximum supply");
-    _safeMint(msg.sender, tokenIds);
-    _setTokenURI(tokenIds, _tokenURI);
-    tokenIds++;
+  // function mintForMarketplace(string memory _tokenURI) public onlyOwner {
+  function mintForMarketplace(uint256 _amount) public onlyOwner {
+    require(totalSupply() < maxNumOfItems, "All NFTs have been minted");
+    require(totalSupply() + _amount <= maxNumOfItems, "Mint exceeds max supply");
+
+    uint256 nextTokenId = numNftsMinted + 1;
+
+    for (uint256 i = 0; i < _amount; i++) {
+      _safeMint(msg.sender, nextTokenId);
+    }
+    numNftsMinted += _amount;
   }
 
   /**
-   * @dev tokenURI overrides the Openzeppelin's ERC721 implementation for tokenURI function
-   * This function returns the URI from where we can extract the metadata for a given tokenId
+   * @dev tokenURI overrides the Openzeppelin's ERC721 implementation for tokenURI function.
+   * @return The URI from where we can extract the metadata for a given tokenId.
+   * The token id is concatenated with the base URI.
+   * Thus the token URI doesn't need to be stored in a data structure, as it's generated dynamically.
+   * The marketplace will query it once per token and keep it in their cache.
    */
   function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
     require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
@@ -95,7 +102,7 @@ contract ZeldaCollection is ERC721URIStorage, Ownable {
     // the tokenId and `.json` to it so that it knows the location of the metadata json file for a given
     // tokenId stored on IPFS
     // If baseURI is empty return an empty string
-    return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenIds.toString(), ".json")) : "";
+    return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString(), ".json")) : "";
   }
 
   /**
