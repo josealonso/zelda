@@ -10,6 +10,8 @@ import "hardhat/console.sol";
  * @dev Despite this name, this contract will probably implement the marketplace functionalities too.
  * Ideally the features common to all the collections would be in a separate contract.
  * But a single contract is likely to be more convenient for the project initial stages.
+ * `_beforeTokenTransfer()` is called before any token transfer. This includes minting
+ * and burning.
  * TODO ---> an interface with even more documentation, more functions,
  * data structures containing fields for each token (price, forSale and other fields),
  * data structures relating the marketplace and the collections, unit testing.
@@ -81,8 +83,9 @@ contract ZeldaCollection is ERC721Enumerable, Ownable {
 
     uint256 nextTokenId = numNftsMinted + 1;
 
+    // If  _safeMint `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
     for (uint256 i = 0; i < _amount; i++) {
-      _safeMint(msg.sender, nextTokenId);
+      _safeMint(msg.sender, nextTokenId + i);
     }
     numNftsMinted += _amount;
   }
