@@ -24,12 +24,12 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 const config: HardhatUserConfig = {
   solidity: "0.8.4",
-  paths: {
-    artifacts: "../nft-mrkt-frontend/src/artifacts",
-  },
-  typechain: {
-    outDir: "../nft-mrkt-frontend/src/typechain",
-  },
+  // paths: {
+  //   artifacts: "../nft-mrkt-frontend/src/artifacts",
+  // },
+  // typechain: {
+  //   outDir: "../nft-mrkt-frontend/src/typechain",
+  // },
   networks: {
     hardhat: {    // Local network
 
