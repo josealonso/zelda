@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./itemDetail.scss";
 import { Location, Params, useLocation, useParams } from "react-router-dom";
-import { BackendAPI, FinalToken, GetInstance } from "../../api/BackendIf";
+import { BackendAPI, Token, GetInstance } from "../../api/BackendIf";
 import { BigNumber, ethers } from "ethers";
 import NotFoundImg from "../Assets/Logo.png";
 
@@ -9,7 +9,7 @@ export const CONTRACT_ADDRESS_PARAM = "contractAddress";
 export const TOKEN_ID_PARAM = "tokenID"
 
 export type ItemDetailInput = {
-  data: FinalToken
+  data: Token
 }
 
 interface ItemDetailProps {
@@ -18,7 +18,7 @@ interface ItemDetailProps {
 
 
 const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
-  const [item, setItem] = useState<FinalToken>();
+  const [item, setItem] = useState<Token>();
   const params = useParams();
   const location = useLocation();
 
@@ -31,7 +31,7 @@ const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
       const backend = api()
       const tokenIDInt = parseInt(tokenID);
       const data = await backend.getTokenDetail(contractAddress, tokenIDInt);
-      const t: FinalToken = {
+      const t: Token = {
         contract: {
           contractAddress: data.contractAddress,
           maker: {

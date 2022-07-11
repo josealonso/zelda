@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "./maker.scss";
 import { userStore } from "../../Store/userStore";
-import { GetInstance, FinalNFTContract } from "../../api/BackendIf";
+import { GetInstance, NFTContract } from "../../api/BackendIf";
 import Modal from "./Modal/Modal";
 import Main from './Main/Main';
 import "./maker.scss";
@@ -11,7 +11,7 @@ const Maker: React.FC = () => {
   const { user } = userStore();
   const makerAddress: string = user.addrString;
 
-  const [makerInfo, setMakerInfo] = useState<FinalNFTContract[]>();
+  const [makerInfo, setMakerInfo] = useState<NFTContract[]>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [logo, setLogo] = useState<string | undefined>("");
   const [chosenLine, setChosenLine] = useState<any>(""); // Running into type problem here. IDE complains that it can be undefined

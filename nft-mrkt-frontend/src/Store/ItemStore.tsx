@@ -1,10 +1,10 @@
 import create from "zustand";
-import { FinalToken } from "../api/BackendIf";
+import { Token } from "../api/BackendIf";
 import { ethers } from "ethers";
 
 interface ItemState {
-  item: FinalToken
-  setItem: (input: FinalToken) => void
+  item: Token
+  setItem: (input: Token) => void
 }
 
 export const itemStore = create<ItemState>((set) => ({
@@ -29,7 +29,7 @@ export const itemStore = create<ItemState>((set) => ({
     salePrice: ethers.BigNumber.from(0),
     minted: false
   },
-  setItem: (_input: FinalToken) => {
+  setItem: (_input: Token) => {
     set(() => ({ item: _input }));
   }
 }));

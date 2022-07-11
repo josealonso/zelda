@@ -4,10 +4,10 @@ import "./lineInfo.scss";
 import { BigNumber } from "ethers";
 import QRGenerator from "../../../QRCode/QRGenerator/QRGenerator";
 import { QRNFTType, stringToType, typeToEmbeddedString } from "../../../../models/QRCodeModel";
-import { FinalToken } from "../../../../api/BackendIf";
+import { Token } from "../../../../api/BackendIf";
 
 interface LineInfoProps {
-  i: FinalToken
+  i: Token
   chosenLine: string
   productUri: string | undefined
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BigNumber, ethers } from "ethers";
-import { BackendAPI, ERC721TokenData, FinalNFTContract, FinalToken } from "./BackendIf";
+import { BackendAPI, ERC721TokenData, Maker, NFTContract, Token } from "./BackendIf";
 import Web3Modal from "web3modal";
 import MarketplaceContractArtifact from "../artifacts/contracts/StubNFTMarketplaceIf.sol/StubNFTMarketplaceIf.json";
 import MakerContractArtifact from "../artifacts/contracts/StubMaker.sol/StubMaker.json";
@@ -58,10 +58,10 @@ export default class BackendAPIImpl implements BackendAPI {
      * Probably better to use covalent for this
      * @param nftContractAddress
      */
-    async getCollectionData(nftContractAddress: string): Promise<FinalNFTContract> {
+    async getCollectionData(nftContractAddress: string): Promise<NFTContract> {
         const prov = await this.providerFn()
         const allData = await this.getNFTsForSale()
-        let firstContract : FinalNFTContract | null = null
+        let firstContract : NFTContract | null = null
         if (allData) {
             const first = allData
               .find(i => {
@@ -78,7 +78,7 @@ export default class BackendAPIImpl implements BackendAPI {
         const nftContract = new ethers.Contract(
           nftContractAddress, MakerContractArtifact.abi, prov) as StubMaker
         const currentMaxToken = await nftContract.tokenIds()
-        let tokens: FinalToken[] = []
+        let tokens: Token[] = []
         for (let i =1; i<=currentMaxToken.toNumber(); i++ ) {
             tokens.push(
               {
@@ -102,7 +102,7 @@ export default class BackendAPIImpl implements BackendAPI {
       productMetadata: string,
       makerSalePrice: BigNumber,  // Price
       numberProduced: number // Max TokenId
-    ): Promise<FinalNFTContract> {
+    ): Promise<NFTContract> {
         if (productMetadata === "") {
             productMetadata = "test_product_meta"
         }
@@ -156,7 +156,7 @@ export default class BackendAPIImpl implements BackendAPI {
      * testing or local development.
      * @param ownerAddress
      */
-    async getUserNFTs(ownerAddress: string): Promise<FinalToken[]> {
+    async getUserNFTs(ownerAddress: string): Promise<Token[]> {
         let url = `https://api.covalenthq.com/v1/${COVALENT_CHAIN_ID}/address/${ownerAddress}/balances_v2/?format=JSON&nft=true&key=${process.env.REACT_APP_COVALENT_API_KEY}`
         let response = await axios.get(url)
         let items = response.data["data"]["items"]
@@ -218,7 +218,7 @@ export default class BackendAPIImpl implements BackendAPI {
         throw new Error('Method not implemented.');
     }
 
-    async getMakerData(makerAddress: string): Promise<FinalNFTContract[]> {
+    async getMakerData(makerAddress: string): Promise<NFTContract[]> {
         const prov = await this.providerFn()
         const mpContract = new ethers.Contract(
           this.mpContractAddress,
@@ -227,7 +227,7 @@ export default class BackendAPIImpl implements BackendAPI {
         ) as StubNFTMarketplaceImpl
         const response = await mpContract.getAllCollectionsForSale()
         return response.map(i => {
-            let t: FinalNFTContract = {
+            let t: NFTContract = {
                 contractAddress: i.nftContractAddress,
                 maker: {
                     companyLogoUri: COMPANY_LOGO,
@@ -245,7 +245,7 @@ export default class BackendAPIImpl implements BackendAPI {
         })
     }
 
-    async getNFTsForSale(): Promise<FinalToken[]> {
+    async getNFTsForSale(): Promise<Token[]> {
         const prov = await this.providerFn()
         const signer = await prov.getSigner()
         const mpContract = new ethers.Contract(
@@ -255,7 +255,7 @@ export default class BackendAPIImpl implements BackendAPI {
         ) as StubNFTMarketplaceImpl
         const response = await mpContract.getAllCollectionsForSale()
         return response.map(i => {
-            let t: FinalToken;
+            let t: Token;
             t = {
                 contract: {
                     contractAddress: i.nftContractAddress,
@@ -279,5 +279,21 @@ export default class BackendAPIImpl implements BackendAPI {
             };
             return t
         })
+    }
+
+    async addMaker(companyName: string, logoIpfsUrl: string): Promise<Maker> {
+        throw new Error("not implemented yet");
+    }
+
+    async getContractOwner(contractAddress: string): Promise<string> {
+        throw new Error("not implemented yet");
+    }
+
+    async getMaker(): Promise<Maker> {
+        throw new Error("not implemented yet");
+    }
+
+    async makerMint(contractAddress: string, tokenUri: string): Promise<BigNumber> {
+        throw new Error("not implemented yet");
     }
 }

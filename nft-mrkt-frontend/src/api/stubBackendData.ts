@@ -1,10 +1,10 @@
-import { BackendAPI, ERC721TokenData, FinalNFTContract, FinalToken } from "./BackendIf";
+import { BackendAPI, ERC721TokenData, Maker, NFTContract, Token } from "./BackendIf";
 import { BigNumber, ethers } from "ethers";
 import { TestContract, TestERC721Token, TestTokenWithID, TestUser } from "../models/TestModels";
 
 export default class StubBackendData implements BackendAPI {
 
-  async getCollectionData(manuContractAddress: string): Promise<FinalNFTContract> {
+  async getCollectionData(manuContractAddress: string): Promise<NFTContract> {
     const tokens = [
       TestTokenWithID(10, true),
       TestTokenWithID(11, true),
@@ -15,7 +15,7 @@ export default class StubBackendData implements BackendAPI {
     return contract;
   }
 
-  async getMakerData(makerAddress: string): Promise<FinalNFTContract[]> {
+  async getMakerData(makerAddress: string): Promise<NFTContract[]> {
     return [TestContract];
   }
 
@@ -26,7 +26,7 @@ export default class StubBackendData implements BackendAPI {
     productMetadataUri: string,
     price: ethers.BigNumber,
     numberProduced: number
-  ): Promise<FinalNFTContract> {
+  ): Promise<NFTContract> {
     return TestContract;
   }
 
@@ -34,7 +34,7 @@ export default class StubBackendData implements BackendAPI {
     return true;
   }
 
-  async getUserNFTs(ownerAddress: string): Promise<FinalToken[]> {
+  async getUserNFTs(ownerAddress: string): Promise<Token[]> {
     return [{
       id: ethers.BigNumber.from(10),
       ownerAddress: ownerAddress,
@@ -45,7 +45,7 @@ export default class StubBackendData implements BackendAPI {
     }];
   }
 
-  async getNFTsForSale(): Promise<FinalToken[]> {
+  async getNFTsForSale(): Promise<Token[]> {
     return [{
       id: ethers.BigNumber.from(10),
       ownerAddress: TestUser.userAddress,
@@ -70,5 +70,21 @@ export default class StubBackendData implements BackendAPI {
 
   async getTokenDetail(contractAddress: string, tokenID: number): Promise<ERC721TokenData> {
     return TestERC721Token
+  }
+
+  async addMaker(companyName: string, logoIpfsUrl: string): Promise<Maker> {
+    throw new Error("not implemented yet");
+  }
+
+  async  getContractOwner(contractAddress: string): Promise<string> {
+    throw new Error("not implemented yet");
+  }
+
+  async getMaker(): Promise<Maker> {
+    throw new Error("not implemented yet");
+  }
+
+  async makerMint(contractAddress: string, tokenUri: string): Promise<BigNumber> {
+    throw new Error("not implemented yet");
   }
 }

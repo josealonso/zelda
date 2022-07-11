@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./main.scss";
-import { FinalToken, GetInstance } from "../../../api/BackendIf";
+import { Token, GetInstance } from "../../../api/BackendIf";
 import LineInfo from "./LineInfo/LineInfo";
 import Header from "./Header";
 import NotFoundImg from "../../Assets/Logo.png";
@@ -17,7 +17,7 @@ const Main: React.FC<MainProps> = ({ chosenLine }) => {
   const [price, setPrice] = useState<number>(0);
   const [quantity, setQuantity] =useState<number>();
   const [loaded, setLoaded] = useState<boolean>();
-  const [tokens, setTokens] = useState<FinalToken[]>();
+  const [tokens, setTokens] = useState<Token[]>();
 
   useEffect(() => {
     async function populate() {

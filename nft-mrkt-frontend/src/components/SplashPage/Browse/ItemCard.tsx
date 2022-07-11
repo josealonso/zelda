@@ -1,12 +1,12 @@
 import { ethers } from "ethers";
 import React from "react";
-import { FinalToken, GetInstance } from "../../../api/BackendIf";
+import { Token, GetInstance } from "../../../api/BackendIf";
 import { useNavigate } from "react-router-dom";
 import NotFoundImg from "../../Assets/Logo.png";
 import { MakeDispAddr } from "../../../models/Address";
 
 interface ItemCardProps {
-  i: FinalToken,
+  i: Token,
   forSale: boolean
 }
 

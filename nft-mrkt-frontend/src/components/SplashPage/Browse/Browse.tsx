@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./browse.scss";
-import { FinalToken, GetInstance } from "../../../api/BackendIf";
+import { Token, GetInstance } from "../../../api/BackendIf";
 import ItemCard from "./ItemCard";
 import "../splashPage.scss";
 import { useLocation, useParams } from "react-router-dom";
@@ -13,7 +13,7 @@ const Browse: React.FC = () => {
   const userAddress = params[USER_ADDRESS_PARAM]
   const locData = useLocation()
   const isConsumerPage = locData.pathname.startsWith("/consumer")
-  let [nfts, setNfts] = useState<FinalToken[]>([]);
+  let [nfts, setNfts] = useState<Token[]>([]);
   const [loadingState, setLoadingState] = useState("loading")
 
   async function getNFT() {
@@ -29,7 +29,7 @@ const Browse: React.FC = () => {
   }, [])
 
   async function loadNfts() {
-    let data: FinalToken[] = await getNFT();
+    let data: Token[] = await getNFT();
     setNfts(data);
     setLoadingState("Loaded")
     if (data.length) {
