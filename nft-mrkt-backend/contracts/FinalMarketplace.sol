@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./FinalCollection.sol";
+import "./NFTCollection.sol";
 
 /*
  * 1.- Deploy at least one NFTCollection contract.

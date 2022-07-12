@@ -26,15 +26,21 @@ interface NFTCollectionInterface extends ethers.utils.Interface {
     "getApproved(uint256)": FunctionFragment;
     "getCollectionAddress()": FunctionFragment;
     "getMakerAddress()": FunctionFragment;
+    "getMakerSalePrice()": FunctionFragment;
     "getNumOfCollectionItems()": FunctionFragment;
+    "getProductMeta()": FunctionFragment;
     "getProductName()": FunctionFragment;
+    "getProductUri()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "makerAddress()": FunctionFragment;
+    "makerSalePrice()": FunctionFragment;
     "maxNumOfItems()": FunctionFragment;
-    "mint(string)": FunctionFragment;
+    "mint(address,string)": FunctionFragment;
     "name()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
+    "productMeta()": FunctionFragment;
     "productName()": FunctionFragment;
+    "productUri()": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
@@ -62,11 +68,23 @@ interface NFTCollectionInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getMakerSalePrice",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getNumOfCollectionItems",
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getProductMeta",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getProductName",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getProductUri",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -78,17 +96,32 @@ interface NFTCollectionInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "makerSalePrice",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "maxNumOfItems",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "mint", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "mint",
+    values: [string, string]
+  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "ownerOf",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "productMeta",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "productName",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "productUri",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -132,11 +165,23 @@ interface NFTCollectionInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getMakerSalePrice",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getNumOfCollectionItems",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getProductMeta",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getProductName",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getProductUri",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -148,6 +193,10 @@ interface NFTCollectionInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "makerSalePrice",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "maxNumOfItems",
     data: BytesLike
   ): Result;
@@ -155,9 +204,14 @@ interface NFTCollectionInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "productMeta",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "productName",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "productUri", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "safeTransferFrom",
     data: BytesLike
@@ -270,9 +324,15 @@ export class NFTCollection extends BaseContract {
 
     getMakerAddress(overrides?: CallOverrides): Promise<[string]>;
 
+    getMakerSalePrice(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     getNumOfCollectionItems(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    getProductMeta(overrides?: CallOverrides): Promise<[string]>;
+
     getProductName(overrides?: CallOverrides): Promise<[string]>;
+
+    getProductUri(overrides?: CallOverrides): Promise<[string]>;
 
     isApprovedForAll(
       owner: string,
@@ -282,9 +342,12 @@ export class NFTCollection extends BaseContract {
 
     makerAddress(overrides?: CallOverrides): Promise<[string]>;
 
+    makerSalePrice(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     maxNumOfItems(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     mint(
+      toAddress: string,
       _tokenURI: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -296,7 +359,11 @@ export class NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    productMeta(overrides?: CallOverrides): Promise<[string]>;
+
     productName(overrides?: CallOverrides): Promise<[string]>;
+
+    productUri(overrides?: CallOverrides): Promise<[string]>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -358,9 +425,15 @@ export class NFTCollection extends BaseContract {
 
   getMakerAddress(overrides?: CallOverrides): Promise<string>;
 
+  getMakerSalePrice(overrides?: CallOverrides): Promise<BigNumber>;
+
   getNumOfCollectionItems(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getProductMeta(overrides?: CallOverrides): Promise<string>;
+
   getProductName(overrides?: CallOverrides): Promise<string>;
+
+  getProductUri(overrides?: CallOverrides): Promise<string>;
 
   isApprovedForAll(
     owner: string,
@@ -370,9 +443,12 @@ export class NFTCollection extends BaseContract {
 
   makerAddress(overrides?: CallOverrides): Promise<string>;
 
+  makerSalePrice(overrides?: CallOverrides): Promise<BigNumber>;
+
   maxNumOfItems(overrides?: CallOverrides): Promise<BigNumber>;
 
   mint(
+    toAddress: string,
     _tokenURI: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -381,7 +457,11 @@ export class NFTCollection extends BaseContract {
 
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
+  productMeta(overrides?: CallOverrides): Promise<string>;
+
   productName(overrides?: CallOverrides): Promise<string>;
+
+  productUri(overrides?: CallOverrides): Promise<string>;
 
   "safeTransferFrom(address,address,uint256)"(
     from: string,
@@ -440,9 +520,15 @@ export class NFTCollection extends BaseContract {
 
     getMakerAddress(overrides?: CallOverrides): Promise<string>;
 
+    getMakerSalePrice(overrides?: CallOverrides): Promise<BigNumber>;
+
     getNumOfCollectionItems(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getProductMeta(overrides?: CallOverrides): Promise<string>;
+
     getProductName(overrides?: CallOverrides): Promise<string>;
+
+    getProductUri(overrides?: CallOverrides): Promise<string>;
 
     isApprovedForAll(
       owner: string,
@@ -452,15 +538,25 @@ export class NFTCollection extends BaseContract {
 
     makerAddress(overrides?: CallOverrides): Promise<string>;
 
+    makerSalePrice(overrides?: CallOverrides): Promise<BigNumber>;
+
     maxNumOfItems(overrides?: CallOverrides): Promise<BigNumber>;
 
-    mint(_tokenURI: string, overrides?: CallOverrides): Promise<BigNumber>;
+    mint(
+      toAddress: string,
+      _tokenURI: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
     ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
+    productMeta(overrides?: CallOverrides): Promise<string>;
+
     productName(overrides?: CallOverrides): Promise<string>;
+
+    productUri(overrides?: CallOverrides): Promise<string>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -576,9 +672,15 @@ export class NFTCollection extends BaseContract {
 
     getMakerAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getMakerSalePrice(overrides?: CallOverrides): Promise<BigNumber>;
+
     getNumOfCollectionItems(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getProductMeta(overrides?: CallOverrides): Promise<BigNumber>;
+
     getProductName(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getProductUri(overrides?: CallOverrides): Promise<BigNumber>;
 
     isApprovedForAll(
       owner: string,
@@ -588,9 +690,12 @@ export class NFTCollection extends BaseContract {
 
     makerAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
+    makerSalePrice(overrides?: CallOverrides): Promise<BigNumber>;
+
     maxNumOfItems(overrides?: CallOverrides): Promise<BigNumber>;
 
     mint(
+      toAddress: string,
       _tokenURI: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -602,7 +707,11 @@ export class NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    productMeta(overrides?: CallOverrides): Promise<BigNumber>;
+
     productName(overrides?: CallOverrides): Promise<BigNumber>;
+
+    productUri(overrides?: CallOverrides): Promise<BigNumber>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -670,11 +779,17 @@ export class NFTCollection extends BaseContract {
 
     getMakerAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    getMakerSalePrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getNumOfCollectionItems(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getProductMeta(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getProductName(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getProductUri(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     isApprovedForAll(
       owner: string,
@@ -684,9 +799,12 @@ export class NFTCollection extends BaseContract {
 
     makerAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    makerSalePrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     maxNumOfItems(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     mint(
+      toAddress: string,
       _tokenURI: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -698,7 +816,11 @@ export class NFTCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    productMeta(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     productName(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    productUri(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,

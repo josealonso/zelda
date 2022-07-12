@@ -14,6 +14,24 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
+        name: "_maker",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_newProductLine",
+        type: "address",
+      },
+    ],
+    name: "addMakerProductLines",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "collectionAddress",
         type: "address",
       },
@@ -133,6 +151,44 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
+        name: "_admin",
+        type: "address",
+      },
+    ],
+    name: "getMakerContractFromAdmin",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_maker",
+        type: "address",
+      },
+    ],
+    name: "getMakerProductLines",
+    outputs: [
+      {
+        internalType: "address[]",
+        name: "",
+        type: "address[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "collectionAddress",
         type: "address",
       },
@@ -146,6 +202,19 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_makerContract",
+        type: "address",
+      },
+    ],
+    name: "setMakerContractFromAdmin",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
 ];
