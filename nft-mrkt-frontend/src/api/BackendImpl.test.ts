@@ -4,7 +4,6 @@ import { AlchemyProvider } from "@ethersproject/providers";
 import { BigNumber, ethers } from "ethers";
 import MarketplaceContractArtifact from "../artifacts/contracts/StubNFTMarketplaceIf.sol/StubNFTMarketplaceIf.json";
 import { StubNFTMarketplaceIf, StubNFTMarketplaceImpl } from "../typechain";
-import { GetInstance } from "./BackendIf";
 import configJson from "../config.json"
 
 const testAddress = "0xfc43f5f9dd45258b3aff31bdbe6561d97e8b71de"

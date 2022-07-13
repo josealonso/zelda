@@ -49,6 +49,7 @@ export type FinalUser = {
 export type Maker = FinalUser & {
     companyName: string
     companyLogoUri: string
+    makerAddress: string
 }
 
 export interface BackendAPI {

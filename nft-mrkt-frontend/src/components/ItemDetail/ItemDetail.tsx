@@ -38,7 +38,8 @@ const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
             companyName: "",
             companyLogoUri: "",
             network: "",
-            userAddress: ""
+            userAddress: "",
+            makerAddress: "",
           },
           makerSalePrice: ethers.BigNumber.from(0),
           productUri: data.image ?? "",

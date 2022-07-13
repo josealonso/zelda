@@ -17,7 +17,8 @@ export const itemStore = create<ItemState>((set) => ({
         companyName: "",
         companyLogoUri: "",
         network: "",
-        userAddress: ""
+        userAddress: "",
+        makerAddress: "",
       },
       makerSalePrice: ethers.BigNumber.from(0),
       productUri: "",

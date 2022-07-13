@@ -4,9 +4,17 @@ import { BackendAPI, ERC721TokenData, Maker, NFTContract, Token } from "./Backen
 import Web3Modal from "web3modal";
 import MarketplaceContractArtifact from "../artifacts/contracts/StubNFTMarketplaceIf.sol/StubNFTMarketplaceIf.json";
 import MakerContractArtifact from "../artifacts/contracts/StubMaker.sol/StubMaker.json";
+import MakerArtifact from "../artifacts/contracts/MakerContract.sol/MakerContract.json";
+import NFTCollectionArtifact from "../artifacts/contracts/NFTCollection.sol/NFTCollection.json";
 import IERC721MetadataArtifact
     from "../artifacts/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json";
-import { IERC721Metadata, StubMaker, StubNFTMarketplaceImpl } from "../typechain";
+import {
+    IERC721Metadata,
+    StubMaker,
+    StubNFTMarketplaceImpl,
+    MakerContract,
+    MakerContract__factory, StubNFTMarketplaceIf, NFTCollection
+} from "../typechain";
 import { GetIPFSGatewayPrefixedLink } from "../models/IPFSUtils";
 
 const COVALENT_CHAIN_ID = 80001
@@ -140,7 +148,8 @@ export default class BackendAPIImpl implements BackendAPI {
                 companyLogoUri: COMPANY_LOGO,
                 companyName: COMPANY_NAME,
                 network: this.network,
-                userAddress: makerAddress
+                userAddress: makerAddress,
+                makerAddress: "",
             },
             makerSalePrice: makerSalePrice,
             numberProduced: numberProduced,
@@ -176,7 +185,8 @@ export default class BackendAPIImpl implements BackendAPI {
                                 companyLogoUri: "",
                                 companyName: "",
                                 network: "",
-                                userAddress: ""
+                                userAddress: "",
+                                makerAddress: ""
                             },
                             makerSalePrice: BigNumber.from(0),
                             productUri: "",
@@ -233,7 +243,8 @@ export default class BackendAPIImpl implements BackendAPI {
                     companyLogoUri: COMPANY_LOGO,
                     companyName: COMPANY_NAME,
                     network: this.network,
-                    userAddress: i.makerAddress
+                    userAddress: i.makerAddress,
+                    makerAddress: "",
                 },
                 makerSalePrice: i.price,
                 productUri: i.imageURI,
@@ -263,7 +274,8 @@ export default class BackendAPIImpl implements BackendAPI {
                         companyLogoUri: COMPANY_LOGO,
                         companyName: COMPANY_NAME,
                         network: this.network,
-                        userAddress: i.makerAddress
+                        userAddress: i.makerAddress,
+                        makerAddress: "",
                     },
                     makerSalePrice: i.price,
                     productUri: i.imageURI,
@@ -281,19 +293,93 @@ export default class BackendAPIImpl implements BackendAPI {
         })
     }
 
-    async addMaker(companyName: string, logoIpfsUrl: string): Promise<Maker> {
-        throw new Error("not implemented yet");
-    }
+    async addMaker(
+      companyName: string,
+      logoIpfsUrl: string
+    ): Promise<Maker> {
+        const prov = await this.providerFn();
+        const signer = prov.getSigner();
+        const cf = new ethers.ContractFactory(
+          MakerArtifact.abi,
+          MakerArtifact.bytecode,
+          signer
+        ) as MakerContract__factory;
+        const makerContract = await cf.deploy(companyName, logoIpfsUrl);
+        const marketPlaceContract = new ethers.Contract(
+          this.mpContractAddress,
+          MarketplaceContractArtifact.abi,
+          signer // signer because it is writing
+        ) as StubNFTMarketplaceImpl;
+        const _addContractToAdmin = await marketPlaceContract.connect(signer).setMakerContractFromAdmin(makerContract.address);
+        await _addContractToAdmin.wait();
 
-    async getContractOwner(contractAddress: string): Promise<string> {
-        throw new Error("not implemented yet");
+        const makerName = await makerContract.getCompanyName();
+        const makerLogo = await makerContract.getLogoUri();
+
+        return {
+            network: prov.network.name,
+            userAddress: signer._address,
+            makerAddress: makerContract.address,
+            companyName: makerName,
+            companyLogoUri: makerLogo,
+        };
     }
 
     async getMaker(): Promise<Maker> {
-        throw new Error("not implemented yet");
+        const prov = await this.providerFn();
+        const signer = prov.getSigner();
+        const address = await signer.getAddress();
+        const marketPlaceContract = new ethers.Contract(
+          this.mpContractAddress,
+          MarketplaceContractArtifact.abi,
+          prov // prov because it is readonly
+        ) as StubNFTMarketplaceIf;
+        const _makerContractAddress = await marketPlaceContract.getMakerContractFromAdmin(address);
+
+        if(_makerContractAddress === "0") {
+          throw new Error("maker contract address not found");
+        }
+        const makerContract = new ethers.Contract(
+          _makerContractAddress,
+          MakerArtifact.abi,
+          prov // prov because it is readonly
+        ) as MakerContract;
+        const companyName = await makerContract.getCompanyName();
+        const companyLogo = await makerContract.getLogoUri();
+        return {
+            network: prov.network.name,
+            makerAddress: _makerContractAddress,
+            companyName: companyName,
+            companyLogoUri: companyLogo,
+            userAddress: "",
+        };
     }
 
-    async makerMint(contractAddress: string, tokenUri: string): Promise<BigNumber> {
-        throw new Error("not implemented yet");
+    // Temp hack on contract
+    // Should use covalent instead
+    async getContractOwner(contractAddress:string): Promise<string>{
+        return (await this.getNFTsForSale()).find(i => i.contract.contractAddress === contractAddress)?.contract.maker.makerAddress ?? "";
+    }
+
+    async makerMint(nftContractAddress: string, tokenUri: string): Promise<BigNumber> {
+        const prov = await this.providerFn();
+        const signer = prov.getSigner();
+        const collectionContract = new ethers.Contract(
+          nftContractAddress,
+          NFTCollectionArtifact.abi,
+          signer
+        ) as NFTCollection;
+        const response = await collectionContract.mint(
+          await signer.getAddress(),
+          tokenUri,
+          {
+              gasLimit: 13000000,
+          });
+        const receipt = await response.wait();
+        if (receipt.events) {
+            const tokenID = parseInt(receipt.events[0]["topics"][3], 16);
+            return BigNumber.from(tokenID);
+        }
+        return BigNumber.from(0);
     }
 }

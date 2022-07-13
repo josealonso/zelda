@@ -21,7 +21,7 @@ async function main() {
     const configPath = "../nft-mrkt-frontend/src/config.json";
     const data = fs.readFileSync(configPath);
     const json = JSON.parse(data.toString());
-    json.mumbai_marketplace_address = "hello";
+    json.mumbai_marketplace_address = stubNFTMarketplaceImpl.address;;
     fs.writeFileSync(configPath, JSON.stringify(json, null, 2));
   } else if (process.env.HARDHAT_NETWORK === "localhost") {
     parsedFile.REACT_APP_MARKETPLACE_CONTRACT_ADDRESS = stubNFTMarketplaceImpl.address;

@@ -6,4 +6,4 @@ node_modules
 .netlify
 #Hardhat files
 cache
-artifacts
+nft-mrkt-backend/artifacts

@@ -9,7 +9,8 @@ export const TestMakerUser: Maker = {
   companyLogoUri: "https://picsum.photos/200",
   companyName: "test_company_name",
   network: "test_network",
-  userAddress: "test_user_address"
+  userAddress: "test_user_address",
+  makerAddress: "test_maker_address"
 };
 export const TestContract: NFTContract = {
   contractAddress: "test_contract_address",
