@@ -26,9 +26,6 @@ const LineInfo: React.FC<LineInfoProps> = ({ i, chosenLine, productUri }) => {
     setQRData(stringToType(stringified));
   }, []);
 
-
-  const navigate = useNavigate();
-
   return (
     <div key={i.contract.productName} className="token x">
       <div className='wrapper first'>

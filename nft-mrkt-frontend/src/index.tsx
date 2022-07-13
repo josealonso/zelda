@@ -9,6 +9,7 @@ import Maker from "./components/Maker/Maker";
 import About from "./components/About/About";
 import Browse from "./components/SplashPage/Browse/Browse";
 import ItemDetail, { CONTRACT_ADDRESS_PARAM, TOKEN_ID_PARAM } from "./components/ItemDetail/ItemDetail";
+import Scan from "./components/Scan/Scan";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -27,7 +28,10 @@ root.render(
               <Route path="browse" element={<Browse />} />
               <Route path="itemDetail" element={<ItemDetail />} />
               <Route path={`itemDetail/:${CONTRACT_ADDRESS_PARAM}/:${TOKEN_ID_PARAM}`} element={<ItemDetail />} />
-            </Route>
+              <Route path={`itemDetail/:${CONTRACT_ADDRESS_PARAM}/:${TOKEN_ID_PARAM}/:makerAddress`} element={<ItemDetail />} />
+              <Route path="scan" element={<Scan />} />
+              <Route path="scan/:makerAddress" element={<Scan />} />
+              </Route>
           </Routes>
         </BrowserRouter>
   </React.StrictMode>
