@@ -2,7 +2,7 @@ import { BackendAPI, ERC721TokenData, Maker, NFTContract, Token } from "./Backen
 import { BigNumber, ethers } from "ethers";
 import { TestContract, TestERC721Token, TestTokenWithID, TestUser } from "../models/TestModels";
 
-export default class StubBackendData implements BackendAPI {
+export default class BackendStubImpl implements BackendAPI {
 
   async getCollectionData(manuContractAddress: string): Promise<NFTContract> {
     const tokens = [

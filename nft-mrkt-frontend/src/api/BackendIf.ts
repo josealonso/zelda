@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers";
-import StubBackendData from "./stubBackendData";
+import BackendStubImpl from "./BackendStubImpl";
 import BackendAPIImpl from "./BackendImpl";
 import configJson from "../config.json"
 
@@ -91,7 +91,7 @@ export interface BackendAPI {
 export function GetInstance(): BackendAPI {
     if (process.env.REACT_APP_DATA_SOURCE && process.env.REACT_APP_DATA_SOURCE === "static") {
         console.log("Using static data source")
-        return new StubBackendData()
+        return new BackendStubImpl()
     }
     if (process.env.REACT_APP_DATA_SOURCE && process.env.REACT_APP_DATA_SOURCE === "mumbai") {
         if (configJson.mumbai_marketplace_address) {
