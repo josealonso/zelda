@@ -22,6 +22,7 @@ const Scan: React.FC = () => {
             onError={() => void {}}
             onScan={(data) => {
               if (data !== null) {
+                console.log("scan", data);
                 const qr = stringToType(data)
                 navigate(`/itemDetail/${qr.address}/${qr.tokenId}`);
               }

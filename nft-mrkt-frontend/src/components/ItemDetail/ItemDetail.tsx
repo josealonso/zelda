@@ -4,9 +4,13 @@ import { Location, Params, useLocation, useParams } from "react-router-dom";
 import { BackendAPI, Token, GetInstance } from "../../api/BackendIf";
 import { BigNumber, ethers } from "ethers";
 import NotFoundImg from "../Assets/Logo.png";
+import { GetIPFSGatewayPrefixedLink } from "../../models/IPFSUtils";
+import QRGenerator from "../QRCode/QRGenerator/QRGenerator";
+import { userStore } from "../../Store/userStore";
 
 export const CONTRACT_ADDRESS_PARAM = "contractAddress";
 export const TOKEN_ID_PARAM = "tokenID"
+export const MAKER_ADDRESS_PARAM = "makerAddress"
 
 export type ItemDetailInput = {
   data: Token
@@ -16,9 +20,9 @@ interface ItemDetailProps {
   api?: () => BackendAPI
 }
 
-
 const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
   const [item, setItem] = useState<Token>();
+  const [validation, setValidation] = useState("");
   const params = useParams();
   const location = useLocation();
 
@@ -26,6 +30,7 @@ const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
 
     const contractAddress = params[CONTRACT_ADDRESS_PARAM];
     const tokenID = params[TOKEN_ID_PARAM];
+    const makerAddress = params[MAKER_ADDRESS_PARAM];
 
     if ((contractAddress !== undefined) && (tokenID !== undefined)) {
       const backend = api()
@@ -44,7 +49,7 @@ const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
           makerSalePrice: ethers.BigNumber.from(0),
           productUri: data.image ?? "",
           productName: data.name,
-          productMeta: "",
+          productMeta: data.description || "",
           numberProduced: 0
         },
         forSale: false,
@@ -54,6 +59,14 @@ const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
         salePrice: BigNumber.from(0)
       };
       setItem(t);
+      if (makerAddress !== undefined) {
+        const ownerAddress = await backend.getContractOwner(contractAddress);
+        if (ownerAddress === makerAddress) {
+          setValidation("This is an authentic token!")
+        } else {
+          setValidation("Cannot authenticate")
+        }
+      }
       return;
     }
     let locData = location.state as ItemDetailInput;
@@ -66,18 +79,20 @@ const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
   useEffect(() => {
     getItem(params, location);
   }, []);
-
-  return (<>{item &&
+  if (!item) {
+    return(<></>)
+  }
+  return (
   <div className='itemDetailWrapper'>
     <div className="itemDetailWrapper-main">
-      <div className="itemDetailWrapper-row title">
-        {item.contract.productName}
+      <div className="itemDetailWrapper-row validating">
+      {params[MAKER_ADDRESS_PARAM] ? validation : ""}
       </div>
       <div className="itemDetailWrapper-row title">
-        {item.contract.productMeta}
+        {item.erc721Data?.name || item.contract.productName}
       </div>
       <div className="itemDetailWrapper-row">
-        <img src={item.contract.productUri.startsWith("http") ? item.contract.productUri : NotFoundImg} className='itemDetailWrapper-img' alt="product" />
+        <img src={GetIPFSGatewayPrefixedLink(item.erc721Data?.image ?? item.contract.productUri).startsWith("http") ? GetIPFSGatewayPrefixedLink(item.erc721Data?.image ?? item.contract.productUri) : NotFoundImg} className='itemDetailWrapper-img' alt="product" />
       </div>
       <div className="itemDetailWrapper-row">
         <div className="itemDetailWrapper-left">
@@ -89,16 +104,23 @@ const ItemDetail: React.FC<ItemDetailProps> = ({api= GetInstance}) => {
       </div>
       <div className="itemDetailWrapper-row">
         <div className="itemDetailWrapper-left">
-          Name:
+          Desc:
         </div>
         <div className="itemDetailWrapper-right">
-          {item.contract.productName}
+          {item.erc721Data?.description}
         </div>
+      </div>
+      <div className="itemDetailWrapper-row">
+        <QRGenerator size={300} data={{
+          network: "polygon",
+          address: item.contract.contractAddress,
+          tokenId: item.id,
+        }} />
       </div>
     </div>
     <div className='body'>
     </div>
-  </div>}</>);
+  </div>);
 };
 
 export default ItemDetail

@@ -6,8 +6,8 @@ import NotFoundImg from "../../Assets/Logo.png";
 import { MakeDispAddr } from "../../../models/Address";
 
 interface ItemCardProps {
-  i: Token,
-  forSale: boolean
+  i: Token;
+  forSale: boolean;
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
@@ -16,13 +16,12 @@ const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
 
   async function purchase(_address: string, _token: ethers.BigNumber) {
     const backend = GetInstance();
-    const response = backend.buyNFT(_address, _token)
+    const response = backend.buyNFT(_address, _token);
     console.log(response);
   }
   const navigate = useNavigate();
-
   return (
-    <div className='itemCardWrapper'>
+    <div className="itemCardWrapper">
       <div className="left">
         <img src={i.contract.productUri.startsWith("http") ? i.contract.productUri : NotFoundImg} alt="placeholder img"/>
         {forSale && <button className='purchase title' data-testid="purchase-button" onClick={() => purchase(i.contract.contractAddress, i.id)}>Purchase</button>}
@@ -42,7 +41,7 @@ const ItemCard: React.FC<ItemCardProps> = ({i, forSale}) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ItemCard
+export default ItemCard;

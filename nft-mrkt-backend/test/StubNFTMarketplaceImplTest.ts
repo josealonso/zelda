@@ -1,11 +1,6 @@
 import { expect } from "chai";
 import hre, { ethers } from "hardhat";
-import {
-  StubMaker,
-  StubMaker__factory,
-  StubNFTMarketplaceImpl,
-  StubNFTMarketplaceImpl__factory,
-} from "../../nft-mrkt-frontend/src/typechain";
+import { StubMaker, StubMaker__factory, StubNFTMarketplaceImpl, StubNFTMarketplaceImpl__factory } from "../../nft-mrkt-frontend/src/typechain";
 import { BigNumber } from "ethers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { fail } from "assert";
@@ -32,14 +27,8 @@ describe.only("Marketplace Contract", function () {
     mpContract = await mpContractFactory.connect(mpSigner).deploy();
     await mpContract.deployed();
 
-    const nftContractFactory = (await ethers.getContractFactory(
-      "StubMaker"
-    )) as StubMaker__factory;
-    nftContract = await nftContractFactory.deploy(
-      "test_name1",
-      "test_symbol1",
-      10
-    );
+    const nftContractFactory = (await ethers.getContractFactory("StubMaker")) as StubMaker__factory;
+    nftContract = await nftContractFactory.deploy("test_name1", "test_symbol1", 10);
     await nftContract.deployed();
   });
 
@@ -60,9 +49,7 @@ describe.only("Marketplace Contract", function () {
       });
       const responseCount = await mpContract.getAllCollectionsForSale();
       expect(responseCount).lengthOf(1);
-      expect(responseCount[0].nftContractAddress).to.be.equals(
-        nftContract.address
-      );
+      expect(responseCount[0].nftContractAddress).to.be.equals(nftContract.address);
     });
 
     step("make sale", async function () {
@@ -95,9 +82,7 @@ describe.only("Marketplace Contract", function () {
         expect(e).to.be.a("Error");
         if (e instanceof Error) {
           const message = e.message;
-          expect(message).contain(
-            "sender doesn't have enough funds to send tx"
-          );
+          expect(message).contain("sender doesn't have enough funds to send tx");
         }
       }
     });

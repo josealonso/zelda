@@ -45,7 +45,18 @@ describe.only("backend test api", async () => {
     manuSigner = provider.getSigner(2);
     buyerSigner = await provider.getSigner(0);
   });
-
+  step("add maker", async () => {
+    await api.addMaker("test_name", "test_logo", await manuSigner.getAddress());
+    const response = await api.getMaker(await manuSigner.getAddress())
+    let expected: Maker = {
+      network: "unknown",
+      makerAddress: "0x663F3ad617193148711d28f5334eE4Ed07016602",
+      companyName: "test_name",
+      companyLogoUri: "test_logo",
+      userAddress: "",
+    };
+    expect(response).to.eql(expected);
+  });
   step("add collection", async () => {
     const createResponse = await api.addCollectionContract(
       "testname",
@@ -65,7 +76,6 @@ describe.only("backend test api", async () => {
     // buy nft
     const buyResponse = await api.buyNFT(nftContractAddress, BigNumber.from(1));
     expect(buyResponse).to.equals(BigNumber.from(1));
-
     // get nft contract
     const nftContract = new ethers.Contract(
       nftContractAddress,
@@ -75,26 +85,15 @@ describe.only("backend test api", async () => {
     const ownerOfNewlyMintedNFT = await nftContract.ownerOf(1);
     expect(ownerOfNewlyMintedNFT).to.equals(await buyerSigner.getAddress());
   });
-  step("add maker", async () => {
-    await api.addMaker("test_name", "test_logo");
-    const response = await api.getMaker()
-    let expected: Maker = {
-      network: "unknown",
-      makerAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      companyName: "test_name",
-      companyLogoUri: "test_logo",
-      userAddress: "",
-    };
-    expect(response).to.eql(expected);
-  });
+
   step("get maker address", async () => {
     const response = await api.getContractOwner(nftContractAddress);
-    // not implemented yet
-    expect(response).to.equal("");
+    expect(response).to.equal("0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC");
   });
   step("maker mint", async () => {
-    const response = await api.getContractOwner(nftContractAddress);
-    // not implemented yet
-    expect(response).to.equal("");
+    let response = await api.makerMint(nftContractAddress, "test_uri");
+    expect(response).to.equal(BigNumber.from(2));
+    response = await api.makerMint(nftContractAddress, "test_uri2");
+    expect(response).to.equal(BigNumber.from(3));
   });
 });

@@ -21,7 +21,7 @@ To run in local hardhat environment:
 in NFT-MRKT/nft-mrkt-backend `run npx hardhat node`
 
 2) Deploy the marketplace contract
-in NFT-MRKT/nft-mrkt-backend run `npx hardhat run scripts/deploy.ts --network localhost`
+in NFT-MRKT/nft-mrkt-backend run `npx hardhat run scripts/deployMarketplace.ts --network localhost`
 
 3) Instead of the usual npm start to start the react server, use this instead
 in NFT-MRKT/nft-mrkt-frontend `run npm run start2`. Note: `npm start` will still use the stubbed data.
@@ -44,7 +44,7 @@ in NFT-MRKT/nft-mrkt-frontend `run npm run start2`. Note: `npm start` will still
 To deploy a contract
 
 1) Deploy the marketplace contract
-in NFT-MRKT/nft-mrkt-backend run `npx hardhat run scripts/deploy.ts --network mumbai`
+in NFT-MRKT/nft-mrkt-backend run `npx hardhat run scripts/deployMarketplace.ts --network mumbai`
    - `mumbai` to be used for testnet testing 
 
 2) Instead of the usual npm start to start the react server, use this instead

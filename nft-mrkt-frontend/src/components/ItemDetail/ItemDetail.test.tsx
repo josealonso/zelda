@@ -18,7 +18,7 @@ describe("Test rendering ItemDetails", () => {
 
     expect(
       screen.queryAllByText("test_product_name").length
-    ).toBe(2);
+    ).toBe(1);
   });
 
   it("Test with injected backend", async () => {
@@ -33,7 +33,7 @@ describe("Test rendering ItemDetails", () => {
     });
     expect(
       screen.queryAllByText("test_product_name").length
-    ).toBe(2);
+    ).toBe(1);
   });
 
 });

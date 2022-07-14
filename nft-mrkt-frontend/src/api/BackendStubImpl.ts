@@ -1,6 +1,6 @@
 import { BackendAPI, ERC721TokenData, Maker, NFTContract, Token } from "./BackendIf";
 import { BigNumber, ethers } from "ethers";
-import { TestContract, TestERC721Token, TestTokenWithID, TestUser } from "../models/TestModels";
+import { TestContract, TestERC721Token, TestTokenWithID, TestUser, TestMakerUser } from "../models/TestModels";
 
 export default class BackendStubImpl implements BackendAPI {
 
@@ -15,8 +15,8 @@ export default class BackendStubImpl implements BackendAPI {
     return contract;
   }
 
-  async getMakerData(makerAddress: string): Promise<NFTContract[]> {
-    return [TestContract];
+  async getMakerData(): Promise<string[]> {
+    return [TestContract.contractAddress];
   }
 
   async addCollectionContract(
@@ -72,19 +72,19 @@ export default class BackendStubImpl implements BackendAPI {
     return TestERC721Token
   }
 
-  async addMaker(companyName: string, logoIpfsUrl: string): Promise<Maker> {
-    throw new Error("not implemented yet");
+  async addMaker(companyName: string, logoIpfsUrl: string, makerUserAddress: string): Promise<Maker> {
+    return TestMakerUser;
   }
 
   async  getContractOwner(contractAddress: string): Promise<string> {
-    throw new Error("not implemented yet");
+    return TestContract.maker.makerAddress
   }
 
-  async getMaker(): Promise<Maker> {
-    throw new Error("not implemented yet");
+  async getMaker(makerUserAddress: string): Promise<Maker> {
+    return TestMakerUser;
   }
 
   async makerMint(contractAddress: string, tokenUri: string): Promise<BigNumber> {
-    throw new Error("not implemented yet");
+    return BigNumber.from(1);
   }
 }

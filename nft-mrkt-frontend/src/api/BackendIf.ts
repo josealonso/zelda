@@ -62,13 +62,13 @@ export interface BackendAPI {
     // contracts address - get a list
     // name - get name from first contract
     // logo - get logo from first contract
-    getMakerData(manufacturerAddress: string): Promise<NFTContract[]>
+    getMakerData(): Promise<string[]>
 
     buyNFT(address: string, tokenId: BigNumber): Promise<BigNumber>
 
-    addMaker(companyName: string, logoIpfsUrl: string): Promise<Maker>
+    addMaker(companyName: string, logoIpfsUrl: string, makerUserAddress: string): Promise<Maker>
 
-    getMaker(): Promise<Maker>
+    getMaker(makerUserAddress: string): Promise<Maker>
 
     addCollectionContract(
         productName: string, //Product Line

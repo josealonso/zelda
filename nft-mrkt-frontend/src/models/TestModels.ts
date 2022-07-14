@@ -3,7 +3,7 @@ import { BigNumber } from "ethers";
 
 export const TestUser: FinalUser = {
   network: "test_network",
-  userAddress: "test_user_address"
+  userAddress: "test_user_address",
 };
 export const TestMakerUser: Maker = {
   companyLogoUri: "https://picsum.photos/200",
@@ -20,7 +20,6 @@ export const TestContract: NFTContract = {
   productMeta: "test_product_meta",
   productName: "test_product_name",
   productUri: "https://picsum.photos/200"
-
 };
 export const TestToken: Token = {
   contract: TestContract,
@@ -28,7 +27,7 @@ export const TestToken: Token = {
   id: BigNumber.from(99),
   minted: false,
   ownerAddress: "test_owner_address",
-  salePrice: BigNumber.from(100)
+  salePrice: BigNumber.from(100),
 };
 export const TestERC721Token: ERC721TokenData = {
   contractAddress: TestContract.contractAddress,
@@ -45,6 +44,6 @@ export function TestTokenWithID(id: number, minted = false ): Token {
     id: BigNumber.from(id),
     minted: minted,
     ownerAddress: "test_owner_address",
-    salePrice: BigNumber.from(100)
-  }
+    salePrice: BigNumber.from(100),
+  };
 }

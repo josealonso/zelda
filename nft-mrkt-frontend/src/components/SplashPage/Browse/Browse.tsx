@@ -5,16 +5,15 @@ import ItemCard from "./ItemCard";
 import "../splashPage.scss";
 import { useLocation, useParams } from "react-router-dom";
 
-export const USER_ADDRESS_PARAM = "userAddress"
+export const USER_ADDRESS_PARAM = "userAddress";
 
 const Browse: React.FC = () => {
-
-  const params= useParams();
-  const userAddress = params[USER_ADDRESS_PARAM]
-  const locData = useLocation()
-  const isConsumerPage = locData.pathname.startsWith("/consumer")
+  const params = useParams();
+  const userAddress = params[USER_ADDRESS_PARAM];
+  const locData = useLocation();
+  const isConsumerPage = locData.pathname.startsWith("/consumer");
   let [nfts, setNfts] = useState<Token[]>([]);
-  const [loadingState, setLoadingState] = useState("loading")
+  const [loadingState, setLoadingState] = useState("loading");
 
   async function getNFT() {
     let backend = GetInstance();
@@ -26,35 +25,41 @@ const Browse: React.FC = () => {
 
   useEffect(() => {
     loadNfts();
-  }, [])
+  }, []);
 
   async function loadNfts() {
     let data: Token[] = await getNFT();
     setNfts(data);
-    setLoadingState("Loaded")
-    if (data.length) {
-      setLoadingState("No items found :(")
+    setLoadingState("Loaded");
+    if (data.length === 0) {
+      setLoadingState("No items found :(");
     }
   }
 
   return (
-    <div className='splashcardwrapper'>
-    <div className='browseWrapper'>
-      <div className='browseBox'>
-        <div className='navigation'>
-          <h3 className='browseTitle'>{ isConsumerPage ? "My Items" : "Browse"}</h3>
-        </div>
-        <div className='itemCards'>
-          {nfts.length > 0 ?
-            nfts.map(i => (
-              <ItemCard key={i.contract.contractAddress} i={i} forSale={!isConsumerPage}/>
-            )) : loadingState
-          }
+    <div className="splashcardwrapper">
+      <div className="browseWrapper">
+        <div className="browseBox">
+          <div className="navigation">
+            <h3 className="browseTitle">
+              {isConsumerPage ? "My Items" : "Browse"}
+            </h3>
+          </div>
+          <div className="itemCards">
+            {nfts.length > 0
+              ? nfts.map((i) => (
+                  <ItemCard
+                    key={i.contract.contractAddress}
+                    i={i}
+                    forSale={!isConsumerPage}
+                  />
+                ))
+              : loadingState }
+          </div>
         </div>
       </div>
     </div>
-    </div>
-  )
-}
+  );
+};
 
-export default Browse
+export default Browse;

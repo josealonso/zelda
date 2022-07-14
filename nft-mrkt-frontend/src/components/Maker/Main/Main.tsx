@@ -3,74 +3,89 @@ import "./main.scss";
 import { Token, GetInstance } from "../../../api/BackendIf";
 import LineInfo from "./LineInfo/LineInfo";
 import Header from "./Header";
+import { userStore } from "../../../Store/userStore";
 import NotFoundImg from "../../Assets/Logo.png";
+import { GetIPFSGatewayPrefixedLink } from "../../../models/IPFSUtils";
+import StoragePinataImpl from "../../../api/StoragePinataImpl";
+import CreateMaker from "./CreateMaker";
 
 interface MainProps {
-    chosenLine: string
+  chosenLine: string;
 }
 
 const Main: React.FC<MainProps> = ({ chosenLine }) => {
-
-  const [name, setName] = useState<string>();
+  const {user, setAddress} = userStore();
+  const [name, setName] = useState<string | undefined>();
   const [makerAddr, setMakerAddr] = useState<string>();
   const [productUri, setProductUri] = useState<string>();
   const [price, setPrice] = useState<number>(0);
-  const [quantity, setQuantity] =useState<number>();
-  const [loaded, setLoaded] = useState<boolean>();
+  const [quantity, setQuantity] = useState<number>();
+  const [loaded, setLoaded] = useState<boolean>(false);
   const [tokens, setTokens] = useState<Token[]>();
-
-  useEffect(() => {
-    async function populate() {
-        if(chosenLine) {
-          const backend = GetInstance();
-          const item = await backend.getCollectionData(chosenLine);
-          if (item) {
-            setName(item.productName);
-            setMakerAddr(item.maker.userAddress);
-            setProductUri(item.productUri);
-            setPrice(item.makerSalePrice.toNumber());
-            setQuantity(item.numberProduced);
-            setTokens(item.tokensMinted);
-            setLoaded(true);
-          }
-        }
+  const backend = GetInstance();
+  async function populate() {
+    if (chosenLine) {
+      const line = await backend.getCollectionData(chosenLine);
+      if (line) {
+        setName(line.productName);
+        setMakerAddr(line.maker.makerAddress);
+        setProductUri(line.productUri);
+        setPrice(line.makerSalePrice.toNumber());
+        setQuantity(line.numberProduced);
+        setTokens(line.tokensMinted);
+      }
     }
+    setLoaded(true);
+  }
+  useEffect(() => {
     populate();
   }, [chosenLine]);
 
-  if (loaded === true) {
-    return (
-        <div className='mainWrapper'>
-          <div className="topMain">
-            <Header productUri={productUri?.startsWith("http") ? productUri : NotFoundImg} chosenLine={chosenLine} name={name} price={price} />
-          </div>
-          <div className="bottomMain">
-            <div className='items'>
-                { tokens?.map((i) => (
-                    <LineInfo key={i.id.toString()} i={i} chosenLine={chosenLine} productUri={productUri} />
-                ))}
-            </div>
-          </div>
-        </div>
-    )
-  } else {
-    return (
-      <div className='mainWrapper'>
-          <div className="topMain">
-            <div className="indexHeader">
-              Welcome to your company dashboard
-            </div>
-          </div>
-          <div className="bottomMain">
-            <div className='items'>
-              <div className="indexMain">
-                Please choose a Product Line to the left to get started
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-  }
-}
 
-export default Main
+  if (chosenLine || user.isMaker === true) {
+    if(chosenLine || price !== 0) {
+      return (
+        <div className="mainWrapper">
+          <div className="topMain">
+            <Header
+              imageUri={productUri ? GetIPFSGatewayPrefixedLink(productUri) : NotFoundImg}
+              chosenLine={chosenLine}
+              name={name}
+              price={price}
+              count={tokens ? tokens.length : 0}
+              onSuccess={()=> populate()}
+            />
+          </div>
+          <div className="bottomMain">
+            <div className="items">
+              {tokens?.map((i) => (
+                <LineInfo
+                  key={i.id.toString()}
+                  i={i}
+                  chosenLine={chosenLine}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="mainWrapper">
+          <div className="topMain noLinesCreated">
+            Thanks for creating your account!
+          </div>
+          <div className="bottomMain">
+            <div className="items noLinesCreated">
+              Please create a line to your left!
+            </div>
+          </div>
+        </div>
+      );
+    }
+  } else {
+    return (<div>Hello world</div>);
+  }
+};
+
+export default Main;

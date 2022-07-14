@@ -3,8 +3,8 @@ import { Token } from "../api/BackendIf";
 import { ethers } from "ethers";
 
 interface ItemState {
-  item: Token
-  setItem: (input: Token) => void
+  item: Token;
+  setItem: (input: Token) => void;
 }
 
 export const itemStore = create<ItemState>((set) => ({
@@ -24,13 +24,13 @@ export const itemStore = create<ItemState>((set) => ({
       productUri: "",
       productName: "",
       productMeta: "",
-      numberProduced: 0
+      numberProduced: 0,
     },
     forSale: false,
     salePrice: ethers.BigNumber.from(0),
-    minted: false
+    minted: false,
   },
   setItem: (_input: Token) => {
     set(() => ({ item: _input }));
-  }
+  },
 }));

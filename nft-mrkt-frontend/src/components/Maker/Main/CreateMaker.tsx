@@ -17,10 +17,7 @@ const CreateMaker: React.FC = () => {
       const cid = await storage.uploadFile(fileImg);
       const imgHash = `ipfs://${cid}`;
       const backend = GetInstance();
-      const response = await backend.addMaker(
-        name,
-        imgHash
-      );
+      const response = await backend.addMaker(name, imgHash, user.addrString);
       setAddressMaker(user.addrString, response.makerAddress, true);
       return response;
     } else {
