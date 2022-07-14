@@ -53,10 +53,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC165__factory>;
     getContractFactory(
-      name: "FinalMarketplace",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.FinalMarketplace__factory>;
-    getContractFactory(
       name: "IMakerContract",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IMakerContract__factory>;
@@ -65,9 +61,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MakerContract__factory>;
     getContractFactory(
-      name: "NFTCollection",
+      name: "FinalMarketplace",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.NFTCollection__factory>;
+    ): Promise<Contracts.FinalMarketplace__factory>;
     getContractFactory(
       name: "OzNFT",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -76,6 +72,10 @@ declare module "hardhat/types/runtime" {
       name: "SimpleNFTs",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SimpleNFTs__factory>;
+    getContractFactory(
+      name: "NFTCollection",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.NFTCollection__factory>;
     getContractFactory(
       name: "StubMaker",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -140,11 +140,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC165>;
     getContractAt(
-      name: "FinalMarketplace",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.FinalMarketplace>;
-    getContractAt(
       name: "IMakerContract",
       address: string,
       signer?: ethers.Signer
@@ -155,10 +150,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.MakerContract>;
     getContractAt(
-      name: "NFTCollection",
+      name: "FinalMarketplace",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.NFTCollection>;
+    ): Promise<Contracts.FinalMarketplace>;
     getContractAt(
       name: "OzNFT",
       address: string,
@@ -169,6 +164,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.SimpleNFTs>;
+    getContractAt(
+      name: "NFTCollection",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.NFTCollection>;
     getContractAt(
       name: "StubMaker",
       address: string,
