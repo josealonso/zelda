@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./lineInfo.scss";
 import { BigNumber } from "ethers";
 import QRGenerator from "../../../QRCode/QRGenerator/QRGenerator";
