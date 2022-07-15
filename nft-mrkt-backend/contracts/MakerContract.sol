@@ -1,10 +1,10 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
+import "./IMakerContract.sol";
 import "hardhat/console.sol";
 
-
-contract MakerContract {
+contract MakerContract is IMakerContract {
     // this is for the test
     address[] admins;
     address[] contracts;
@@ -33,35 +33,35 @@ contract MakerContract {
         logoIpfsUrl = _logoIpfsUrl;
     }
 
-    function addAdmin(address _newAdmin) external onlyAdmin {
+    function addAdmin(address _newAdmin) external override onlyAdmin {
         admins.push(_newAdmin);
     }
 
-    function getMakerName() external view returns(string memory) {
+    function getMakerName() external view override returns(string memory) {
         return companyName;
     }
 
-    function getMakerLogoUri() external view returns(string memory) {
+    function getMakerLogoUri() external view override returns(string memory) {
         return logoIpfsUrl;
     }
 
-    function getAdmin(uint256 _index) external view returns(address) {
+    function getAdmin(uint256 _index) external view override returns(address) {
         return(admins[_index]);
     }
 
-    function getAdminCount() external view returns(uint256) {
+    function getAdminCount() external view override returns(uint256) {
         return admins.length;
     }
 
-    function addMaker(address _address) external onlyAdmin {
+    function addMaker(address _address) external override onlyAdmin {
         contracts.push(_address);
     }
 
-    function getMakers() external view returns(address[] memory){
+    function getMakers() external view override returns(address[] memory){
         return contracts;
     }
 
-    function getMakersCount() external view returns(uint256) {
+    function getMakersCount() external view override returns(uint256) {
         return contracts.length;
     }
 }
