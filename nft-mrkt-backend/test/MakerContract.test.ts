@@ -7,6 +7,8 @@ import {
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 describe.only("Maker Contract", function () {
+  const MAKER_NAME = "test_name";
+  const MAKER_LOGO = "test_uri";
   let owner: SignerWithAddress;
   let user1: SignerWithAddress;
   let user2: SignerWithAddress;
@@ -17,18 +19,18 @@ describe.only("Maker Contract", function () {
   before(async function () {
     [owner, user1, user2] = await ethers.getSigners();
 
-    const makerContractFactory = await ethers.getContractFactory("MakerContract") as MakerContract__factory;
-    makerContract = await makerContractFactory.deploy("test_name", "test_uri");
+    const makerContractFactory = await ethers.getContractFactory("MakerContract") as unknown as MakerContract__factory;
+    makerContract = await makerContractFactory.deploy(MAKER_NAME, MAKER_LOGO);
   });
 
   describe("Test gets", async function () {
     it("get name", async function () {
-      const response = await makerContract.getCompanyName();
-      expect(response).to.equal("test_name");
+      const response = await makerContract.getMakerName();
+      expect(response).to.equal(MAKER_NAME);
     });
     it("get logo", async function () {
-      const response = await makerContract.getLogoUri();
-      expect(response).to.equal("test_uri");
+      const response = await makerContract.getMakerLogoUri();
+      expect(response).to.equal(MAKER_LOGO);
     });
   });
   describe("Admins", async function () {
@@ -46,11 +48,11 @@ describe.only("Maker Contract", function () {
   });
   describe("contracts", async function () {
     it("add a contract", async function () {
-      const tx2 = await makerContract.addContract(contractAddress1);
+      const tx2 = await makerContract.addMaker(contractAddress1);
       await tx2.wait();
-      const contractCount = await makerContract.getContractCount();
+      const contractCount = await makerContract.getMakersCount();
       expect(contractCount).to.equal(1);
-      const contracts = await makerContract.getContracts()
+      const contracts = await makerContract.getMakers()
       expect(contracts[0].toLowerCase()).to.equal(contractAddress1);
       expect(contracts).lengthOf(1)
     });
@@ -64,9 +66,9 @@ describe.only("Maker Contract", function () {
     });
     it("should add the second NFT contract to the Maker's db", async function () {
       const contract2Address = OzContract2.address;
-      const tx3 = await makerContract.addContract(contract2Address);
+      const tx3 = await makerContract.addMaker(contract2Address);
       await tx3.wait();
-      const contractCount = await makerContract.getContractCount();
+      const contractCount = await makerContract.getMakersCount();
       await expect(contractCount).to.equal(2);
     });
   });

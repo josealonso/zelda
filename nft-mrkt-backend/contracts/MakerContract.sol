@@ -37,11 +37,11 @@ contract MakerContract {
         admins.push(_newAdmin);
     }
 
-    function getCompanyName() external view returns(string memory) {
+    function getMakerName() external view returns(string memory) {
         return companyName;
     }
 
-    function getLogoUri() external view returns(string memory) {
+    function getMakerLogoUri() external view returns(string memory) {
         return logoIpfsUrl;
     }
 
@@ -53,15 +53,15 @@ contract MakerContract {
         return admins.length;
     }
 
-    function addContract(address _address) external onlyAdmin {
+    function addMaker(address _address) external onlyAdmin {
         contracts.push(_address);
     }
 
-    function getContracts() external view returns(address[] memory){
+    function getMakers() external view returns(address[] memory){
         return contracts;
     }
 
-    function getContractCount() external view returns(uint256) {
+    function getMakersCount() external view returns(uint256) {
         return contracts.length;
     }
 }
