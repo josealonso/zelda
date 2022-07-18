@@ -1,14 +1,16 @@
 import { BigNumber } from "ethers";
-import StubBackendData from "./stubBackendData";
+import BackendStubImpl from "./BackendStubImpl";
 import BackendAPIImpl from "./BackendImpl";
+import configJson from "../config.json"
 
-export type FinalToken = {
+export type Token = {
     id: BigNumber
     ownerAddress: string
-    contract: FinalNFTContract
+    contract: NFTContract
     forSale: boolean
     salePrice: BigNumber
     minted: boolean
+    erc721Data?: ERC721TokenData
 }
 
 /**
@@ -28,15 +30,15 @@ export type ERC721TokenData = {
     image?: string,
 }
 
-export type FinalNFTContract = {
+export type NFTContract = {
     contractAddress: string
-    maker: FinalMakerUser
+    maker: Maker
     makerSalePrice: BigNumber
     productUri: string
     productName: string
     productMeta: string
     numberProduced: number
-    tokensMinted?: FinalToken[]
+    tokensMinted?: Token[]
 }
 
 export type FinalUser = {
@@ -44,24 +46,29 @@ export type FinalUser = {
     userAddress: string
 }
 
-export type FinalMakerUser = FinalUser & {
+export type Maker = FinalUser & {
     companyName: string
     companyLogoUri: string
+    makerAddress: string
 }
 
 export interface BackendAPI {
-    getUserNFTs(ownerAddress: string): Promise<FinalToken[]>
+    getUserNFTs(ownerAddress: string): Promise<Token[]>
 
-    getNFTsForSale(): Promise<FinalToken[]>
+    getNFTsForSale(): Promise<Token[]>
 
-    getCollectionData(nftContractAddress: string): Promise<FinalNFTContract>
+    getCollectionData(nftContractAddress: string): Promise<NFTContract>
 
     // contracts address - get a list
     // name - get name from first contract
     // logo - get logo from first contract
-    getMakerData(manufacturerAddress: string): Promise<FinalNFTContract[]>
+    getMakerData(): Promise<string[]>
 
     buyNFT(address: string, tokenId: BigNumber): Promise<BigNumber>
+
+    addMaker(companyName: string, logoIpfsUrl: string, makerUserAddress: string): Promise<Maker>
+
+    getMaker(makerUserAddress: string): Promise<Maker>
 
     addCollectionContract(
         productName: string, //Product Line
@@ -70,21 +77,25 @@ export interface BackendAPI {
         productMetadata: string,
         makerSalePrice: BigNumber,  // Price
         numberProduced: number, // Max TokenId
-    ): Promise<FinalNFTContract>
+    ): Promise<NFTContract>
 
     changePrice(contractAddress: string, newPrice: Number): Promise<boolean>
 
     getTokenDetail(contractAddress: string, tokenID: number): Promise<ERC721TokenData>
+
+    makerMint(contractAddress: string, tokenUri: string): Promise<BigNumber>
+
+    getContractOwner(contractAddress:string): Promise<string>
 }
 
 export function GetInstance(): BackendAPI {
     if (process.env.REACT_APP_DATA_SOURCE && process.env.REACT_APP_DATA_SOURCE === "static") {
         console.log("Using static data source")
-        return new StubBackendData()
+        return new BackendStubImpl()
     }
     if (process.env.REACT_APP_DATA_SOURCE && process.env.REACT_APP_DATA_SOURCE === "mumbai") {
-        if (process.env.REACT_APP_MUMBAI_MARKETPLACE_CONTRACT_ADDRESS) {
-            return new BackendAPIImpl(process.env.REACT_APP_MUMBAI_MARKETPLACE_CONTRACT_ADDRESS)
+        if (configJson.mumbai_marketplace_address) {
+            return new BackendAPIImpl(configJson.mumbai_marketplace_address)
         }
         throw new Error("cannot get mumbai market place contract address")
     }

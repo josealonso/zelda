@@ -7,12 +7,12 @@ describe("ipfs utils utils", () => {
     expect(actual).toEqual(test)
 
     test = "ipfs://hello/123"
-    let expected = "https://ipfs.io/ipfs/hello/123"
+    let expected = "https://gateway.pinata.cloud/ipfs/hello/123"
     actual = GetIPFSGatewayPrefixedLink(test)
     expect(actual).toEqual(expected)
 
     test = "iPFs://hello/123"
-    expected = "https://ipfs.io/ipfs/hello/123"
+    expected = "https://gateway.pinata.cloud/ipfs/hello/123"
     actual = GetIPFSGatewayPrefixedLink(test)
     expect(actual).toEqual(expected)
   })

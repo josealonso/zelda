@@ -1,11 +1,6 @@
 import { expect } from "chai";
 import hre, { ethers } from "hardhat";
-import {
-  StubMaker,
-  StubMaker__factory,
-  StubNFTMarketplaceImpl,
-  StubNFTMarketplaceImpl__factory,
-} from "../../nft-mrkt-frontend/src/typechain";
+import { StubMaker, StubMaker__factory, StubNFTMarketplaceImpl, StubNFTMarketplaceImpl__factory } from "../../nft-mrkt-frontend/src/typechain";
 import { BigNumber } from "ethers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { fail } from "assert";
@@ -17,6 +12,8 @@ describe.only("Marketplace Contract", function () {
   let user2: SignerWithAddress;
   let mpContract: StubNFTMarketplaceImpl;
   let nftContract: StubMaker;
+  let testAddress1: string = "0x3c44cdddb6a900fa2b585dd299e03d12fa429399"
+  let testAddress2: string = "0x3c44cdddb6a900fa2b585dd299e03d12fa429888"
 
   before(async function () {
     await hre.network.provider.send("hardhat_reset");
@@ -30,14 +27,8 @@ describe.only("Marketplace Contract", function () {
     mpContract = await mpContractFactory.connect(mpSigner).deploy();
     await mpContract.deployed();
 
-    const nftContractFactory = (await ethers.getContractFactory(
-      "StubMaker"
-    )) as StubMaker__factory;
-    nftContract = await nftContractFactory.deploy(
-      "test_name1",
-      "test_symbol1",
-      10
-    );
+    const nftContractFactory = (await ethers.getContractFactory("StubMaker")) as StubMaker__factory;
+    nftContract = await nftContractFactory.deploy("test_name1", "test_symbol1", 10);
     await nftContract.deployed();
   });
 
@@ -58,9 +49,7 @@ describe.only("Marketplace Contract", function () {
       });
       const responseCount = await mpContract.getAllCollectionsForSale();
       expect(responseCount).lengthOf(1);
-      expect(responseCount[0].nftContractAddress).to.be.equals(
-        nftContract.address
-      );
+      expect(responseCount[0].nftContractAddress).to.be.equals(nftContract.address);
     });
 
     step("make sale", async function () {
@@ -72,9 +61,7 @@ describe.only("Marketplace Contract", function () {
         value: BigNumber.from("50000000000000000"),
       });
       const receipt = await tx.wait();
-      expect(receipt.gasUsed).equals(130275);
-      const newBalance = await user2.getBalance();
-      expect(newBalance.toString()).equals("9999949790355703507400");
+      expect(receipt.gasUsed).equals(130297);
       // eslint-disable-next-line no-unused-expressions
       expect(receipt.events).not.to.be.undefined;
       if (receipt.events) {
@@ -95,15 +82,34 @@ describe.only("Marketplace Contract", function () {
         expect(e).to.be.a("Error");
         if (e instanceof Error) {
           const message = e.message;
-          expect(message).contain(
-            "sender doesn't have enough funds to send tx"
-          );
+          expect(message).contain("sender doesn't have enough funds to send tx");
         }
       }
     });
     step("check owner of sale", async function () {
       const postSaleOwner = await nftContract.ownerOf(1);
       expect(postSaleOwner).equals(user2.address);
+    });
+  });
+
+  describe("Maker interactions", async function () {
+    it("empty response", async function () {
+      let response = await mpContract.getMakerProductLines(user1.address)
+      await expect(response).lengthOf(0);
+
+      let response2 = await mpContract.getMakerContractFromAdmin(user1.address)
+      await expect(response2).equals("0x0000000000000000000000000000000000000000");
+    });
+    it("add maker", async function () {
+      await mpContract.addMakerProductLines(testAddress1, testAddress2)
+      let response = await mpContract.getMakerProductLines(testAddress1)
+      await expect(response).lengthOf(1);
+      await expect(response[0].toLowerCase()).equals(testAddress2);
+    });
+    it("add maker via admin", async function () {
+      await mpContract.connect(user2).setMakerContractFromAdmin(testAddress1)
+      let response = await mpContract.getMakerContractFromAdmin(user2.address)
+      await expect(response.toLowerCase()).equals(testAddress1);
     });
   });
 });

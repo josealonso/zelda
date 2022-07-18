@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./lineInfo.scss";
 import { BigNumber } from "ethers";
 import QRGenerator from "../../../QRCode/QRGenerator/QRGenerator";
 import { QRNFTType, stringToType, typeToEmbeddedString } from "../../../../models/QRCodeModel";
-import { FinalToken } from "../../../../api/BackendIf";
+import { Token } from "../../../../api/BackendIf";
 
 interface LineInfoProps {
-  i: FinalToken
-  chosenLine: string
-  productUri: string | undefined
+  i: Token;
+  chosenLine: string;
 }
 
-const LineInfo: React.FC<LineInfoProps> = ({ i, chosenLine, productUri }) => {
+const LineInfo: React.FC<LineInfoProps> = ({ i, chosenLine }) => {
 
   const [QRData, setQRData] = useState<QRNFTType>();
   const [viewCode, setViewCode] = useState<boolean>(false);
@@ -20,24 +19,27 @@ const LineInfo: React.FC<LineInfoProps> = ({ i, chosenLine, productUri }) => {
   useEffect(() => {
     const stringified = typeToEmbeddedString({
       network: "polygon",
-      address: "owner",
-      tokenId: BigNumber.from(1)
+      address: i.contract.contractAddress,
+      tokenId: i.id,
     });
     setQRData(stringToType(stringified));
   }, []);
-
-
-  const navigate = useNavigate();
-
   return (
     <div key={i.contract.productName} className="token x">
-      <div className='title'>Title:&nbsp;&nbsp;</div>
-      <button
-        onClick={() => {
-          navigate("/itemDetail", { state: { data: i } });
-        }} className='wrapper first'>
-        <div className='data'>{i.contract.productName}</div>
-      </button>
+      <div className='wrapper first'>
+
+      <div className='title'><img src={i.erc721Data?.image ?? i.contract.productUri}/></div>
+      <Link
+        to="/itemDetail"
+        state={{ data: i }}
+        className='link'>
+        <div className='data'>{i.erc721Data?.name || i.contract.productName}</div>
+      </Link>
+      </div>
+      <div className='wrapper'>
+        <div className='title'>ID:&nbsp;&nbsp;</div>
+        <div className='data'>{i.id.toString()}</div>
+      </div>
       <div className='wrapper'>
         <div className='title'>Sold:&nbsp;&nbsp;</div>
         {i.forSale ? <div className='data'>yes</div> : <div className='data'>no</div>}
@@ -58,7 +60,7 @@ const LineInfo: React.FC<LineInfoProps> = ({ i, chosenLine, productUri }) => {
         }
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LineInfo
+export default LineInfo;

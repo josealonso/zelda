@@ -22,12 +22,20 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface StubNFTMarketplaceIfInterface extends ethers.utils.Interface {
   functions: {
+    "addMakerProductLines(address,address)": FunctionFragment;
     "buyItem(address)": FunctionFragment;
     "createNftCollectionContract((string,string,string,string,address,address,uint256))": FunctionFragment;
     "getAllCollectionsForSale()": FunctionFragment;
+    "getMakerContractFromAdmin(address)": FunctionFragment;
+    "getMakerProductLines(address)": FunctionFragment;
     "getPrice(address)": FunctionFragment;
+    "setMakerContractFromAdmin(address)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "addMakerProductLines",
+    values: [string, string]
+  ): string;
   encodeFunctionData(functionFragment: "buyItem", values: [string]): string;
   encodeFunctionData(
     functionFragment: "createNftCollectionContract",
@@ -47,8 +55,24 @@ interface StubNFTMarketplaceIfInterface extends ethers.utils.Interface {
     functionFragment: "getAllCollectionsForSale",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "getMakerContractFromAdmin",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMakerProductLines",
+    values: [string]
+  ): string;
   encodeFunctionData(functionFragment: "getPrice", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "setMakerContractFromAdmin",
+    values: [string]
+  ): string;
 
+  decodeFunctionResult(
+    functionFragment: "addMakerProductLines",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "buyItem", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "createNftCollectionContract",
@@ -58,7 +82,19 @@ interface StubNFTMarketplaceIfInterface extends ethers.utils.Interface {
     functionFragment: "getAllCollectionsForSale",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMakerContractFromAdmin",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMakerProductLines",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getPrice", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setMakerContractFromAdmin",
+    data: BytesLike
+  ): Result;
 
   events: {};
 }
@@ -107,6 +143,12 @@ export class StubNFTMarketplaceIf extends BaseContract {
   interface: StubNFTMarketplaceIfInterface;
 
   functions: {
+    addMakerProductLines(
+      _maker: string,
+      _newProductLine: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     buyItem(
       collectionAddress: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -159,11 +201,32 @@ export class StubNFTMarketplaceIf extends BaseContract {
       }
     >;
 
+    getMakerContractFromAdmin(
+      _admin: string,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    getMakerProductLines(
+      _maker: string,
+      overrides?: CallOverrides
+    ): Promise<[string[]]>;
+
     getPrice(
       collectionAddress: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    setMakerContractFromAdmin(
+      _makerContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
+
+  addMakerProductLines(
+    _maker: string,
+    _newProductLine: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   buyItem(
     collectionAddress: string,
@@ -197,12 +260,33 @@ export class StubNFTMarketplaceIf extends BaseContract {
     })[]
   >;
 
+  getMakerContractFromAdmin(
+    _admin: string,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  getMakerProductLines(
+    _maker: string,
+    overrides?: CallOverrides
+  ): Promise<string[]>;
+
   getPrice(
     collectionAddress: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  setMakerContractFromAdmin(
+    _makerContract: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
+    addMakerProductLines(
+      _maker: string,
+      _newProductLine: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     buyItem(
       collectionAddress: string,
       overrides?: CallOverrides
@@ -235,15 +319,36 @@ export class StubNFTMarketplaceIf extends BaseContract {
       })[]
     >;
 
+    getMakerContractFromAdmin(
+      _admin: string,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    getMakerProductLines(
+      _maker: string,
+      overrides?: CallOverrides
+    ): Promise<string[]>;
+
     getPrice(
       collectionAddress: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    setMakerContractFromAdmin(
+      _makerContract: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {};
 
   estimateGas: {
+    addMakerProductLines(
+      _maker: string,
+      _newProductLine: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     buyItem(
       collectionAddress: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -264,13 +369,34 @@ export class StubNFTMarketplaceIf extends BaseContract {
 
     getAllCollectionsForSale(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getMakerContractFromAdmin(
+      _admin: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getMakerProductLines(
+      _maker: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getPrice(
       collectionAddress: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    setMakerContractFromAdmin(
+      _makerContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    addMakerProductLines(
+      _maker: string,
+      _newProductLine: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     buyItem(
       collectionAddress: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -293,9 +419,24 @@ export class StubNFTMarketplaceIf extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getMakerContractFromAdmin(
+      _admin: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getMakerProductLines(
+      _maker: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getPrice(
       collectionAddress: string,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    setMakerContractFromAdmin(
+      _makerContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

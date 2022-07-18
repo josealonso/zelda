@@ -1,19 +1,41 @@
 import { MakeDispAddr } from "../../models/Address";
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { userStore } from "../../Store/userStore";
 import Metamask from "../Assets/Metamask.svg";
 import { Link } from "react-router-dom";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import LogoText from "../Assets/Logo-Text.png";
+import { GetInstance } from "../../api/BackendIf";
 import './navbar.scss'
 
 const { ethereum } = window as any;
 
+interface Maker {
+  network: string;
+  makerAddress: string;
+  companyName: string;
+  companyLogoUri: string;
+}
+
 const Navbar: React.FC = () => {
 
-  const { user, setAddress } = userStore();
+  const { user, setAddress, setAddressMaker } = userStore();
   const [dispAddr, setDispAddr] = useState<string>("");
+
+  useEffect(() => {
+    async function setStatus() {
+      const backend = GetInstance();
+      const response = await backend.getMaker(user.addrString);
+      if(response.makerAddress.length < 10) {
+        setAddressMaker(user.addrString, user.makerAddress, user.isMaker)
+      } else{
+        setAddressMaker(user.addrString, response.makerAddress, true)
+      }
+    }
+    console.log("Admin's maker address: ",user.makerAddress);
+    setStatus()
+  }, [dispAddr])
 
   async function connectMM() {
     if(ethereum) {
@@ -21,7 +43,7 @@ const Navbar: React.FC = () => {
       const prov = new ethers.providers.Web3Provider(await web3Modal.connect())
       const signer = await prov.getSigner()
       const address = await signer.getAddress();
-      setAddress(address);
+      setAddressMaker(address, user.makerAddress, user.isMaker);
       setDispAddr(MakeDispAddr(address))
     }
   }

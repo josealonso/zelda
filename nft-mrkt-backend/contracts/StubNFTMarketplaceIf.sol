@@ -20,4 +20,13 @@ interface StubNFTMarketplaceIf {
     external
     view
     returns (Models.NftCollection[] memory collections);
+
+    function addMakerProductLines(address _maker, address _newProductLine) external;
+
+    function getMakerProductLines(address _maker) external view returns(address[] memory);
+
+    function setMakerContractFromAdmin(address _makerContract) external;
+
+    function getMakerContractFromAdmin(address _admin) external view returns(address);
+
 }

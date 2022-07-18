@@ -1,4 +1,4 @@
-import {ethers} from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 const NETWORK_STRING = "network"
 const ADDRESS_STRING = "address"
@@ -13,6 +13,7 @@ export type QRNFTType  = {
 // Call  typeToEmbeddedString 1st
 
 export function typeToEmbeddedString(qrNFTType: QRNFTType): string {
+    qrNFTType.tokenId = BigNumber.from(qrNFTType.tokenId._hex);
     return `${NETWORK_STRING}:${qrNFTType.network} ${ADDRESS_STRING}:${qrNFTType.address} ${TOKENID_STRING}:${qrNFTType.tokenId.toString()}`
 }
 

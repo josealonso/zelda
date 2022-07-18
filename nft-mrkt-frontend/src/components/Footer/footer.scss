@@ -28,6 +28,10 @@
             text-decoration: none;
             border: 2px solid var(--ZELDABEIGE)
         }
+        .text:hover{
+            background-color: var(--ZELDAGREEN);
+            cursor: pointer;
+        }
         .about{
 
         }
@@ -44,13 +48,13 @@
             margin: auto 1%;
             width: auto;
             padding-right: 25%;
-    
+
             .linkBox{
                 display: flex;
                 height: 100%;
                 width: auto;
             }
-    
+
             .twitter{
                 height: 90%;
             }
