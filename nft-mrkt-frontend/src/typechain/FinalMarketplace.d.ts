@@ -23,7 +23,6 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 interface FinalMarketplaceInterface extends ethers.utils.Interface {
   functions: {
     "addCollection(address)": FunctionFragment;
-    "addMakerProductLines(address,address)": FunctionFragment;
     "addMarketItem(address,uint256,uint256)": FunctionFragment;
     "buyMarketItem(uint256)": FunctionFragment;
     "chooseCollection(uint256)": FunctionFragment;
@@ -33,15 +32,12 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
     "feePercent()": FunctionFragment;
     "getItemsForSale()": FunctionFragment;
     "getItemsOwnedByUser()": FunctionFragment;
-    "getMakerContractFromAdmin(address)": FunctionFragment;
-    "getMakerProductLines(address)": FunctionFragment;
     "getTotalPrice(uint256)": FunctionFragment;
     "itemCount()": FunctionFragment;
     "items(uint256)": FunctionFragment;
     "nftCollectionsArray(uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "setMakerContractFromAdmin(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "withdraw()": FunctionFragment;
   };
@@ -49,10 +45,6 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "addCollection",
     values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "addMakerProductLines",
-    values: [string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "addMarketItem",
@@ -91,14 +83,6 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getMakerContractFromAdmin",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getMakerProductLines",
-    values: [string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getTotalPrice",
     values: [BigNumberish]
   ): string;
@@ -114,10 +98,6 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "setMakerContractFromAdmin",
-    values: [string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
@@ -125,10 +105,6 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "addCollection",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "addMakerProductLines",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -162,14 +138,6 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getMakerContractFromAdmin",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getMakerProductLines",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getTotalPrice",
     data: BytesLike
   ): Result;
@@ -182,10 +150,6 @@ interface FinalMarketplaceInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setMakerContractFromAdmin",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -279,12 +243,6 @@ export class FinalMarketplace extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    addMakerProductLines(
-      _maker: string,
-      _newProductLine: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     addMarketItem(
       _nft: string,
       _tokenId: BigNumberish,
@@ -321,16 +279,6 @@ export class FinalMarketplace extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    getMakerContractFromAdmin(
-      _admin: string,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    getMakerProductLines(
-      _maker: string,
-      overrides?: CallOverrides
-    ): Promise<[string[]]>;
-
     getTotalPrice(
       _itemId: BigNumberish,
       overrides?: CallOverrides
@@ -348,7 +296,7 @@ export class FinalMarketplace extends BaseContract {
         tokenId: BigNumber;
         price: BigNumber;
         seller: string;
-        forSale: boolean;
+        sold: boolean;
       }
     >;
 
@@ -360,11 +308,6 @@ export class FinalMarketplace extends BaseContract {
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setMakerContractFromAdmin(
-      _makerContract: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -380,12 +323,6 @@ export class FinalMarketplace extends BaseContract {
 
   addCollection(
     _nftCollectionAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  addMakerProductLines(
-    _maker: string,
-    _newProductLine: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -425,16 +362,6 @@ export class FinalMarketplace extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  getMakerContractFromAdmin(
-    _admin: string,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  getMakerProductLines(
-    _maker: string,
-    overrides?: CallOverrides
-  ): Promise<string[]>;
-
   getTotalPrice(
     _itemId: BigNumberish,
     overrides?: CallOverrides
@@ -452,7 +379,7 @@ export class FinalMarketplace extends BaseContract {
       tokenId: BigNumber;
       price: BigNumber;
       seller: string;
-      forSale: boolean;
+      sold: boolean;
     }
   >;
 
@@ -464,11 +391,6 @@ export class FinalMarketplace extends BaseContract {
   owner(overrides?: CallOverrides): Promise<string>;
 
   renounceOwnership(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setMakerContractFromAdmin(
-    _makerContract: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -484,12 +406,6 @@ export class FinalMarketplace extends BaseContract {
   callStatic: {
     addCollection(
       _nftCollectionAddress: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    addMakerProductLines(
-      _maker: string,
-      _newProductLine: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -530,7 +446,7 @@ export class FinalMarketplace extends BaseContract {
         tokenId: BigNumber;
         price: BigNumber;
         seller: string;
-        forSale: boolean;
+        sold: boolean;
       })[]
     >;
 
@@ -543,19 +459,9 @@ export class FinalMarketplace extends BaseContract {
         tokenId: BigNumber;
         price: BigNumber;
         seller: string;
-        forSale: boolean;
+        sold: boolean;
       })[]
     >;
-
-    getMakerContractFromAdmin(
-      _admin: string,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    getMakerProductLines(
-      _maker: string,
-      overrides?: CallOverrides
-    ): Promise<string[]>;
 
     getTotalPrice(
       _itemId: BigNumberish,
@@ -574,7 +480,7 @@ export class FinalMarketplace extends BaseContract {
         tokenId: BigNumber;
         price: BigNumber;
         seller: string;
-        forSale: boolean;
+        sold: boolean;
       }
     >;
 
@@ -586,11 +492,6 @@ export class FinalMarketplace extends BaseContract {
     owner(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    setMakerContractFromAdmin(
-      _makerContract: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     transferOwnership(
       newOwner: string,
@@ -696,12 +597,6 @@ export class FinalMarketplace extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    addMakerProductLines(
-      _maker: string,
-      _newProductLine: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     addMarketItem(
       _nft: string,
       _tokenId: BigNumberish,
@@ -738,16 +633,6 @@ export class FinalMarketplace extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    getMakerContractFromAdmin(
-      _admin: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getMakerProductLines(
-      _maker: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getTotalPrice(
       _itemId: BigNumberish,
       overrides?: CallOverrides
@@ -768,11 +653,6 @@ export class FinalMarketplace extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setMakerContractFromAdmin(
-      _makerContract: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -786,12 +666,6 @@ export class FinalMarketplace extends BaseContract {
   populateTransaction: {
     addCollection(
       _nftCollectionAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    addMakerProductLines(
-      _maker: string,
-      _newProductLine: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -831,16 +705,6 @@ export class FinalMarketplace extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    getMakerContractFromAdmin(
-      _admin: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getMakerProductLines(
-      _maker: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     getTotalPrice(
       _itemId: BigNumberish,
       overrides?: CallOverrides
@@ -861,11 +725,6 @@ export class FinalMarketplace extends BaseContract {
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setMakerContractFromAdmin(
-      _makerContract: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

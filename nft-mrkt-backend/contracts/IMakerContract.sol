@@ -8,17 +8,17 @@ interface IMakerContract {
 
     function addAdmin(address _newAdmin) external;
 
-    function getCompanyName() external view returns(string memory);
+    function getMakerName() external view returns(string memory);
 
-    function getLogoUri() external view returns(string memory);
+    function getMakerLogoUri() external view returns(string memory);
 
     function getAdmin(uint256 _index) external view returns(address);
 
     function getAdminCount() external view returns(uint256);
 
-    function addContract(address _address) external;
+    function addMaker(address _address) external;
 
-    function getContracts() external view returns(address[] memory);
+    function getMakers() external view returns(address[] memory);
 
-    function getContractCount() external view returns(uint256);
+    function getMakersCount() external view returns(uint256);
 }

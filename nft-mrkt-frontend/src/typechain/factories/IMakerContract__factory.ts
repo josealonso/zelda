@@ -31,7 +31,7 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "addContract",
+    name: "addMaker",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -70,7 +70,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getCompanyName",
+    name: "getMakerLogoUri",
     outputs: [
       {
         internalType: "string",
@@ -83,12 +83,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getContractCount",
+    name: "getMakerName",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "string",
         name: "",
-        type: "uint256",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -96,7 +96,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getContracts",
+    name: "getMakers",
     outputs: [
       {
         internalType: "address[]",
@@ -109,12 +109,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getLogoUri",
+    name: "getMakersCount",
     outputs: [
       {
-        internalType: "string",
+        internalType: "uint256",
         name: "",
-        type: "string",
+        type: "uint256",
       },
     ],
     stateMutability: "view",

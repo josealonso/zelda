@@ -87,8 +87,8 @@ export default class BackendAPIImpl implements BackendAPI {
       MakerArtifact.abi,
       signer
     ) as MakerContract;
-    const companyName = await makerContract.connect(signer).getCompanyName();
-    const companyLogo = await makerContract.connect(signer).getLogoUri();
+    const companyName = await makerContract.connect(signer).getMakerName();
+    const companyLogo = await makerContract.connect(signer).getMakerLogoUri();
     const produced = (await _collectionContract.getNumOfCollectionItems()).toNumber();
     const currentProduced = (await _collectionContract.tokenCount()).toNumber();
 
@@ -162,7 +162,7 @@ export default class BackendAPIImpl implements BackendAPI {
         productMetadata,
         _makerContractAddress
     );
-    const tx = await makerContract.connect(signer).addContract(NFTCollectionContract.address);
+    const tx = await makerContract.connect(signer).addMaker(NFTCollectionContract.address);
     await tx.wait()
     const tx2 = await marketPlaceContract.connect(signer)
       .addMakerProductLines(_makerContractAddress, NFTCollectionContract.address);
@@ -182,8 +182,8 @@ export default class BackendAPIImpl implements BackendAPI {
       maker: {
         network: this.network,
         makerAddress: makerContract.address,
-        companyName: await makerContract.getCompanyName(),
-        companyLogoUri: await makerContract.getLogoUri(),
+        companyName: await makerContract.getMakerName(),
+        companyLogoUri: await makerContract.getMakerLogoUri(),
         userAddress: "",
       },
       makerSalePrice: makerSalePrice,
@@ -287,7 +287,7 @@ export default class BackendAPIImpl implements BackendAPI {
       MakerArtifact.abi,
       signer
     ) as MakerContract;
-    return await _makerContract.getContracts();
+    return await _makerContract.getMakers();
   }
 
   async getNFTsForSale(): Promise<Token[]> {
@@ -352,8 +352,8 @@ export default class BackendAPIImpl implements BackendAPI {
             network: prov.network.name,
             userAddress: signer._address,
             makerAddress: makerContract.address,
-            companyName: await makerContract.getCompanyName(),
-            companyLogoUri: await makerContract.getLogoUri(),
+            companyName: await makerContract.getMakerName(),
+            companyLogoUri: await makerContract.getMakerLogoUri(),
         };
     }
 
@@ -376,8 +376,8 @@ export default class BackendAPIImpl implements BackendAPI {
           MakerArtifact.abi,
           prov // prov because it is readonly
         ) as MakerContract;
-        const companyName = await makerContract.getCompanyName();
-        const companyLogo = await makerContract.getLogoUri();
+        const companyName = await makerContract.getMakerName();
+        const companyLogo = await makerContract.getMakerLogoUri();
         return {
             network: prov.network.name,
             makerAddress: _makerContractAddress,
