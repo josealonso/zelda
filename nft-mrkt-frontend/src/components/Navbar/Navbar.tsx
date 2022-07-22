@@ -8,6 +8,7 @@ import { ethers } from "ethers";
 import LogoText from "../Assets/Logo-Text.png";
 import { GetInstance } from "../../api/BackendIf";
 import './navbar.scss'
+import { Button, Img } from "@chakra-ui/react";
 
 const { ethereum } = window as any;
 
@@ -52,17 +53,17 @@ const Navbar: React.FC = () => {
     <div className='navbar' id="navbar">
       <div className='left'>
         <Link to="/" className='title'>
-          <img src={LogoText} alt="Zelda Logo"></img>
+          <Img src={LogoText} alt="Zelda Logo"></Img>
         </Link>
       </div>
       <div className='right'>
         <Link to={"/consumer/" + user.addrString} className='consumerLink'> My Items </Link>
         {user?.addrString ?
-          <button className='connectMMBtn'>
-            <img src={Metamask} alt="metamask logo" ></img>
+          <Button className='connectMMBtn'>
+            <Img src={Metamask} alt="metamask logo" ></Img>
             {dispAddr}
-          </button> :
-          <button className='connectMMBtn' onClick={connectMM}>Connect Wallet</button>
+          </Button> :
+          <Button className='connectMMBtn' onClick={connectMM}>Connect Wallet</Button>
         }
       </div>
     </div>
