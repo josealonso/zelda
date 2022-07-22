@@ -10,8 +10,8 @@ node_modules
 /coverage
 
 # Solidity
-src/artifacts
-src/typechain
+#src/artifacts
+#src/typechain
 
 # production
 /build
