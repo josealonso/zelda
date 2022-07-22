@@ -22,17 +22,17 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 interface IMakerContractInterface extends ethers.utils.Interface {
   functions: {
     "addAdmin(address)": FunctionFragment;
-    "addContract(address)": FunctionFragment;
+    "addMaker(address)": FunctionFragment;
     "getAdmin(uint256)": FunctionFragment;
     "getAdminCount()": FunctionFragment;
-    "getCompanyName()": FunctionFragment;
-    "getContractCount()": FunctionFragment;
-    "getContracts()": FunctionFragment;
-    "getLogoUri()": FunctionFragment;
+    "getMakerLogoUri()": FunctionFragment;
+    "getMakerName()": FunctionFragment;
+    "getMakers()": FunctionFragment;
+    "getMakersCount()": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addAdmin", values: [string]): string;
-  encodeFunctionData(functionFragment: "addContract", values: [string]): string;
+  encodeFunctionData(functionFragment: "addMaker", values: [string]): string;
   encodeFunctionData(
     functionFragment: "getAdmin",
     values: [BigNumberish]
@@ -42,45 +42,39 @@ interface IMakerContractInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getCompanyName",
+    functionFragment: "getMakerLogoUri",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getContractCount",
+    functionFragment: "getMakerName",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "getMakers", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getContracts",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getLogoUri",
+    functionFragment: "getMakersCount",
     values?: undefined
   ): string;
 
   decodeFunctionResult(functionFragment: "addAdmin", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "addContract",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "addMaker", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getAdmin", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getAdminCount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getCompanyName",
+    functionFragment: "getMakerLogoUri",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getContractCount",
+    functionFragment: "getMakerName",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getMakers", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getContracts",
+    functionFragment: "getMakersCount",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getLogoUri", data: BytesLike): Result;
 
   events: {};
 }
@@ -134,7 +128,7 @@ export class IMakerContract extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    addContract(
+    addMaker(
       _address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -146,13 +140,13 @@ export class IMakerContract extends BaseContract {
 
     getAdminCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getCompanyName(overrides?: CallOverrides): Promise<[string]>;
+    getMakerLogoUri(overrides?: CallOverrides): Promise<[string]>;
 
-    getContractCount(overrides?: CallOverrides): Promise<[BigNumber]>;
+    getMakerName(overrides?: CallOverrides): Promise<[string]>;
 
-    getContracts(overrides?: CallOverrides): Promise<[string[]]>;
+    getMakers(overrides?: CallOverrides): Promise<[string[]]>;
 
-    getLogoUri(overrides?: CallOverrides): Promise<[string]>;
+    getMakersCount(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
 
   addAdmin(
@@ -160,7 +154,7 @@ export class IMakerContract extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  addContract(
+  addMaker(
     _address: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -169,30 +163,30 @@ export class IMakerContract extends BaseContract {
 
   getAdminCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-  getCompanyName(overrides?: CallOverrides): Promise<string>;
+  getMakerLogoUri(overrides?: CallOverrides): Promise<string>;
 
-  getContractCount(overrides?: CallOverrides): Promise<BigNumber>;
+  getMakerName(overrides?: CallOverrides): Promise<string>;
 
-  getContracts(overrides?: CallOverrides): Promise<string[]>;
+  getMakers(overrides?: CallOverrides): Promise<string[]>;
 
-  getLogoUri(overrides?: CallOverrides): Promise<string>;
+  getMakersCount(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
     addAdmin(_newAdmin: string, overrides?: CallOverrides): Promise<void>;
 
-    addContract(_address: string, overrides?: CallOverrides): Promise<void>;
+    addMaker(_address: string, overrides?: CallOverrides): Promise<void>;
 
     getAdmin(_index: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
     getAdminCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getCompanyName(overrides?: CallOverrides): Promise<string>;
+    getMakerLogoUri(overrides?: CallOverrides): Promise<string>;
 
-    getContractCount(overrides?: CallOverrides): Promise<BigNumber>;
+    getMakerName(overrides?: CallOverrides): Promise<string>;
 
-    getContracts(overrides?: CallOverrides): Promise<string[]>;
+    getMakers(overrides?: CallOverrides): Promise<string[]>;
 
-    getLogoUri(overrides?: CallOverrides): Promise<string>;
+    getMakersCount(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   filters: {};
@@ -203,7 +197,7 @@ export class IMakerContract extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    addContract(
+    addMaker(
       _address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -215,13 +209,13 @@ export class IMakerContract extends BaseContract {
 
     getAdminCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getCompanyName(overrides?: CallOverrides): Promise<BigNumber>;
+    getMakerLogoUri(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getContractCount(overrides?: CallOverrides): Promise<BigNumber>;
+    getMakerName(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getContracts(overrides?: CallOverrides): Promise<BigNumber>;
+    getMakers(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getLogoUri(overrides?: CallOverrides): Promise<BigNumber>;
+    getMakersCount(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -230,7 +224,7 @@ export class IMakerContract extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    addContract(
+    addMaker(
       _address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -242,12 +236,12 @@ export class IMakerContract extends BaseContract {
 
     getAdminCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getCompanyName(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getMakerLogoUri(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getContractCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getMakerName(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getContracts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getMakers(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getLogoUri(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getMakersCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }
