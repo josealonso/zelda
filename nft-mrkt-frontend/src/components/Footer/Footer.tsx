@@ -1,17 +1,17 @@
 import EtherscanLogo from "../Assets/EtherscanLogoLight.png";
 import TwitterLogo from "../Assets/TwitterLogo.png";
-import GitHubLogo  from "../Assets/GitHubLogo.png";
+import GitHubLogo from "../Assets/GitHubLogo.png";
 import { Link } from "react-router-dom";
 import React from 'react'
 import "./footer.scss";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 const Footer: React.FC = () => {
   return (
     <Box className='footer' id="footer">
       <Box className='left'>
-        <Link to="/maker" className='text'> Makers </Link>
-        <Link to="/about" className='text about'> About </Link>
+        <Link to="/maker" className='text'><Text> Makers</Text> </Link>
+        <Link to="/about" className='text about'><Text as="em">About</Text> </Link>
       </Box>
       <Box className='right'>
         <Box className='icon github'>
