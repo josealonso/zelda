@@ -9,6 +9,10 @@ node_modules
 # testing
 /coverage
 
+# Solidity
+src/artifacts
+src/typechain
+
 # production
 /build
 
